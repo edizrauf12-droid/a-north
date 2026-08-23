@@ -1,7 +1,7 @@
 import flet as ft
 
 def main(page: ft.Page):
-    page.title = "North AI - Endüstriyel Konsol"
+    page.title = "North AI - Android Konsol"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.bgcolor = "#0B0F19"
@@ -46,7 +46,7 @@ def main(page: ft.Page):
         
         title_content = ft.Column([
             ft.Text("NORTH OS", size=28, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-            ft.Text("Endüstriyel Yapay Zeka Konsolu v4.2", size=14, color="#8A99AD"),
+            ft.Text("Android Yapay Zeka Konsolu v0.0.1", size=14, color="#8A99AD"),
             ft.Container(height=5),
             ft.Text("⚠️ Sistemler şu an GELİŞTİRME AŞAMASINDADIR", size=12, weight=ft.FontWeight.BOLD, color="#F59E0B")
         ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.CENTER)
@@ -167,16 +167,20 @@ def main(page: ft.Page):
             ft.Text("Diyalog ve Komut Rehberi", size=16, weight=ft.FontWeight.BOLD, color="white")
         ])
 
-        guide_content = ft.Column([
-            ft.Text("📢 NORTH AI KULLANILABİLİR KOMUTLAR VE ÖZELLİKLER\n", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-            ft.Text("🔹 Matematik İşlemleri\nAçıklama: Sohbet ekranına doğrudan 50+50, 14*5 gibi işlemler yazarak hesaplatabilirsin.\n", color="white"),
-            ft.Text("🔹 nasılsın / naber\nAçıklama: Sistemlerin durumu ve enerji seviyesi hakkında bilgi verir.\n", color="white"),
-            ft.Text("🔹 adın ne / kimsin\nAçıklama: Asistanın kimliği hakkında bilgi sunar.\n", color="white"),
-            ft.Text("🔹 kim yaptı?\nAçıklama: Projenin geliştiricisini gösterir.\n", color="white"),
-            ft.Text("🔹 şaka yap / fıkra\nAçıklama: Eğlenceli bir matematik şakası patlatır.\n", color="white"),
-            ft.Text("🔹 motive et\nAçıklama: Moral verici ve ilham dolu sözler söyler.\n", color="white"),
-            ft.Text("🔹 ekip / katılmak\nAçıklama: Geliştirme ekibi iletişim bilgilerini paylaşır.", color="white"),
-        ], scroll=ft.ScrollMode.AUTO, expand=True, padding=15)
+        guide_content = ft.Container(
+            content=ft.Column([
+                ft.Text("📢 NORTH AI KULLANILABİLİR KOMUTLAR VE ÖZELLİKLER\n", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("🔹 Matematik İşlemleri\nAçıklama: Sohbet ekranına doğrudan 50+50, 14*5 gibi işlemler yazarak hesaplatabilirsin.\n", color="white"),
+                ft.Text("🔹 nasılsın / naber\nAçıklama: Sistemlerin durumu ve enerji seviyesi hakkında bilgi verir.\n", color="white"),
+                ft.Text("🔹 adın ne / kimsin\nAçıklama: Asistanın kimliği hakkında bilgi sunar.\n", color="white"),
+                ft.Text("🔹 kim yaptı?\nAçıklama: Projenin geliştiricisini gösterir.\n", color="white"),
+                ft.Text("🔹 şaka yap / fıkra\nAçıklama: Eğlenceli bir matematik şakası patlatır.\n", color="white"),
+                ft.Text("🔹 motive et\nAçıklama: Moral verici ve ilham dolu sözler söyler.\n", color="white"),
+                ft.Text("🔹 ekip / katılmak\nAçıklama: Geliştirme ekibi iletişim bilgilerini paylaşır.", color="white"),
+            ], scroll=ft.ScrollMode.AUTO),
+            padding=15,
+            expand=True
+        )
 
         page.add(
             ft.Column([
@@ -196,10 +200,10 @@ def main(page: ft.Page):
 
         about_content = ft.Container(
             content=ft.Column([
-                ft.Text("North AI v4.2", size=22, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("North AI v0.0.1", size=22, weight=ft.FontWeight.BOLD, color="#00E5FF"),
                 ft.Text("Geliştirici: Rauf Ediz Parlak", size=14, weight=ft.FontWeight.BOLD, color="white"),
                 ft.Text("Durum: ⚠️ Aktif Geliştirme Aşamasında", size=14, weight=ft.FontWeight.BOLD, color="#F59E0B"),
-                ft.Text("Açıklama: Endüstriyel yapay zeka konsol altyapısı ve modüler diyalog motoru.", size=12, color="#9CA3AF"),
+                ft.Text("Açıklama: Android yapay zeka konsol altyapısı ve modüler diyalog motoru.", size=12, color="#9CA3AF"),
                 ft.Container(height=10),
                 ft.Text("📢 Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", size=13, weight=ft.FontWeight.BOLD, color="#3B82F6"),
             ], spacing=10),
