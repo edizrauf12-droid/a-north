@@ -1,106 +1,20 @@
-import tkinter as tk
-from tkinter import scrolledtext
-import ctypes
+import flet as ft
 
-try:
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)
-except:
-    try:
-        ctypes.windll.user32.SetProcessDPIAware()
-    except:
-        pass
+def main(page: ft.Page):
+    page.title = "North AI - Endüstriyel Konsol"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.bgcolor = "#0B0F19"
+    page.window_width = 480
+    page.window_height = 750
+    page.window_resizable = False
 
-class NorthAIApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("North AI - Endüstriyel Konsol")
-        self.root.geometry("480x750")
-        self.root.config(bg="#0B0F19")
-        self.root.resizable(False, False)
-
-        self.create_menu()
-
-    def clear_window(self):
-        for widget in self.root.winfo_children():
-            widget.destroy()
-
-    # 1. ANA MENÜ
-    def create_menu(self):
-        self.clear_window()
-
-        title_frame = tk.Frame(self.root, bg="#0B0F19")
-        title_frame.pack(pady=40)
-
-        tk.Label(title_frame, text="NORTH OS", font=("Segoe UI", 28, "bold"), fg="#00E5FF", bg="#0B0F19").pack()
-        tk.Label(title_frame, text="Endüstriyel Yapay Zeka Konsolu v4.2", font=("Segoe UI", 10), fg="#8A99AD", bg="#0B0F19").pack(pady=5)
-        tk.Label(title_frame, text="⚠️ Sistemler şu an GELİŞTİRME AŞAMASINDADIR", font=("Segoe UI", 9, "bold"), fg="#F59E0B", bg="#0B0F19").pack(pady=2)
-
-        btn_frame = tk.Frame(self.root, bg="#0B0F19")
-        btn_frame.pack(pady=10)
-
-        self.create_menu_button(btn_frame, "🚀 NORTH AI (Sohbet Et)", self.open_chat)
-        self.create_menu_button(btn_frame, "📖 Diyalog Rehberi", self.open_guide)
-        self.create_menu_button(btn_frame, "ℹ️ Hakkında & Geliştirici", self.open_about)
-
-        footer = tk.Label(self.root, text="📢 Geliştirme ekibi alımı mevcut: @raufedizparlak0", font=("Segoe UI", 9, "bold"), fg="#00E5FF", bg="#111827")
-        footer.pack(side=tk.BOTTOM, fill=tk.X, ipady=12)
-
-    def create_menu_button(self, parent, text, command):
-        btn = tk.Button(
-            parent, text=text, font=("Segoe UI", 12, "bold"), fg="white", bg="#1A233A",
-            activebackground="#25324D", activeforeground="#00E5FF", relief="flat",
-            command=command, width=28, height=2, cursor="hand2"
-        )
-        btn.pack(pady=8)
-
-    # 2. SOHBET EKRANI (Düzeltilmiş ve Güçlendirilmiş)
-    def open_chat(self):
-        self.clear_window()
-
-        # Üst Bar
-        top_bar = tk.Frame(self.root, bg="#111827", height=55)
-        top_bar.pack(fill=tk.X, side=tk.TOP)
-        top_bar.pack_propagate(False)
-
-        tk.Button(top_bar, text="⬅ Geri", font=("Segoe UI", 10, "bold"), fg="white", bg="#1F2937", activebackground="#374151", activeforeground="white", bd=0, command=self.create_menu, cursor="hand2").pack(side=tk.LEFT, padx=12, pady=10)
-        tk.Label(top_bar, text="North AI - Akıllı Sohbet", font=("Segoe UI", 12, "bold"), fg="white", bg="#111827").pack(side=tk.LEFT, padx=10)
-
-        # Alt Giriş Paneli (Önce oluşturuyoruz ki altta sabit kalsın)
-        input_frame = tk.Frame(self.root, bg="#111827", height=75)
-        input_frame.pack(fill=tk.X, side=tk.BOTTOM)
-        input_frame.pack_propagate(False)
-
-        send_btn = tk.Button(input_frame, text="Gönder", font=("Segoe UI", 11, "bold"), fg="#0B0F19", bg="#00E5FF", activebackground="#00B4D8", relief="flat", command=self.send_message, cursor="hand2", width=10)
-        send_btn.pack(side=tk.RIGHT, padx=12, pady=15)
-
-        self.msg_entry = tk.Entry(input_frame, font=("Segoe UI", 12), bg="#1F2937", fg="white", insertbackground="white", relief="flat")
-        self.msg_entry.pack(side=tk.LEFT, expand=True, fill=tk.BOTH, padx=12, pady=15)
-        self.msg_entry.focus_set()
-        self.msg_entry.bind("<Return>", lambda event: self.send_message())
-
-        # Sohbet Geçmişi Alanı (Kalan boşluğu doldurur)
-        self.chat_history = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, bg="#0B0F19", fg="#E5E7EB", font=("Segoe UI", 11), bd=0, padx=10, pady=10)
-        self.chat_history.pack(expand=True, fill=tk.BOTH, side=tk.TOP, padx=10, pady=10)
-        self.chat_history.config(state=tk.DISABLED)
-
-        self.append_chat("North", "Merhaba! Ben North. Şu an geliştirme aşamasındayım. Bana matematik işlemi sorabilir, sohbet edebilir veya komutları deneyebilirsin!")
-
-    def append_chat(self, sender, message):
-        self.chat_history.config(state=tk.NORMAL)
-        if sender == "Sen":
-            self.chat_history.insert(tk.END, f"\n> {message}\n", "user")
-        else:
-            self.chat_history.insert(tk.END, f"\n[North AI]: {message}\n", "bot")
-        self.chat_history.config(state=tk.DISABLED)
-        self.chat_history.see(tk.END)
-
-    def get_north_response(self, text):
+    # Yanıt Motoru (Mantık aynı kalıyor)
+    def get_north_response(text):
         t = text.lower().strip()
 
-        # Matematik Hesaplama Motoru (Örn: 50+50, 12*4, 100/5)
         if any(op in t for op in ['+', '-', '*', '/', 'x']):
             try:
-                # Güvenli matematik hesaplama
                 clean_expr = t.replace('x', '*')
                 result = eval(clean_expr)
                 return f"Matematik İşlemi Sonucu: {clean_expr} = {result} 🧮"
@@ -128,70 +42,195 @@ class NorthAIApp:
         else:
             return f"'{text}' ifadesini analiz ettim. Geliştirme aşamasında olduğum için bu konuyu henüz tam öğrenmedim ama her geçen gün gelişiyorum!"
 
-    def send_message(self):
-        text = self.msg_entry.get().strip()
-        if not text:
-            return
+    # 1. ANA MENÜ EKRANI
+    def show_menu(e=None):
+        page.clean()
+        
+        title_content = ft.Column([
+            ft.Text("NORTH OS", size=28, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+            ft.Text("Endüstriyel Yapay Zeka Konsolu v4.2", size=14, color="#8A99AD"),
+            ft.Container(
+                content=ft.Text("⚠️ Sistemler şu an GELİŞTİRME AŞAMASINDADIR", size=12, weight=ft.FontWeight.BOLD, color="#F59E0B"),
+                margin=ft.margin.only(top=5)
+            )
+        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.CENTER)
 
-        self.append_chat("Sen", text)
-        self.msg_entry.delete(0, tk.END)
+        btn_chat = ft.ElevatedButton(
+            text="🚀 NORTH AI (Sohbet Et)",
+            color=ft.colors.WHITE,
+            bgcolor="#1A233A",
+            width=300,
+            height=50,
+            on_click=show_chat
+        )
+        btn_guide = ft.ElevatedButton(
+            text="📖 Diyalog Rehberi",
+            color=ft.colors.WHITE,
+            bgcolor="#1A233A",
+            width=300,
+            height=50,
+            on_click=show_guide
+        )
+        btn_about = ft.ElevatedButton(
+            text="ℹ️ Hakkında & Geliştirici",
+            color=ft.colors.WHITE,
+            bgcolor="#1A233A",
+            width=300,
+            height=50,
+            on_click=show_about
+        )
 
-        response = self.get_north_response(text)
-        self.append_chat("North", response)
+        footer = ft.Container(
+            content=ft.Text("📢 Geliştirme ekibi alımı mevcut: @raufedizparlak0", size=12, weight=ft.FontWeight.BOLD, color="#00E5FF", text_align=ft.TextAlign.CENTER),
+            bgcolor="#111827",
+            padding=12,
+            alignment=ft.alignment.center,
+            width=page.window_width
+        )
 
-    # 3. DİYALOG REHBERİ
-    def open_guide(self):
-        self.clear_window()
+        page.add(
+            ft.Column([
+                ft.Container(height=40),
+                title_content,
+                ft.Container(height=30),
+                ft.Column([btn_chat, btn_guide, btn_about], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                ft.Expand(),
+                footer
+            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, horizontal_alignment=ft.CrossAxisAlignment.CENTER, expand=True)
+        )
+        page.update()
 
-        top_bar = tk.Frame(self.root, bg="#111827", height=55)
-        top_bar.pack(fill=tk.X, side=tk.TOP)
-        top_bar.pack_propagate(False)
+    # 2. SOHBET EKRANI
+    def show_chat(e):
+        page.clean()
 
-        tk.Button(top_bar, text="⬅ Geri", font=("Segoe UI", 10, "bold"), fg="white", bg="#1F2937", activebackground="#374151", activeforeground="white", bd=0, command=self.create_menu, cursor="hand2").pack(side=tk.LEFT, padx=12, pady=10)
-        tk.Label(top_bar, text="Diyalog ve Komut Rehberi", font=("Segoe UI", 12, "bold"), fg="white", bg="#111827").pack(side=tk.LEFT, padx=10)
+        chat_list = ft.ListView(expand=True, spacing=10, padding=15, auto_scroll=True)
 
-        guide_box = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, bg="#0B0F19", fg="white", font=("Segoe UI", 11), bd=0, padx=15, pady=15)
-        guide_box.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
+        def add_bubble(sender, message):
+            if sender == "Sen":
+                align = ft.CrossAxisAlignment.END
+                bg_color = "#1F2937"
+                text_color = ft.colors.WHITE
+                prefix = "> "
+            else:
+                align = ft.CrossAxisAlignment.START
+                bg_color = "#111827"
+                text_color = "#00E5FF"
+                prefix = "[North AI]: "
 
-        dialogues = [
-            ("Matematik İşlemleri", "Sohbet ekranına doğrudan 50+50, 14*5, 100/4 gibi işlemler yazarak hesaplatabilirsin."),
-            ("nasılsın / naber", "Sistemlerin durumu ve enerji seviyesi hakkında bilgi verir."),
-            ("adın ne / kimsin", "Asistanın kimliği hakkında bilgi sunar."),
-            ("kim yaptı?", "Projenin geliştiricisini gösterir."),
-            ("geliştirme / durum ne", "Yapay zekanın şu anki sürüm ve gelişim aşamasını açıklar."),
-            ("şaka yap / fıkra", "Eğlenceli bir matematik şakası patlatır."),
-            ("motive et", "Moral verici ve ilham dolu sözler söyler."),
-            ("ekip / katılmak", "Geliştirme ekibi iletişim bilgilerini paylaşır.")
-        ]
+            chat_list.controls.append(
+                ft.Container(
+                    content=ft.Text(f"{prefix}{message}", color=text_color, size=14),
+                    bgcolor=bg_color,
+                    padding=10,
+                    border_radius=8
+                )
+            )
+            page.update()
 
-        guide_box.insert(tk.END, "📢 NORTH AI KULLANILABİLİR KOMUTLAR VE ÖZELLİKLER\n\n", "header")
-        for cmd, desc in dialogues:
-            guide_box.insert(tk.END, f"🔹 {cmd}\n", "cmd")
-            guide_box.insert(tk.END, f"Açıklama: {desc}\n\n", "desc")
+        add_bubble("North", "Merhaba! Ben North. Şu an geliştirme aşamasındayım. Bana matematik işlemi sorabilir, sohbet edebilir veya komutları deneyebilirsin!")
 
-        guide_box.config(state=tk.DISABLED)
+        msg_input = ft.TextField(
+            hint_text="Mesajınızı yazın...",
+            hint_style=ft.TextStyle(color="#8A99AD"),
+            border_color="#374151",
+            focused_border_color="#00E5FF",
+            bgcolor="#1F2937",
+            color=ft.colors.WHITE,
+            expand=True
+        )
 
-    # 4. HAKKINDA
-    def open_about(self):
-        self.clear_window()
+        def send_click(e):
+            text = msg_input.value.strip()
+            if not text:
+                return
+            add_bubble("Sen", text)
+            msg_input.value = ""
+            page.update()
 
-        top_bar = tk.Frame(self.root, bg="#111827", height=55)
-        top_bar.pack(fill=tk.X, side=tk.TOP)
-        top_bar.pack_propagate(False)
+            response = get_north_response(text)
+            add_bubble("North", response)
 
-        tk.Button(top_bar, text="⬅ Geri", font=("Segoe UI", 10, "bold"), fg="white", bg="#1F2937", activebackground="#374151", activeforeground="white", bd=0, command=self.create_menu, cursor="hand2").pack(side=tk.LEFT, padx=12, pady=10)
-        tk.Label(top_bar, text="Hakkında & Geliştirici", font=("Segoe UI", 12, "bold"), fg="white", bg="#111827").pack(side=tk.LEFT, padx=10)
+        msg_input.on_submit = send_click
+        send_btn = ft.ElevatedButton(text="Gönder", bgcolor="#00E5FF", color="#0B0F19", on_click=send_click)
 
-        about_frame = tk.Frame(self.root, bg="#111827")
-        about_frame.pack(expand=True, fill=tk.BOTH, padx=25, pady=30)
+        top_bar = ft.Row([
+            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color=ft.colors.WHITE, on_click=show_menu),
+            ft.Text("North AI - Akıllı Sohbet", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE)
+        ], alignment=ft.MainAxisAlignment.START)
 
-        tk.Label(about_frame, text="North AI v4.2", font=("Segoe UI", 18, "bold"), fg="#00E5FF", bg="#111827").pack(anchor="w", pady=10)
-        tk.Label(about_frame, text="Geliştirici: Rauf Ediz Parlak", font=("Segoe UI", 13, "bold"), fg="white", bg="#111827").pack(anchor="w", pady=5)
-        tk.Label(about_frame, text="Durum: ⚠️ Aktif Geliştirme Aşamasında", font=("Segoe UI", 11, "bold"), fg="#F59E0B", bg="#111827").pack(anchor="w", pady=5)
-        tk.Label(about_frame, text="Açıklama: Endüstriyel yapay zeka konsol altyapısı ve modüler diyalog motoru.", font=("Segoe UI", 10), fg="#9CA3AF", bg="#111827", justify=tk.LEFT).pack(anchor="w", pady=10)
-        tk.Label(about_frame, text="📢 Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", font=("Segoe UI", 11, "bold"), fg="#3B82F6", bg="#111827", justify=tk.LEFT).pack(anchor="w", pady=15)
+        bottom_bar = ft.Row([msg_input, send_btn], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = NorthAIApp(root)
-    root.mainloop()
+        page.add(
+            ft.Column([
+                ft.Container(content=top_bar, bgcolor="#111827", padding=10),
+                chat_list,
+                ft.Container(content=bottom_bar, bgcolor="#111827", padding=10)
+            ], expand=True)
+        )
+        page.update()
+
+    # 3. DİYALOG REHBERİ EKRANI
+    def show_guide(e):
+        page.clean()
+
+        top_bar = ft.Row([
+            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color=ft.colors.WHITE, on_click=show_menu),
+            ft.Text("Diyalog ve Komut Rehberi", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE)
+        ])
+
+        guide_content = ft.Column([
+            ft.Text("📢 NORTH AI KULLANILABİLİR KOMUTLAR VE ÖZELLİKLER\n", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+            ft.Text("🔹 Matematik İşlemleri\nAçıklama: Sohbet ekranına doğrudan 50+50, 14*5 gibi işlemler yazarak hesaplatabilirsin.\n", color=ft.colors.WHITE),
+            ft.Text("🔹 nasılsın / naber\nAçıklama: Sistemlerin durumu ve enerji seviyesi hakkında bilgi verir.\n", color=ft.colors.WHITE),
+            ft.Text("🔹 adın ne / kimsin\nAçıklama: Asistanın kimliği hakkında bilgi sunar.\n", color=ft.colors.WHITE),
+            ft.Text("🔹 kim yaptı?\nAçıklama: Projenin geliştiricisini gösterir.\n", color=ft.colors.WHITE),
+            ft.Text("🔹 şaka yap / fıkra\nAçıklama: Eğlenceli bir matematik şakası patlatır.\n", color=ft.colors.WHITE),
+            ft.Text("🔹 motive et\nAçıklama: Moral verici ve ilham dolu sözler söyler.\n", color=ft.colors.WHITE),
+            ft.Text("🔹 ekip / katılmak\nAçıklama: Geliştirme ekibi iletişim bilgilerini paylaşır.", color=ft.colors.WHITE),
+        ], scroll=ft.ScrollMode.AUTO, expand=True, padding=15)
+
+        page.add(
+            ft.Column([
+                ft.Container(content=top_bar, bgcolor="#111827", padding=10),
+                guide_content
+            ], expand=True)
+        )
+        page.update()
+
+    # 4. HAKKINDA EKRANI
+    def show_about(e):
+        page.clean()
+
+        top_bar = ft.Row([
+            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color=ft.colors.WHITE, on_click=show_menu),
+            ft.Text("Hakkında & Geliştirici", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE)
+        ])
+
+        about_content = ft.Container(
+            content=ft.Column([
+                ft.Text("North AI v4.2", size=22, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("Geliştirici: Rauf Ediz Parlak", size=14, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+                ft.Text("Durum: ⚠️ Aktif Geliştirme Aşamasında", size=14, weight=ft.FontWeight.BOLD, color="#F59E0B"),
+                ft.Text("Açıklama: Endüstriyel yapay zeka konsol altyapısı ve modüler diyalog motoru.", size=12, color="#9CA3AF"),
+                ft.Container(height=10),
+                ft.Text("📢 Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", size=13, weight=ft.FontWeight.BOLD, color="#3B82F6"),
+            ], spacing=10),
+            padding=20,
+            bgcolor="#111827",
+            border_radius=10,
+            margin=20
+        )
+
+        page.add(
+            ft.Column([
+                ft.Container(content=top_bar, bgcolor="#111827", padding=10),
+                about_content
+            ], expand=True)
+        )
+        page.update()
+
+    show_menu()
+
+ft.app(target=main)
+        
