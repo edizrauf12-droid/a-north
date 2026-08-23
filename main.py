@@ -52,24 +52,21 @@ def main(page: ft.Page):
         ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.CENTER)
 
         btn_chat = ft.ElevatedButton(
-            text="🚀 NORTH AI (Sohbet Et)",
-            color="white",
+            content=ft.Text("🚀 NORTH AI (Sohbet Et)", color="white"),
             bgcolor="#1A233A",
             width=300,
             height=50,
             on_click=show_chat
         )
         btn_guide = ft.ElevatedButton(
-            text="📖 Diyalog Rehberi",
-            color="white",
+            content=ft.Text("📖 Diyalog Rehberi", color="white"),
             bgcolor="#1A233A",
             width=300,
             height=50,
             on_click=show_guide
         )
         btn_about = ft.ElevatedButton(
-            text="ℹ️ Hakkında & Geliştirici",
-            color="white",
+            content=ft.Text("ℹ️ Hakkında & Geliştirici", color="white"),
             bgcolor="#1A233A",
             width=300,
             height=50,
@@ -145,10 +142,10 @@ def main(page: ft.Page):
             add_bubble("North", response)
 
         msg_input.on_submit = send_click
-        send_btn = ft.ElevatedButton(text="Gönder", bgcolor="#00E5FF", color="#0B0F19", on_click=send_click)
+        send_btn = ft.ElevatedButton(content=ft.Text("Gönder", color="#0B0F19", weight=ft.FontWeight.BOLD), bgcolor="#00E5FF", on_click=send_click)
 
         top_bar = ft.Row([
-            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color="white", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Geri", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("North AI - Akıllı Sohbet", size=16, weight=ft.FontWeight.BOLD, color="white")
         ], alignment=ft.MainAxisAlignment.START)
 
@@ -167,7 +164,7 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color="white", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Geri", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("Diyalog ve Komut Rehberi", size=16, weight=ft.FontWeight.BOLD, color="white")
         ])
 
@@ -194,7 +191,7 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color="white", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Geri", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("Hakkında & Geliştirici", size=16, weight=ft.FontWeight.BOLD, color="white")
         ])
 
