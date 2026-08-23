@@ -234,19 +234,43 @@ def main(page: ft.Page):
 
         top_bar = ft.Row([
             ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
-            ft.Text("Komut ve Kullanım Rehberi", color="white", weight=ft.FontWeight.BOLD)
+            ft.Text("Tam Komut & Kategori Rehberi", color="white", weight=ft.FontWeight.BOLD)
         ])
 
         guide_content = ft.Container(
             content=ft.Column([
-                ft.Text("📢 KONSOLA NE YAZABİLİRSİN?", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("\nAşağıdaki komutları doğrudan konsola yazarak kullanabilirsin:\n", color="#9CA3AF", size=13),
+                ft.Text("📢 NORTH AI KİRLİSTESİ VE KOMUTLAR", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("Konsola yazabileceğin tüm ana kategoriler ve tetikleyici ifadeler:\n", color="#9CA3AF", size=13),
                 
-                ft.Text("🔹 PRATİK ARAÇLAR:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• şifre üret -> 12 haneli güçlü şifre oluşturur.\n• yazı tura -> Yazı veya tura atar.\n• zar at -> 1-6 arası rastgele zar atar.\n• 15*5 veya 50+50 -> Matematiksel hesaplama yapar.", color="white", size=13),
+                ft.Text("🔹 1. PRATİK ARAÇLAR VE HESAPLAMA", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• şifre üret / şifre oluştur -> 12 haneli güçlü rastgele şifre üretir.\n• yazı tura / yazı-tura -> Yazı veya tura atar.\n• zar at -> 1'den 6'ya kadar zar atar.\n• [İşlem yazın] -> Örn: 15*4 veya 50+50 şeklinde matematik yapar.", color="white", size=13),
                 
-                ft.Text("\n🔹 SOHBET VE ETKİLEŞİM:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Nasılsın? / Naber -> Sistem durumunu sorar.\n• Adın ne? / Kimsin? -> Geliştiriciyi öğrenir.\n• Şaka yap / Fıkra anlat -> Eğlenceli fıkralar getirir.\n• Motivasyon ver -> Moral ve destek mesajı alır.\n• Felsefe / Hayatın anlamı -> Derin sorular sorabilirsin.", color="white", size=13),
+                ft.Text("\n🔹 2. SİSTEM KONTROLLERİ", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `nasılsın`, `naber`, `durumun ne`, `keyfin nasıl`, `iyi misin`", color="white", size=13),
+
+                ft.Text("\n🔹 3. KİMLİK VE GELİŞTİRİCİ", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `adın ne`, `kimsin`, `sen kimsin`, `kim yaptı`, `kim yarattı`, `geliştiricin kim`", color="white", size=13),
+
+                ft.Text("\n🔹 4. YETENEKLER VE KOMUTLAR", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `ne yapabiliyorsun`, `yeteneğin ne`, `ne işe yararsın`, `yardım`, `komutlar`", color="white", size=13),
+
+                ft.Text("\n🔹 5. MOTİVASYON VE MORAL", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `motive et`, `moralim bozuk`, `üzgünüm`, `motivasyon ver`, `beni gaza getir`, `yoruldum`", color="white", size=13),
+
+                ft.Text("\n🔹 6. EĞLENCE VE ŞAKALAR", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `şaka yap`, `fıkra anlat`, `güldür beni`, `komik bişey söyle`, `espri`", color="white", size=13),
+
+                ft.Text("\n🔹 7. EKİP VE İLETİŞİM", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `ekip`, `katılmak`, `nasıl katılabilirim`, `iletişim`, `sahibin kim`", color="white", size=13),
+
+                ft.Text("\n🔹 8. FELSEFE VE VAROLUŞ", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `rüya görür müsün`, `hissediyor musun`, `aşk nedir`, `hayatın anlamı ne`, `yapay zeka`", color="white", size=13),
+
+                ft.Text("\n🔹 9. PROJE DURUMU", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Yazabileceğin kelimeler: `geliştirme aşaması`, `ne zaman biter`, `stabil sürüm`, `beta`, `versiyon`", color="white", size=13),
+
+                ft.Text("\n🔹 10. SELAMLAMA VE VEDALAŞMA", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Selamlama: `merhaba`, `selam`, `selamün aleyküm`, `hayırlı günler`, `hey`, `hi`\n• Vedalaşma: `güle güle`, `bay bay`, `iyi günler`, `kapat`, `çıkış`", color="white", size=13),
             ], scroll=ft.ScrollMode.AUTO),
             padding=15, expand=True
         )
@@ -263,7 +287,7 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#111827", on_click=show_menu),
             ft.Text("AI Protokolü", color="white", weight=ft.FontWeight.BOLD)
         ])
 
@@ -306,7 +330,7 @@ def main(page: ft.Page):
         page.clean()
         
         top_bar = ft.Row([
-            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#111827", on_click=show_menu),
             ft.Text("Geliştirici Bilgisi", color="white", weight=ft.FontWeight.BOLD)
         ])
 
