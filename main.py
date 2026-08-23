@@ -104,11 +104,11 @@ def main(page: ft.Page):
         }
     }
 
-    # --- YENİ PRATİK ARAÇ FONKSİYONLARI ---
+    # --- PRATİK ARAÇ FONKSİYONLARI ---
     def generate_password():
         chars = string.ascii_letters + string.digits + "!@#$%^&*"
         pwd = "".join(random.choice(chars) for _ in range(12))
-        return f"🔐 Üretilen Güvenli Şifre: `{pwd}`"
+        return f"🔐 Güvenli Şifre: {pwd}"
 
     def flip_coin():
         result = random.choice(["Yazı 🪙", "Tura 🪙"])
@@ -122,7 +122,6 @@ def main(page: ft.Page):
     def get_north_response(text):
         t = text.lower().strip()
 
-        # 1. Özel Komut Kontrolleri
         if "şifre üret" in t or "şifre oluştur" in t:
             return generate_password()
         if "yazı tura" in t or "yazı-tura" in t:
@@ -130,7 +129,6 @@ def main(page: ft.Page):
         if "zar at" in t:
             return roll_dice()
 
-        # 2. Matematik Kontrolü
         if any(op in t for op in ['+', '-', '*', '/', 'x']):
             try:
                 clean_expr = t.replace('x', '*')
@@ -139,40 +137,48 @@ def main(page: ft.Page):
             except:
                 pass
         
-        # 3. Kategori ve Tetikleyici Arama (100+ Diyalog Mantığı)
         for kategori_adi, veri in NORTH_KNOWLEDGE.items():
             if any(trigger in t for trigger in veri["triggers"]):
                 return random.choice(veri["responses"])
         
-        # 4. Eşleşme Bulunamazsa
-        return f"'{text}' komutu algılanamadı. Rehberden geçerli komutlara göz atabilirsin."
+        return f"'{text}' komutu anlaşılamadı. Ne yazman gerektiğini görmek için 'Rehber' sayfasına göz atabilirsin."
 
     # --- ARAYÜZ SAYFALARI ---
     
     def show_menu(e=None):
         page.clean()
         
-        logo = ft.Text("NORTH AI", size=28, weight=ft.FontWeight.BOLD, color="#00E5FF", font_family="monospace")
-        subtext = ft.Text("v0.0.2 // Konsol Modülü Aktif", size=12, color="#9CA3AF")
+        logo = ft.Text("NORTH AI", size=32, weight=ft.FontWeight.BOLD, color="#00E5FF", font_family="monospace")
+        subtext = ft.Text("v0.0.2 // Konsol Modülü Aktif", size=13, color="#9CA3AF")
 
         btn_chat = ft.ElevatedButton(
-            content=ft.Text("💬 Konsol Sohbeti & Araçlar", color="white"),
-            bgcolor="#1F2937", width=250, on_click=show_chat
+            content=ft.Text("💬 Konsol Sohbeti & Araçlar", color="white", size=14),
+            bgcolor="#1F2937", width=260, height=45, on_click=show_chat
         )
         btn_guide = ft.ElevatedButton(
-            content=ft.Text("📖 Komut & Diyalog Rehberi", color="white"),
-            bgcolor="#1F2937", width=250, on_click=show_guide
+            content=ft.Text("📖 Komut & Diyalog Rehberi", color="white", size=14),
+            bgcolor="#1F2937", width=260, height=45, on_click=show_guide
+        )
+        btn_protocol = ft.ElevatedButton(
+            content=ft.Text("🤖 AI Protokolü", color="white", size=14),
+            bgcolor="#1F2937", width=260, height=45, on_click=show_protocol
         )
         btn_about = ft.ElevatedButton(
-            content=ft.Text("ℹ️ Geliştirici Bilgisi", color="white"),
-            bgcolor="#1F2937", width=250, on_click=show_about
+            content=ft.Text("ℹ️ Geliştirici Bilgisi", color="white", size=14),
+            bgcolor="#1F2937", width=260, height=45, on_click=show_about
         )
 
         page.add(
             ft.Column([
                 logo, subtext,
                 ft.Container(height=30),
-                btn_chat, btn_guide, btn_about
+                btn_chat,
+                ft.Container(height=8),
+                btn_guide,
+                ft.Container(height=8),
+                btn_protocol,
+                ft.Container(height=8),
+                btn_about
             ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         )
         page.update()
@@ -183,7 +189,7 @@ def main(page: ft.Page):
         chat_history = ft.ListView(expand=True, spacing=10, padding=20, auto_scroll=True)
         
         user_input = ft.TextField(
-            hint_text="Komut yazın (örn: şifre üret, yazı tura, 50+50)...",
+            hint_text="Komut veya mesaj yazın...",
             hint_style=ft.TextStyle(color="#6B7280"),
             color="white", bgcolor="#1F2937", border_radius=8, expand=True
         )
@@ -201,7 +207,10 @@ def main(page: ft.Page):
             user_input.value = ""
             page.update()
 
-        send_btn = ft.IconButton(icon=ft.icons.SEND, icon_color="#00E5FF", on_click=send_click)
+        send_btn = ft.ElevatedButton(
+            content=ft.Text("GÖNDER", color="#00E5FF", weight=ft.FontWeight.BOLD),
+            bgcolor="#1F2937", on_click=send_click
+        )
 
         top_bar = ft.Row([
             ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
@@ -225,40 +234,20 @@ def main(page: ft.Page):
 
         top_bar = ft.Row([
             ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
-            ft.Text("Diyalog ve Yetenek Rehberi", color="white", weight=ft.FontWeight.BOLD)
+            ft.Text("Komut ve Kullanım Rehberi", color="white", weight=ft.FontWeight.BOLD)
         ])
 
-        guide_controls = [
-            ft.Text("📢 NORTH AI AKTİF KATEGORİLER VE ARAÇLAR\n", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF")
-        ]
-
-        # Pratik Araçlar
-        guide_controls.append(
-            ft.Container(
-                content=ft.Column([
-                    ft.Text("🔹 PRATİK ARAÇ KOMUTLARI", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                    ft.Text("• şifre üret -> Güvenli 12 haneli şifre oluşturur.\n• yazı tura -> Yazı veya tura atar.\n• zar at -> 1 ile 6 arası rastgele zar atar.\n• [İşlem] -> Örn: 15*4 gibi matematik yapar.\n", color="white", size=13)
-                ]),
-                padding=10, bgcolor="#1A233A", border_radius=8
-            )
-        )
-        guide_controls.append(ft.Container(height=5))
-
-        # Kategorileri listele
-        for kat_adi, kat_verisi in NORTH_KNOWLEDGE.items():
-            trigger_list = ", ".join(kat_verisi["triggers"][:4]) + "..."
-            c = ft.Container(
-                content=ft.Column([
-                    ft.Text(f"🔹 {kat_adi}", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                    ft.Text(f"Örnek İfadeler: {trigger_list}", color="#9CA3AF", size=13),
-                ]),
-                padding=10, bgcolor="#1A233A", border_radius=8
-            )
-            guide_controls.append(c)
-            guide_controls.append(ft.Container(height=5))
-
         guide_content = ft.Container(
-            content=ft.Column(guide_controls, scroll=ft.ScrollMode.AUTO),
+            content=ft.Column([
+                ft.Text("📢 KONSOLA NE YAZABİLİRSİN?", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("\nAşağıdaki komutları doğrudan konsola yazarak kullanabilirsin:\n", color="#9CA3AF", size=13),
+                
+                ft.Text("🔹 PRATİK ARAÇLAR:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• şifre üret -> 12 haneli güçlü şifre oluşturur.\n• yazı tura -> Yazı veya tura atar.\n• zar at -> 1-6 arası rastgele zar atar.\n• 15*5 veya 50+50 -> Matematiksel hesaplama yapar.", color="white", size=13),
+                
+                ft.Text("\n🔹 SOHBET VE ETKİLEŞİM:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Nasılsın? / Naber -> Sistem durumunu sorar.\n• Adın ne? / Kimsin? -> Geliştiriciyi öğrenir.\n• Şaka yap / Fıkra anlat -> Eğlenceli fıkralar getirir.\n• Motivasyon ver -> Moral ve destek mesajı alır.\n• Felsefe / Hayatın anlamı -> Derin sorular sorabilirsin.", color="white", size=13),
+            ], scroll=ft.ScrollMode.AUTO),
             padding=15, expand=True
         )
 
@@ -266,6 +255,49 @@ def main(page: ft.Page):
             ft.Column([
                 ft.Container(content=top_bar, bgcolor="#111827", padding=10),
                 guide_content
+            ], expand=True)
+        )
+        page.update()
+
+    def show_protocol(e):
+        page.clean()
+
+        top_bar = ft.Row([
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
+            ft.Text("AI Protokolü", color="white", weight=ft.FontWeight.BOLD)
+        ])
+
+        protocol_content = ft.Container(
+            content=ft.Column([
+                ft.Text("🤖 AI PROTOKOLÜ VE PROJE HAKKINDA", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text(
+                    "\nNorth, Python programlama dili ve Flet çatısı (framework) kullanılarak sıfırdan geliştirilen "
+                    "modern ve dinamik bir mobil uygulama projesidir. Bu proje, Python kodlarının mobil platformlarda "
+                    "sorunsuz çalışmasını sağlayan yenilikçi bir altyapı üzerine kurulmuştur.\n\n"
+                    "Uygulamanın geliştirme süreci aktif olarak devam etmekte olup, kod tabanı düzenli olarak iyileştirilmekte, "
+                    "yeni özellikler eklenmekte ve olası hatalar giderilmektedir. Sürümler ilerledikçe uygulamanın performansının "
+                    "ve kararlılığının artırılması hedeflenmektedir.\n\n"
+                    "Altyapı tarafında ise kodların her güncellenişinde otomatik olarak Android APK derlemesi gerçekleştiren "
+                    "GitHub Actions otomasyon sisteminden yararlanılmaktadır. Projenin güncel sürümlerini deneyimlemek için "
+                    "yayınlanan son APK paketini indirip Android cihazınıza kurabilirsiniz.",
+                    color="white", size=13
+                ),
+                ft.Container(height=15),
+                ft.Container(
+                    content=ft.Text(
+                        "⚠️ NORTH GELİŞMEKTE OLAN BİR YAPAY ZEKA MODELİDİR, YANLIŞ YAPABİLİR.",
+                        color="#EF4444", weight=ft.FontWeight.BOLD, size=12, text_align=ft.TextAlign.CENTER
+                    ),
+                    padding=10, bgcolor="#1F2937", border_radius=8
+                )
+            ], scroll=ft.ScrollMode.AUTO),
+            padding=15, expand=True
+        )
+
+        page.add(
+            ft.Column([
+                ft.Container(content=top_bar, bgcolor="#111827", padding=10),
+                protocol_content
             ], expand=True)
         )
         page.update()
@@ -284,8 +316,7 @@ def main(page: ft.Page):
                 ft.Text("\nBu konsol asistanı, tamamen çevrimdışı ve esnek yapı taşlarıyla Rauf Ediz Parlak tarafından tasarlanmıştır.", color="white"),
                 ft.Text("\nÖzellikler:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
                 ft.Text("• Kategori tabanlı dinamik diyalog motoru\n• Pratik şifre ve şans araçları\n• Flet (Python) altyapılı mobil konsol arayüzü", color="#9CA3AF")
-            ], padding=20),
-            expand=True
+            ]), padding=20
         )
 
         page.add(
