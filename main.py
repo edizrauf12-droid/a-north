@@ -9,7 +9,6 @@ def main(page: ft.Page):
     page.window_height = 750
     page.window_resizable = False
 
-    # Yanıt Motoru (Mantık aynı kalıyor)
     def get_north_response(text):
         t = text.lower().strip()
 
@@ -42,17 +41,14 @@ def main(page: ft.Page):
         else:
             return f"'{text}' ifadesini analiz ettim. Geliştirme aşamasında olduğum için bu konuyu henüz tam öğrenmedim ama her geçen gün gelişiyorum!"
 
-    # 1. ANA MENÜ EKRANI
     def show_menu(e=None):
         page.clean()
         
         title_content = ft.Column([
             ft.Text("NORTH OS", size=28, weight=ft.FontWeight.BOLD, color="#00E5FF"),
             ft.Text("Endüstriyel Yapay Zeka Konsolu v4.2", size=14, color="#8A99AD"),
-            ft.Container(
-                content=ft.Text("⚠️ Sistemler şu an GELİŞTİRME AŞAMASINDADIR", size=12, weight=ft.FontWeight.BOLD, color="#F59E0B"),
-                margin=ft.margin.only(top=5)
-            )
+            ft.Container(height=5),
+            ft.Text("⚠️ Sistemler şu an GELİŞTİRME AŞAMASINDADIR", size=12, weight=ft.FontWeight.BOLD, color="#F59E0B")
         ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.CENTER)
 
         btn_chat = ft.ElevatedButton(
@@ -100,7 +96,6 @@ def main(page: ft.Page):
         )
         page.update()
 
-    # 2. SOHBET EKRANI
     def show_chat(e):
         page.clean()
 
@@ -170,7 +165,6 @@ def main(page: ft.Page):
         )
         page.update()
 
-    # 3. DİYALOG REHBERİ EKRANI
     def show_guide(e):
         page.clean()
 
@@ -198,7 +192,6 @@ def main(page: ft.Page):
         )
         page.update()
 
-    # 4. HAKKINDA EKRANI
     def show_about(e):
         page.clean()
 
