@@ -77,7 +77,6 @@ def main(page: ft.Page):
             content=ft.Text("📢 Geliştirme ekibi alımı mevcut: @raufedizparlak0", size=12, weight=ft.FontWeight.BOLD, color="#00E5FF", text_align=ft.TextAlign.CENTER),
             bgcolor="#111827",
             padding=12,
-            alignment=ft.alignment.center,
             width=page.window_width
         )
 
@@ -202,7 +201,7 @@ def main(page: ft.Page):
                 ft.Text("Durum: ⚠️ Aktif Geliştirme Aşamasında", size=14, weight=ft.FontWeight.BOLD, color="#F59E0B"),
                 ft.Text("Açıklama: Endüstriyel yapay zeka konsol altyapısı ve modüler diyalog motoru.", size=12, color="#9CA3AF"),
                 ft.Container(height=10),
-                ft.Text("📢 Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", size=13, weight=ft.FontWeight.BOLD, color="#3B82F6"),
+                ft.Text("📢 Geliştirme Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", size=13, weight=ft.FontWeight.BOLD, color="#3B82F6"),
             ], spacing=10),
             padding=20,
             bgcolor="#111827",
