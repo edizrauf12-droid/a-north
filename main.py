@@ -53,7 +53,7 @@ def main(page: ft.Page):
 
         btn_chat = ft.ElevatedButton(
             text="🚀 NORTH AI (Sohbet Et)",
-            color=ft.colors.WHITE,
+            color="white",
             bgcolor="#1A233A",
             width=300,
             height=50,
@@ -61,7 +61,7 @@ def main(page: ft.Page):
         )
         btn_guide = ft.ElevatedButton(
             text="📖 Diyalog Rehberi",
-            color=ft.colors.WHITE,
+            color="white",
             bgcolor="#1A233A",
             width=300,
             height=50,
@@ -69,7 +69,7 @@ def main(page: ft.Page):
         )
         btn_about = ft.ElevatedButton(
             text="ℹ️ Hakkında & Geliştirici",
-            color=ft.colors.WHITE,
+            color="white",
             bgcolor="#1A233A",
             width=300,
             height=50,
@@ -103,12 +103,10 @@ def main(page: ft.Page):
 
         def add_bubble(sender, message):
             if sender == "Sen":
-                align = ft.CrossAxisAlignment.END
                 bg_color = "#1F2937"
-                text_color = ft.colors.WHITE
+                text_color = "white"
                 prefix = "> "
             else:
-                align = ft.CrossAxisAlignment.START
                 bg_color = "#111827"
                 text_color = "#00E5FF"
                 prefix = "[North AI]: "
@@ -131,7 +129,7 @@ def main(page: ft.Page):
             border_color="#374151",
             focused_border_color="#00E5FF",
             bgcolor="#1F2937",
-            color=ft.colors.WHITE,
+            color="white",
             expand=True
         )
 
@@ -150,8 +148,8 @@ def main(page: ft.Page):
         send_btn = ft.ElevatedButton(text="Gönder", bgcolor="#00E5FF", color="#0B0F19", on_click=send_click)
 
         top_bar = ft.Row([
-            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color=ft.colors.WHITE, on_click=show_menu),
-            ft.Text("North AI - Akıllı Sohbet", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE)
+            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color="white", on_click=show_menu),
+            ft.Text("North AI - Akıllı Sohbet", size=16, weight=ft.FontWeight.BOLD, color="white")
         ], alignment=ft.MainAxisAlignment.START)
 
         bottom_bar = ft.Row([msg_input, send_btn], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
@@ -169,19 +167,19 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color=ft.colors.WHITE, on_click=show_menu),
-            ft.Text("Diyalog ve Komut Rehberi", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE)
+            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color="white", on_click=show_menu),
+            ft.Text("Diyalog ve Komut Rehberi", size=16, weight=ft.FontWeight.BOLD, color="white")
         ])
 
         guide_content = ft.Column([
             ft.Text("📢 NORTH AI KULLANILABİLİR KOMUTLAR VE ÖZELLİKLER\n", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-            ft.Text("🔹 Matematik İşlemleri\nAçıklama: Sohbet ekranına doğrudan 50+50, 14*5 gibi işlemler yazarak hesaplatabilirsin.\n", color=ft.colors.WHITE),
-            ft.Text("🔹 nasılsın / naber\nAçıklama: Sistemlerin durumu ve enerji seviyesi hakkında bilgi verir.\n", color=ft.colors.WHITE),
-            ft.Text("🔹 adın ne / kimsin\nAçıklama: Asistanın kimliği hakkında bilgi sunar.\n", color=ft.colors.WHITE),
-            ft.Text("🔹 kim yaptı?\nAçıklama: Projenin geliştiricisini gösterir.\n", color=ft.colors.WHITE),
-            ft.Text("🔹 şaka yap / fıkra\nAçıklama: Eğlenceli bir matematik şakası patlatır.\n", color=ft.colors.WHITE),
-            ft.Text("🔹 motive et\nAçıklama: Moral verici ve ilham dolu sözler söyler.\n", color=ft.colors.WHITE),
-            ft.Text("🔹 ekip / katılmak\nAçıklama: Geliştirme ekibi iletişim bilgilerini paylaşır.", color=ft.colors.WHITE),
+            ft.Text("🔹 Matematik İşlemleri\nAçıklama: Sohbet ekranına doğrudan 50+50, 14*5 gibi işlemler yazarak hesaplatabilirsin.\n", color="white"),
+            ft.Text("🔹 nasılsın / naber\nAçıklama: Sistemlerin durumu ve enerji seviyesi hakkında bilgi verir.\n", color="white"),
+            ft.Text("🔹 adın ne / kimsin\nAçıklama: Asistanın kimliği hakkında bilgi sunar.\n", color="white"),
+            ft.Text("🔹 kim yaptı?\nAçıklama: Projenin geliştiricisini gösterir.\n", color="white"),
+            ft.Text("🔹 şaka yap / fıkra\nAçıklama: Eğlenceli bir matematik şakası patlatır.\n", color="white"),
+            ft.Text("🔹 motive et\nAçıklama: Moral verici ve ilham dolu sözler söyler.\n", color="white"),
+            ft.Text("🔹 ekip / katılmak\nAçıklama: Geliştirme ekibi iletişim bilgilerini paylaşır.", color="white"),
         ], scroll=ft.ScrollMode.AUTO, expand=True, padding=15)
 
         page.add(
@@ -196,14 +194,14 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color=ft.colors.WHITE, on_click=show_menu),
-            ft.Text("Hakkında & Geliştirici", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE)
+            ft.ElevatedButton("⬅ Geri", bgcolor="#1F2937", color="white", on_click=show_menu),
+            ft.Text("Hakkında & Geliştirici", size=16, weight=ft.FontWeight.BOLD, color="white")
         ])
 
         about_content = ft.Container(
             content=ft.Column([
                 ft.Text("North AI v4.2", size=22, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("Geliştirici: Rauf Ediz Parlak", size=14, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+                ft.Text("Geliştirici: Rauf Ediz Parlak", size=14, weight=ft.FontWeight.BOLD, color="white"),
                 ft.Text("Durum: ⚠️ Aktif Geliştirme Aşamasında", size=14, weight=ft.FontWeight.BOLD, color="#F59E0B"),
                 ft.Text("Açıklama: Endüstriyel yapay zeka konsol altyapısı ve modüler diyalog motoru.", size=12, color="#9CA3AF"),
                 ft.Container(height=10),
@@ -226,4 +224,3 @@ def main(page: ft.Page):
     show_menu()
 
 ft.app(target=main)
-        
