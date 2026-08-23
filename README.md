@@ -1,1 +1,3 @@
-nnnnn
+# North
+
+North, Python programlama dili ve Flet çatısı (framework) kullanılarak sıfırdan geliştirilen modern ve dinamik bir mobil uygulama projesidir. Bu proje, Python kodlarının mobil platformlarda sorunsuz çalışmasını sağlayan yenilikçi bir altyapı üzerine kurulmuştur. Uygulamanın geliştirme süreci aktif olarak devam etmekte olup, kod tabanı düzenli olarak iyileştirilmekte, yeni özellikler eklenmekte ve olası hatalar giderilmektedir. Sürümler ilerledikçe uygulamanın performansının ve kararlılığının artırılması hedeflenmektedir. Altyapı tarafında ise kodların her güncellenişinde otomatik olarak Android APK derlemesi gerçekleştiren GitHub Actions otomasyon sisteminden yararlanılmaktadır. Projenin güncel sürümlerini deneyimlemek için yayınlanan son APK paketini indirip Android cihazınıza kurabilirsiniz.
