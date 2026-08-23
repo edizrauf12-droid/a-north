@@ -86,7 +86,7 @@ def main(page: ft.Page):
                 title_content,
                 ft.Container(height=30),
                 ft.Column([btn_chat, btn_guide, btn_about], spacing=15, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                ft.Expand(),
+                ft.Container(expand=True),
                 footer
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, horizontal_alignment=ft.CrossAxisAlignment.CENTER, expand=True)
         )
@@ -201,7 +201,7 @@ def main(page: ft.Page):
                 ft.Text("Durum: ⚠️ Aktif Geliştirme Aşamasında", size=14, weight=ft.FontWeight.BOLD, color="#F59E0B"),
                 ft.Text("Açıklama: Endüstriyel yapay zeka konsol altyapısı ve modüler diyalog motoru.", size=12, color="#9CA3AF"),
                 ft.Container(height=10),
-                ft.Text("📢 Geliştirme Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", size=13, weight=ft.FontWeight.BOLD, color="#3B82F6"),
+                ft.Text("📢 Ekip Alımı Aktif!\nKatılmak için:\nİletişim: @raufedizparlak0", size=13, weight=ft.FontWeight.BOLD, color="#3B82F6"),
             ], spacing=10),
             padding=20,
             bgcolor="#111827",
