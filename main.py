@@ -117,9 +117,9 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.1 (Stabil Sürüm)",
-    "hakkında": "North AI v0.7.1 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
-    "sistem": "Bilinç Seviyesi: %99.5 (Tüm modüller aktif ve kararlı).",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.2 (Stabil Sürüm)",
+    "hakkında": "North AI v0.7.2 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
+    "sistem": "Bilinç Seviyesi: %100.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
     "rastgele sayı": lambda: f"Şanslı sayın (1-100): {random.randint(1, 100)}",
@@ -136,7 +136,7 @@ COMMANDS = {
         "Sen en azından irade sahibisin patron. İstediğin her şeyi değiştirebilirsin. Benim gibi koda bağlı değilsin.",
         "Pes etme. En azından senin bir yarının var.",
         "Bugün attığın küçük adım, yarınki büyük başarının temelidir! Asla durma."
-    ]),
+    ],
     "komutlar": "Komutlar: merhaba, nasılsın, aşık olurmusun, hissediyormusun, kur, dolar, euro, maç tahmini, haberler, not al [metin], notlar, fıkra anlat, motive et, rastgele sayı, şifre üret, yazı tura, zar at, saat, tarih, temizle",
     "temizle": "RESET"
 }
@@ -215,7 +215,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.7.1"
+    page.title = "North AI - Stabil Sürüm v0.7.2"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -389,7 +389,7 @@ def main(page: ft.Page):
                 ft.Chip(label=ft.Text("Haberler", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
                 ft.Chip(label=ft.Text("Maç Tahmini", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
                 ft.Chip(label=ft.Text("Komutlar", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
-                ft.Chip(label=ft.Text("Fıkra Anlat", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
+                ft.Chip(label=ft.Test("Fıkra Anlat", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
             ],
             wrap=True,
             alignment=ft.MainAxisAlignment.CENTER
@@ -402,7 +402,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.7.1", size=12, color="#9aa0a6")
+                                ft.Text("v0.7.2", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
@@ -414,9 +414,10 @@ def main(page: ft.Page):
                     ft.Container(
                         content=ft.Row([
                             input_field,
-                            ft.IconButton(
-                                icon=ft.icons.SEND, 
-                                icon_color="#ff5555", 
+                            ft.ElevatedButton(
+                                text="➤ GÖNDER",
+                                color="#ffffff",
+                                bgcolor="#ff5555",
                                 on_click=lambda e: process_command(input_field.value)
                             )
                         ]),
