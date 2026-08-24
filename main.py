@@ -117,9 +117,9 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.0 (Stabil Sürüm)",
-    "hakkında": "North AI v0.7.0 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
-    "sistem": "Bilinç Seviyesi: %99.0 (Tüm modüller aktif ve kararlı).",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.1 (Stabil Sürüm)",
+    "hakkında": "North AI v0.7.1 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
+    "sistem": "Bilinç Seviyesi: %99.5 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
     "rastgele sayı": lambda: f"Şanslı sayın (1-100): {random.randint(1, 100)}",
@@ -215,7 +215,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.7.0"
+    page.title = "North AI - Stabil Sürüm v0.7.1"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -402,7 +402,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.7.0", size=12, color="#9aa0a6")
+                                ft.Text("v0.7.1", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
@@ -415,7 +415,7 @@ def main(page: ft.Page):
                         content=ft.Row([
                             input_field,
                             ft.IconButton(
-                                icon=ft.icons.SEND_ROUNDED, 
+                                icon=ft.icons.SEND, 
                                 icon_color="#ff5555", 
                                 on_click=lambda e: process_command(input_field.value)
                             )
