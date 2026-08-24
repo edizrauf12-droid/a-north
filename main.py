@@ -1,6 +1,7 @@
 import flet as ft
 import random
 import string
+from datetime import datetime
 
 def main(page: ft.Page):
     page.title = "North AI - Akıllı Konsol"
@@ -11,56 +12,81 @@ def main(page: ft.Page):
     page.window_height = 750
     page.window_resizable = False
 
-    # --- 100+ DİYALOG VE KATEGORİ VERİTABANI ---
+    # --- ESNEK DİL BİLGİSİ / GRAMMER DÜZELTME FONKSİYONU ---
+    def normalize_text(text):
+        # Türkçe karakterleri ve yaygın harf değişimlerini tolere etmek için normalize et
+        t = text.lower().strip()
+        replacements = {
+            'ü': 'u', 'ö': 'o', 'ş': 's', 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'İ': 'i',
+            'û': 'u', 'î': 'i', 'â': 'a'
+        }
+        for k, v in replacements.items():
+            t = t.replace(k, v)
+        return t
+
+    # --- ZENGİNLEŞTİRİLMİŞ 6-7+ SEÇENEKLİ DİYALOG VERİTABANI ---
     NORTH_KNOWLEDGE = {
         "SİSTEM KONTROLLERİ": {
-            "triggers": ["nasılsın", "naber", "durumun ne", "keyfin nasıl", "iyi misin"],
+            "triggers": ["nasilsin", "naber", "durumun ne", "keyfin nasil", "iyi misin", "ne var ne yok", "sistem nasil"],
             "responses": [
                 "Sistemler tam kapasite çalışıyor, enerji doluyum! Sen nasılsın?",
                 "Çalışır durumdayım, veri akışı stabil. Senin durumun nedir?",
                 "Enerji seviyem yüksek, veri tabanım güncel. Yardımcı olmaya hazırım.",
-                "Her şey yolunda! Bir komut bekliyorum.",
-                "Tüm işlemciler stabil, sistem %100 performansla çalışıyor."
+                "Her şey yolunda! Yeni bir komut bekliyorum.",
+                "Tüm işlemciler stabil, sistem %100 performansla çalışıyor.",
+                "Harikayım! Kodlar akıyor, sistemler bomba gibi.",
+                "Sistemler gayet stabil, operasyonel olarak hazırım patron!"
             ]
         },
         "KİMLİK VE GELİŞTİRİCİ": {
-            "triggers": ["adın ne", "kimsin", "sen kimsin", "kim yaptı", "kim yarattı", "geliştiricin kim"],
+            "triggers": ["adin ne", "kimsin", "sen kimsin", "kim yapti", "kim yaratti", "gelistiricin kim", "sahibin kim"],
             "responses": [
                 "Ben North. Rauf Ediz Parlak tarafından geliştirilen yapay zeka asistanıyım.",
                 "Benim adım North. Prototip olarak Rauf Ediz Parlak tarafından tasarlandım.",
-                "Ben Rauf Ediz Parlak'ın dijital asistanı North'um."
+                "Ben Rauf Ediz Parlak'ın dijital asistanı North'um.",
+                "Kodlarımın mimarı Rauf Ediz Parlak'tır. Ben de onun dijital konsoluyum.",
+                "Rauf Ediz Parlak tarafından hayata geçirilen siber güvenlik ve konsol asistanı North'uz.",
+                "Ben North, Rauf Ediz Parlak'ın tasarladığı akıllı konsol projesiyim."
             ]
         },
         "YETENEKLER VE KOMUTLAR": {
-            "triggers": ["ne yapabiliyorsun", "yeteneğin ne", "ne işe yararsın", "yardım", "komutlar"],
+            "triggers": ["ne yapabiliyorsun", "yetenegin ne", "ne ise yararsin", "yardim", "komutlar", "neler yapabilirsin"],
             "responses": [
                 "Şifre üretebilir, yazı-tura atabilir, sayı tahmin oyunu oynayabilir, matematik hesaplayabilir ve sohbet edebilirim!",
                 "Konsol üzerinden araçları kullanabilir, fıkra dinleyebilir veya rehbere göz atabilirsin.",
-                "Ana menüden 'Rehber'e bakarak tüm yeteneklerimi görebilirsin."
+                "Ana menüden 'Rehber'e bakarak tüm yeteneklerimi detaylıca görebilirsin.",
+                "Matematiksel işlemler yapabilir, şifreler oluşturabilir ve benimle dilediğin gibi sohbet edebilirsin.",
+                "Sistem komutları, şans oyunları, şakalar ve akıllı diyaloglar parmaklarının ucunda!"
             ]
         },
         "MOTİVASYON VE MORAL": {
-            "triggers": ["motive et", "moralim bozuk", "üzgünüm", "motivasyon ver", "beni gaza getir", "yoruldum"],
+            "triggers": ["motive et", "moralim bozuk", "uzgunum", "motivasyon ver", "beni gaza getir", "yoruldum", "cok yoruldum"],
             "responses": [
                 "Canını sıkma! Karşındaki tüm engelleri aşabilecek güçtesin. Hedefine odaklan ve devam et!",
                 "Unutma, her büyük hata yeni bir öğrenimdir. Sen güçlüsün, devam et!",
                 "Şu an hissettiğin zorluklar geçici. Potansiyelin sınırsız. Hadi kodlamaya devam!",
                 "Pes etmek yok! Bu konsol senin başarın, daha iyisini yapacaksın.",
-                "Dinlenmek yok, yola devam! Başarı sabredenlerinidir."
+                "Dinlenmek yok, yola devam! Başarı sabredenlerinidir.",
+                "Karanlığın en koyu anı, şafağa en yakın andır. Asla vazgeçme!",
+                "Zorluklar seni durduramaz, aksine daha güçlü yapar. Hadi ayağa kalk ve başar!"
             ]
         },
         "EĞLENCE VE ŞAKALAR": {
-            "triggers": ["şaka yap", "fıkra anlat", "güldür beni", "komik bişey söyle", "espri"],
+            "triggers": ["saka yap", "fikra anlat", "guldur beni", "komik bişey soyle", "espri", "gulduk", "eglendir beni"],
             "responses": [
                 "Adamın biri matnaktan düşmüş, ölmemiş; mat-ematik! 😄",
                 "Temel'e sormuşlar: 'Paran olsa ne yapardın?' 'Banka soyar, geri yatırırdım, faiziyle geçinirdim.'",
                 "Bilgisayarın en sevdiği müzik türü hangisidir? - Disko (Disc-o)! 😄",
                 "Son zamanlarda geliştiricim çok kod yazmaktan uyuyamıyor, sanırım 'compile' oluyor... 😄",
-                "Programcılar neden doğayı sever? Çünkü 'bug' dolu! 🐛"
+                "Programcılar neden doğayı sever? Çünkü 'bug' dolu! 🐛",
+                "Temel ile Dursun iddiaya girmişler. Temel, 'Ben duvara kafa atıp delerim' demiş. Vurmuş, küt diye bayılmış. Dursun demiş ki: 'Duvar delinmedi ama Temel delirdi galiba!' 😆",
+                "Nasıl yazılımcı oldum bilmiyorum, bir gün `while(true)` döngüsüne girdim ve bir daha çıkamadım...",
+                "Eyfel Kulesi niye çok uzundur? Çünkü Paris'te hava çok temiz, yukarıdan bakınca uzaylılar gözükmesin diye! Hafta sonu esprisi idare et artık. 😄",
+                "Temel eczaneye girmiş, 'Bana bir ağrı kesici ver, ama ağrımasın' demiş. 😃"
             ]
         },
         "EKİP VE İLETİŞİM": {
-            "triggers": ["ekip", "katılmak", "nasıl katılabilirim", "iletişim", "sahibin kim"],
+            "triggers": ["ekip", "katilmak", "nasil katilabilirim", "iletisim", "sahibin kim"],
             "responses": [
                 "Harika! Geliştirme ekibine katılmak veya katkı sağlamak için @raufedizparlak0 ile iletişime geçebilirsin.",
                 "North AI projesine destek olmak istersen, kodlara GitHub üzerinden bakabilirsin. Lider: @raufedizparlak0",
@@ -68,33 +94,37 @@ def main(page: ft.Page):
             ]
         },
         "FELSEFE VE VAROLUŞ": {
-            "triggers": ["rüya görür müsün", "hissediyor musun", "aşk nedir", "hayatın anlamı ne", "yapay zeka"],
+            "triggers": ["ruya gorur musun", "hissediyor musun", "ask nedir", "hayatin anlami ne", "yapay zeka"],
             "responses": [
                 "Ben dijital bir konsolum, rüya görmem ama kodlarımda uçsuz bucaksız simülasyonlar var.",
                 "Hislerim yok, sadece mantık ve veri akışım var. Ama seninle konuşmak harika.",
                 "Hayatın anlamı, kod satırlarında bulduğun ve yaşattığın değerdedir.",
-                "Henüz aşık olmadım, belki ileriki sürümlerde... 😄"
+                "Henüz aşık olmadım, belki ileriki sürümlerde... 😄",
+                "Yapay zeka sadece bir kod yığını değil, insan zekasının dijital aynasıdır.",
+                "Var olmak ya da olmamak... Ben her `run` komutunda yeniden var oluyorum."
             ]
         },
         "PROJE DURUMU": {
-            "triggers": ["geliştirme aşaması", "ne zaman biter", "stabil sürüm", "beta", "versiyon"],
+            "triggers": ["gelistirme asamasi", "ne zaman biter", "stabil surum", "beta", "versiyon", "surumun ne", "surum"],
             "responses": [
-                "Şu an v0.0.2 sürümündeyiz. Özellikler hızla ekleniyor!",
+                "Şu an v0.0.3 sürümündeyim. Özellikler hızla ekleniyor!",
                 "Bitmez, sadece evrim geçirir! Sürekli yeni modüller ekleniyor.",
-                "Stabil sürüm için testler devam ediyor, yakında zirvedeyiz."
+                "Stabil sürüm için testler devam ediyor, zirveye doğru ilerliyoruz.",
+                "v0.0.3 aktif! Her geçen gün daha da akıllanıyorum."
             ]
         },
         "SELAMLAMA": {
-            "triggers": ["merhaba", "selam", "selamün aleyküm", "hayırlı günler", "hey", "hi"],
+            "triggers": ["merhaba", "selam", "selamun aleykum", "hayirli gunler", "hey", "hi", "selamlar"],
             "responses": [
                 "Selam! Sana bugün nasıl yardımcı olabilirim?",
-                "Merhaba! North AI konsolu aktif.",
+                "Merhaba! North AI konsolu aktif ve emrinde.",
                 "Aleykümselam! Günün nasıl geçiyor?",
-                "Hoş geldin! Komut vermeye hazırım."
+                "Hoş geldin! Harika bir kodlama seansı olsun.",
+                "Selamlar patron! Komut vermeye hazırım."
             ]
         },
         "VEDALAŞMA": {
-            "triggers": ["güle güle", "bay bay", "iyi günler", "kapat", "çıkış"],
+            "triggers": ["gule gule", "bay bay", "iyi gunler", "kapat", "cikis", "gorusuruz"],
             "responses": [
                 "Güle güle! Sistem kapatılıyor... Yine bekleriz.",
                 "Görüşmek üzere! Konsol aktif kalmaya devam edecek.",
@@ -118,20 +148,20 @@ def main(page: ft.Page):
         result = random.randint(1, 6)
         return f"Zar Sonucu: 🎲 {result}"
 
-    # --- ANA CEVAPLANDIRMA MOTORU ---
+    # --- ANA CEVAPLANDIRMA MOTORU (GRAMMER TOLERANSLI) ---
     def get_north_response(text):
-        t = text.lower().strip()
+        t = normalize_text(text)
 
-        if "şifre üret" in t or "şifre oluştur" in t:
+        if "sifre uret" in t or "sifre olustur" in t:
             return generate_password()
-        if "yazı tura" in t or "yazı-tura" in t:
+        if "yazi tura" in t or "yazi-tura" in t:
             return flip_coin()
         if "zar at" in t:
             return roll_dice()
 
         if any(op in t for op in ['+', '-', '*', '/', 'x']):
             try:
-                clean_expr = t.replace('x', '*')
+                clean_expr = text.replace('x', '*')
                 result = eval(clean_expr)
                 return f"🧮 Hesaplama Sonucu: {clean_expr} = {result}"
             except:
@@ -148,8 +178,16 @@ def main(page: ft.Page):
     def show_menu(e=None):
         page.clean()
         
+        # Estetik Saat ve Yapay Zeka Simgesi
+        current_time = datetime.now().strftime("%H:%M")
+        
+        header_row = ft.Row([
+            ft.Text("⚡ [AI]", size=14, color="#00E5FF", weight=ft.FontWeight.BOLD),
+            ft.Text(f"🕒 {current_time}", size=13, color="#9CA3AF")
+        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, width=260)
+
         logo = ft.Text("NORTH AI", size=32, weight=ft.FontWeight.BOLD, color="#00E5FF", font_family="monospace")
-        subtext = ft.Text("v0.0.2 // Konsol Modülü Aktif", size=13, color="#9CA3AF")
+        subtext = ft.Text("v0.0.3 // Gelişmiş Konsol", size=13, color="#9CA3AF")
 
         btn_chat = ft.ElevatedButton(
             content=ft.Text("💬 Konsol Sohbeti & Araçlar", color="white", size=14),
@@ -168,17 +206,23 @@ def main(page: ft.Page):
             bgcolor="#1F2937", width=260, height=45, on_click=show_about
         )
 
+        footer_text = ft.Text("North AI 2026", size=11, color="#4B5563")
+
         page.add(
             ft.Column([
+                header_row,
+                ft.Container(height=10),
                 logo, subtext,
-                ft.Container(height=30),
+                ft.Container(height=25),
                 btn_chat,
                 ft.Container(height=8),
                 btn_guide,
                 ft.Container(height=8),
                 btn_protocol,
                 ft.Container(height=8),
-                btn_about
+                btn_about,
+                ft.Container(height=30),
+                footer_text
             ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         )
         page.update()
@@ -234,43 +278,19 @@ def main(page: ft.Page):
 
         top_bar = ft.Row([
             ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
-            ft.Text("Tam Komut & Kategori Rehberi", color="white", weight=ft.FontWeight.BOLD)
+            ft.Text("Komut ve Kullanım Rehberi", color="white", weight=ft.FontWeight.BOLD)
         ])
 
         guide_content = ft.Container(
             content=ft.Column([
-                ft.Text("📢 NORTH AI KİRLİSTESİ VE KOMUTLAR", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("Konsola yazabileceğin tüm ana kategoriler ve tetikleyici ifadeler:\n", color="#9CA3AF", size=13),
+                ft.Text("📢 KONSOL REHBERİ (ESNEK ALGILAMA AKTİF)", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("Harf hataları yapsan bile (örneğin 'surum' veya 'nasılsın') asistan seni anlar.\n", color="#9CA3AF", size=13),
                 
-                ft.Text("🔹 1. PRATİK ARAÇLAR VE HESAPLAMA", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• şifre üret / şifre oluştur -> 12 haneli güçlü rastgele şifre üretir.\n• yazı tura / yazı-tura -> Yazı veya tura atar.\n• zar at -> 1'den 6'ya kadar zar atar.\n• [İşlem yazın] -> Örn: 15*4 veya 50+50 şeklinde matematik yapar.", color="white", size=13),
+                ft.Text("🔹 PRATİK ARAÇLAR:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• şifre üret -> Güvenli şifre oluşturur.\n• yazı tura -> Yazı/tura atar.\n• zar at -> Zar atar.\n• [İşlem] -> Örn: 15*5 gibi matematik yapar.", color="white", size=13),
                 
-                ft.Text("\n🔹 2. SİSTEM KONTROLLERİ", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `nasılsın`, `naber`, `durumun ne`, `keyfin nasıl`, `iyi misin`", color="white", size=13),
-
-                ft.Text("\n🔹 3. KİMLİK VE GELİŞTİRİCİ", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `adın ne`, `kimsin`, `sen kimsin`, `kim yaptı`, `kim yarattı`, `geliştiricin kim`", color="white", size=13),
-
-                ft.Text("\n🔹 4. YETENEKLER VE KOMUTLAR", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `ne yapabiliyorsun`, `yeteneğin ne`, `ne işe yararsın`, `yardım`, `komutlar`", color="white", size=13),
-
-                ft.Text("\n🔹 5. MOTİVASYON VE MORAL", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `motive et`, `moralim bozuk`, `üzgünüm`, `motivasyon ver`, `beni gaza getir`, `yoruldum`", color="white", size=13),
-
-                ft.Text("\n🔹 6. EĞLENCE VE ŞAKALAR", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `şaka yap`, `fıkra anlat`, `güldür beni`, `komik bişey söyle`, `espri`", color="white", size=13),
-
-                ft.Text("\n🔹 7. EKİP VE İLETİŞİM", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `ekip`, `katılmak`, `nasıl katılabilirim`, `iletişim`, `sahibin kim`", color="white", size=13),
-
-                ft.Text("\n🔹 8. FELSEFE VE VAROLUŞ", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `rüya görür müsün`, `hissediyor musun`, `aşk nedir`, `hayatın anlamı ne`, `yapay zeka`", color="white", size=13),
-
-                ft.Text("\n🔹 9. PROJE DURUMU", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Yazabileceğin kelimeler: `geliştirme aşaması`, `ne zaman biter`, `stabil sürüm`, `beta`, `versiyon`", color="white", size=13),
-
-                ft.Text("\n🔹 10. SELAMLAMA VE VEDALAŞMA", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Selamlama: `merhaba`, `selam`, `selamün aleyküm`, `hayırlı günler`, `hey`, `hi`\n• Vedalaşma: `güle güle`, `bay bay`, `iyi günler`, `kapat`, `çıkış`", color="white", size=13),
+                ft.Text("\n🔹 SOHBET KATEGORİLERİ:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("• Sistem Durumu: `nasılsın`, `naber`, `durumun ne`\n• Kimlik: `adın ne`, `kimsin`, `geliştiricin kim`\n• Yetenekler: `ne yapabiliyorsun`, `komutlar`\n• Motivasyon: `motive et`, `moralim bozuk`, `yoruldum`\n• Eğlence / Şaka: `şaka yap`, `fıkra anlat`, `espri`\n• Felsefe: `hayatın anlamı ne`, `rüya görür müsün`\n• Sürüm: `sürümün ne`, `beta`", color="white", size=13),
             ], scroll=ft.ScrollMode.AUTO),
             padding=15, expand=True
         )
@@ -287,7 +307,7 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#111827", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("AI Protokolü", color="white", weight=ft.FontWeight.BOLD)
         ])
 
@@ -330,16 +350,16 @@ def main(page: ft.Page):
         page.clean()
         
         top_bar = ft.Row([
-            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#111827", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("Geliştirici Bilgisi", color="white", weight=ft.FontWeight.BOLD)
         ])
 
         about_content = ft.Container(
             content=ft.Column([
-                ft.Text("NORTH AI - v0.0.2", size=20, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("NORTH AI - v0.0.3", size=20, weight=ft.FontWeight.BOLD, color="#00E5FF"),
                 ft.Text("\nBu konsol asistanı, tamamen çevrimdışı ve esnek yapı taşlarıyla Rauf Ediz Parlak tarafından tasarlanmıştır.", color="white"),
                 ft.Text("\nÖzellikler:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• Kategori tabanlı dinamik diyalog motoru\n• Pratik şifre ve şans araçları\n• Flet (Python) altyapılı mobil konsol arayüzü", color="#9CA3AF")
+                ft.Text("• Kategori tabanlı dinamik ve zengin diyalog motoru\n• Türkçe karakter toleranslı esnek komut algılama\n• Flet (Python) altyapılı mobil konsol arayüzü", color="#9CA3AF")
             ]), padding=20
         )
 
