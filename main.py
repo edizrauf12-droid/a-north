@@ -117,9 +117,9 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.9 (Stabil Sürüm)",
-    "hakkında": "North AI v0.6.9 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
-    "sistem": "Bilinç Seviyesi: %98.0 (Tüm modüller aktif ve kararlı).",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.0 (Stabil Sürüm)",
+    "hakkında": "North AI v0.7.0 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
+    "sistem": "Bilinç Seviyesi: %99.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
     "rastgele sayı": lambda: f"Şanslı sayın (1-100): {random.randint(1, 100)}",
@@ -171,7 +171,6 @@ def get_news_data():
 
 def get_exchange_rates():
     try:
-        # Piyasardaki açık kaynaklı döviz JSON API'lerinden biri
         url = "https://open.er-api.com/v6/latest/USD"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req, timeout=4) as response:
@@ -216,7 +215,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.6.9"
+    page.title = "North AI - Stabil Sürüm v0.7.0"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -403,7 +402,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.9", size=12, color="#9aa0a6")
+                                ft.Text("v0.7.0", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
@@ -416,7 +415,7 @@ def main(page: ft.Page):
                         content=ft.Row([
                             input_field,
                             ft.IconButton(
-                                icon=ft.icons.AUTO_AWESOME_ROUNDED, 
+                                icon=ft.icons.SEND_ROUNDED, 
                                 icon_color="#ff5555", 
                                 on_click=lambda e: process_command(input_field.value)
                             )
