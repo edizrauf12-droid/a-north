@@ -209,7 +209,7 @@ def main(page: ft.Page):
         ] + [ft.Text(f"• {item}", size=11, color="#94a3b8") for item in news_items], spacing=3)
 
         news_container = ft.Container(
-            content=news_column, bgcolor=card_col, padding=12, border_radius=12, width=330, margin=ft.margin.only(top=10)
+            content=news_column, bgcolor=card_col, padding=12, border_radius=12, width=330, margin=ft.margin.symmetric(vertical=10)
         )
 
         def custom_menu_button(text, icon_name, on_click_func, is_primary=False):
