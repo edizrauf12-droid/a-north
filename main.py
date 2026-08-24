@@ -47,7 +47,7 @@ COMMANDS = {
     ],
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')}",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.4",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.7.5",
     "rastgele sayı": lambda: f"Şanslı sayın (1-100): {random.randint(1, 100)}",
     "fıkra anlat": "Yapay zekaya sormuşlar: 'Mutluluk nedir?' Yapay zeka: 'Elektrik kesintisi' demiş.",
     "komutlar": "Komutlar: merhaba, nasılsın, aşık olurmusun, kur, dolar, haberler, not al [metin], notlar, fıkra anlat, saat, tarih, temizle",
@@ -87,7 +87,7 @@ def get_exchange_rates():
         return "💱 Dolar (USD): ~34.10 TL (Çevrimdışı)"
 
 def main(page: ft.Page):
-    page.title = "North AI v0.7.4"
+    page.title = "North AI v0.7.5"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -206,11 +206,10 @@ def main(page: ft.Page):
             alignment=ft.MainAxisAlignment.CENTER
         )
 
-        # Buton sorununu tamamen çözen güvenli Container yapısı
         send_button = ft.Container(
             content=ft.Text("➤ GÖNDER", color="#ffffff", weight=ft.FontWeight.BOLD, size=12),
             bgcolor="#ff5555",
-            padding=ft.padding.symmetric(horizontal=16, vertical=10),
+            padding=10,
             border_radius=20,
             on_click=lambda e: process_command(input_field.value),
             ink=True
@@ -222,7 +221,7 @@ def main(page: ft.Page):
                     ft.Container(
                         content=ft.Row([
                             ft.Text("👁️ North AI (Asistan)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                            ft.Text("v0.7.4", size=12, color="#9aa0a6")
+                            ft.Text("v0.7.5", size=12, color="#9aa0a6")
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                         padding=16, bgcolor="#1e1f22",
                     ),
@@ -233,7 +232,7 @@ def main(page: ft.Page):
                             input_field,
                             send_button
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                        padding=ft.padding.symmetric(horizontal=12, vertical=4),
+                        padding=8,
                         margin=10, bgcolor="#1e1f22", border_radius=28,
                     ),
                 ],
