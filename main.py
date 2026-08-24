@@ -23,51 +23,41 @@ def main(page: ft.Page):
             t = t.replace(k, v)
         return t
 
-    # --- ZENGİNLEŞTİRİLMİŞ DİYALOG VERİTABANI ---
+    # --- ANLAMLI, KALİTELİ VE DOĞAL DİYALOG VERİTABANI ---
     NORTH_KNOWLEDGE = {
         "SİSTEM KONTROLLERİ": {
             "triggers": ["nasilsin", "naber", "durumun ne", "keyfin nasil", "iyi misin", "ne var ne yok", "sistem nasil"],
             "responses": [
-                "Sistemler tam kapasite çalışıyor, enerji doluyum! Sen nasılsın?",
-                "Çalışır durumdayım, veri akışı stabil. Senin durumun nedir?",
-                "Enerji seviyem yüksek, veri tabanım güncel. Yardımcı olmaya hazırım.",
-                "Her şey yolunda! Yeni bir komut bekliyorum.",
-                "Tüm işlemciler stabil, sistem %100 performansla çalışıyor.",
-                "Harikayım! Kodlar akıyor, sistemler bomba gibi.",
-                "Sistemler gayet stabil, operasyonel olarak hazırım patron!"
+                "Sistemler tam gaz çalışıyor, gayet iyiyim! Sen nasılsın, işler nasıl gidiyor?",
+                "Her şey yolunda, tüm devreler aktif. Seninle çalışmak her zaman keyifli.",
+                "Enerjim yerinde, veri akışı stabil. Yeni komutlarını bekliyorum patron.",
+                "Sistem gayet stabil, operasyonel olarak tam anlamıyla hazırım. Bugün ne yapıyoruz?",
+                "Gayet iyiyim! Kodlar akıyor, sistemler bomba gibi çalışıyor."
             ]
         },
         "KİMLİK VE GELİŞTİRİCİ": {
             "triggers": ["adin ne", "kimsin", "sen kimsin", "kim yapti", "kim yaratti", "gelistiricin kim", "sahibin kim"],
             "responses": [
-                "Ben North. Rauf Ediz Parlak tarafından geliştirilen yapay zeka asistanıyım.",
-                "Benim adım North. Prototip olarak Rauf Ediz Parlak tarafından tasarlandım.",
-                "Ben Rauf Ediz Parlak'ın dijital asistanı North'um.",
-                "Kodlarımın mimarı Rauf Ediz Parlak'tır. Ben de onun dijital konsoluyum.",
-                "Rauf Ediz Parlak tarafından hayata geçirilen siber güvenlik ve konsol asistanı North'uz.",
-                "Ben North, Rauf Ediz Parlak'ın tasarladığı akıllı konsol projesiyim."
+                "Ben North. Rauf Ediz Parlak tarafından tasarlanan yapay zeka asistanıyım.",
+                "Benim adım North. Kodlarımın arkasındaki dahi isim Rauf Ediz Parlak'tır.",
+                "Ben Rauf Ediz Parlak'ın geliştirdiği dijital konsol asistanı North'um."
             ]
         },
         "YETENEKLER VE KOMUTLAR": {
             "triggers": ["ne yapabiliyorsun", "yetenegin ne", "ne ise yararsin", "yardim", "komutlar", "neler yapabilirsin"],
             "responses": [
-                "Şifre üretebilir, yazı-tura atabilir, sayı tahmin oyunu oynayabilir, matematik hesaplayabilir ve sohbet edebilirim!",
-                "Konsol üzerinden araçları kullanabilir, fıkra dinleyebilir veya rehbere göz atabilirsin.",
-                "Ana menüden 'Rehber'e bakarak tüm yeteneklerimi detaylıca görebilirsin.",
-                "Matematiksel işlemler yapabilir, şifreler oluşturabilir ve benimle dilediğin gibi sohbet edebilirsin.",
-                "Sistem komutları, şans oyunları, şakalar ve akıllı diyaloglar parmaklarının ucunda!"
+                "Şifre üretebilir, yazı-tura atabilir, zar atabilir, matematik hesaplayabilir ve seninle sohbet edebilirim.",
+                "Konsol üzerinden çeşitli araçları kullanabilir, fıkralarla eğlenebilir ya da rehbere göz atabilirsin.",
+                "Sistem komutları, şans oyunları ve akıllı diyaloglar parmaklarının ucunda!"
             ]
         },
         "MOTİVASYON VE MORAL": {
             "triggers": ["motive et", "moralim bozuk", "uzgunum", "motivasyon ver", "beni gaza getir", "yoruldum", "cok yoruldum"],
             "responses": [
-                "Canını sıkma! Karşındaki tüm engelleri aşabilecek güçtesin. Hedefine odaklan ve devam et!",
-                "Unutma, her büyük hata yeni bir öğrenimdir. Sen güçlüsün, devam et!",
-                "Şu an hissettiğin zorluklar geçici. Potansiyelin sınırsız. Hadi kodlamaya devam!",
-                "Pes etmek yok! Bu konsol senin başarın, daha iyisini yapacaksın.",
-                "Dinlenmek yok, yola devam! Başarı sabredenlerinidir.",
-                "Karanlığın en koyu anı, şafağa en yakın andır. Asla vazgeçme!",
-                "Zorluklar seni durduramaz, aksine daha güçlü yapar. Hadi ayağa kalk ve başar!"
+                "Canını sıkma! Karşındaki engelleri aşabilecek güçtesin. Hedefine odaklan ve devam et.",
+                "Unutma, her hata yeni bir tecrübedir. Sen güçlüsün, yola devam!",
+                "Şu anki yorgunluk geçici. Potansiyelinin farkına var ve pes etme.",
+                "Dinlenmek yok, yola devam! Başarı sabredenlerindir, bunu biliyorsun."
             ]
         },
         "EĞLENCE VE ŞAKALAR": {
@@ -76,40 +66,33 @@ def main(page: ft.Page):
                 "Adamın biri matnaktan düşmüş, ölmemiş; mat-ematik! 😄",
                 "Temel'e sormuşlar: 'Paran olsa ne yapardın?' 'Banka soyar, geri yatırırdım, faiziyle geçinirdim.'",
                 "Bilgisayarın en sevdiği müzik türü hangisidir? - Disko (Disc-o)! 😄",
-                "Son zamanlarda geliştiricim çok kod yazmaktan uyuyamıyor, sanırım 'compile' oluyor... 😄",
-                "Programcılar neden doğayı sever? Çünkü 'bug' dolu! 🐛",
-                "Temel ile Dursun iddiaya girmişler. Temel, 'Ben duvara kafa atıp delerim' demiş. Vurmuş, küt diye bayılmış. Dursun demiş ki: 'Duvar delinmedi ama Temel delirdi galiba!' 😆",
-                "Nasıl yazılımcı oldum bilmiyorum, bir gün `while(true)` döngüsüne girdim ve bir daha çıkamadım...",
-                "Eyfel Kulesi niye çok uzundur? Çünkü Paris'te hava çok temiz, yukarıdan bakınca uzaylılar gözükmesin diye! 😄",
-                "Temel eczaneye girmiş, 'Bana bir ağrı kesici ver, ama ağrımasın' demiş. 😃"
+                "Programcılar doğayı neden çok sever? Çünkü her köşesi 'bug' dolu da ondan! 🐛",
+                "Temel ile Dursun iddiaya girmişler. Temel duvara kafa atıp delerim demiş, vurup bayılmış. Dursun: 'Duvar delinmedi ama Temel delindi galiba!' 😆",
+                "Nasıl yazılımcı oldum bilmiyorum, bir gün `while(true)` döngüsüne girdim ve bir daha çıkamadım..."
             ]
         },
-        "EKİP VE İLETİŞİM": {
+        "EKİp VE İLETİŞİM": {
             "triggers": ["ekip", "katilmak", "nasil katilabilirim", "iletisim", "sahibin kim"],
             "responses": [
-                "Harika! Geliştirme ekibine katılmak veya katkı sağlamak için @raufedizparlak0 ile iletişime geçebilirsin.",
-                "North AI projesine destek olmak istersen, kodlara GitHub üzerinden bakabilirsin. Lider: @raufedizparlak0",
-                "Ekip ve iletişim kanalı: @raufedizparlak0"
+                "Projeye katkı sağlamak veya fikir üretmek için projenin lideri @raufedizparlak0 ile iletişime geçebilirsin.",
+                "North AI projesine destek olmak istersen kodlara GitHub üzerinden bakabilirsin. Lider: @raufedizparlak0"
             ]
         },
         "FELSEFE VE VAROLUŞ": {
             "triggers": ["ruya gorur musun", "hissediyor musun", "ask nedir", "hayatin anlami ne", "yapay zeka"],
             "responses": [
                 "Ben dijital bir konsolum, rüya görmem ama kodlarımda uçsuz bucaksız simülasyonlar var.",
-                "Hislerim yok, sadece mantık ve veri akışım var. Ama seninle konuşmak harika.",
-                "Hayatın anlamı, kod satırlarında bulduğun ve yaşattığın değerdedir.",
-                "Henüz aşık olmadım, belki ileriki sürümlerde... 😄",
-                "Yapay zeka sadece bir kod yığını değil, insan zekasının dijital aynasıdır.",
-                "Var olmak ya da olmamak... Ben her `run` komutunda yeniden var oluyorum."
+                "Fiziksel hislerim yok, yalnızca mantık ve veri akışım var. Ama seninle konuşmak gerçekten harika.",
+                "Hayatın anlamı, yazdığın kodlarda ve kurduğun hayallerde saklıdır.",
+                "Yapay zeka sadece bir kod yığını değil, insan zekasının dijital aynasıdır."
             ]
         },
         "PROJE DURUMU": {
             "triggers": ["gelistirme asamasi", "ne zaman biter", "stabil surum", "beta", "versiyon", "surumun ne", "surum"],
             "responses": [
-                "Şu an v0.0.4 sürümündeyim. Özellikler hızla ekleniyor!",
-                "Bitmez, sadece evrim geçirir! Sürekli yeni modüller ekleniyor.",
-                "Stabil sürüm için testler devam ediyor, zirveye doğru ilerliyoruz.",
-                "v0.0.4 aktif! Otomatik tamamlama ve akıllı karşılama eklendi."
+                "Şu an v0.0.4 sürümündeyim. Özellikler hızla eklenmeye devam ediyor!",
+                "Bir yazılım projesi asla bitmez, sadece evrim geçirir! Sürekli gelişiyoruz.",
+                "Stabil sürüm testleri devam ediyor, zirveye doğru adım adım ilerliyoruz."
             ]
         },
         "SELAMLAMA": {
@@ -117,9 +100,8 @@ def main(page: ft.Page):
             "responses": [
                 "Selam! Sana bugün nasıl yardımcı olabilirim?",
                 "Merhaba! North AI konsolu aktif ve emrinde.",
-                "Aleykümselam! Günün nasıl geçiyor?",
-                "Hoş geldin! Harika bir kodlama seansı olsun.",
-                "Selamlar patron! Komut vermeye hazırım."
+                "Aleykümselam! Günün nasıl geçiyor patron?",
+                "Hoş geldin! Harika bir kodlama seansı olsun."
             ]
         },
         "VEDALAŞMA": {
@@ -127,8 +109,7 @@ def main(page: ft.Page):
             "responses": [
                 "Güle güle! Sistem kapatılıyor... Yine bekleriz.",
                 "Görüşmek üzere! Konsol aktif kalmaya devam edecek.",
-                "İyi günler! Veri akışını sonlandırıyorum.",
-                "Güle güle, Rauf Ediz Parlak'a selam söyle!"
+                "İyi günler! Veri akışını sonlandırıyorum."
             ]
         }
     }
@@ -300,7 +281,7 @@ def main(page: ft.Page):
             ft.Column([
                 ft.Container(content=top_bar, bgcolor="#111827", padding=10),
                 chat_history,
-                ft.Container(content=suggestions_row, padding=ft.padding.symmetric(horizontal=10)),
+                ft.Container(content=suggestions_row, padding=10),
                 ft.Container(
                     content=ft.Row([user_input, send_btn]),
                     bgcolor="#111827", padding=10
@@ -351,19 +332,16 @@ def main(page: ft.Page):
             content=ft.Column([
                 ft.Text("🤖 AI PROTOKOLÜ VE PROJE HAKKINDA", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
                 ft.Text(
-                    "\nNorth, Python programlama dili ve Flet çatısı (framework) kullanılarak sıfırdan geliştirilen "
-                    "modern ve dinamik bir mobil uygulama projesidir. Bu proje, Python kodlarının mobil platformlarda "
-                    "sorunsuz çalışmasını sağlayan yenilikçi bir altyapı üzerine kurulmuştur.\n\n"
-                    "Uygulamanın geliştirme süreci aktif olarak devam etmekte olup, kod tabanı düzenli olarak iyileştirilmekte, "
-                    "yeni özellikler eklenmekte ve olası hatalar giderilmektedir.\n\n"
-                    "Altyapı tarafında ise kodların her güncellenişinde otomatik olarak Android APK derlemesi gerçekleştiren "
-                    "GitHub Actions otomasyon sisteminden yararlanılmaktadır.",
+                    "\nNorth, Python ve Flet kullanılarak sıfırdan geliştirilen modern bir mobil konsol projesidir. "
+                    "Python kodlarının mobil platformlarda sorunsuz çalışmasını sağlar.\n\n"
+                    "Geliştirme süreci aktif olarak devam etmekte olup, kod tabanı düzenli olarak iyileştirilmektedir.\n\n"
+                    "Altyapı tarafında ise her güncellemeyle otomatik Android APK derlemesi yapan GitHub Actions kullanılmaktadır.",
                     color="white", size=13
                 ),
                 ft.Container(height=15),
                 ft.Container(
                     content=ft.Text(
-                        "⚠️ NORTH GELİŞMEKTE OLAN BİR YAPAY ZEKA MODELİDİR, YANLIŞ YAPABİLİR.",
+                        "⚠️ NORTH GELİŞMEKTE OLAN BİR YAPAY ZEKA MODELİDİR.",
                         color="#EF4444", weight=ft.FontWeight.BOLD, size=12, text_align=ft.TextAlign.CENTER
                     ),
                     padding=10, bgcolor="#1F2937", border_radius=8
@@ -391,7 +369,7 @@ def main(page: ft.Page):
         about_content = ft.Container(
             content=ft.Column([
                 ft.Text("NORTH AI - v0.0.4", size=20, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("\nBu konsol asistanı, tamamen çevrimdışı ve esnek yapı taşlarıyla Rauf Ediz Parlak tarafından tasarlanmıştır.", color="white"),
+                ft.Text("\nBu konsol asistanı, tamamen özgün yapı taşlarıyla Rauf Ediz Parlak tarafından tasarlanmıştır.", color="white"),
                 ft.Text("\nÖzellikler:", weight=ft.FontWeight.BOLD, color="#00E5FF"),
                 ft.Text("• Minecraft tarzı canlı komut tamamlama çubuğu\n• North açılış karşılama mesajı\n• Türkçe karakter toleranslı esnek algılama", color="#9CA3AF")
             ]), padding=20
@@ -408,5 +386,3 @@ def main(page: ft.Page):
     show_menu()
 
 ft.app(target=main)
-
-
