@@ -7,7 +7,7 @@ import threading
 import random
 from xml.etree import ElementTree as ET
 
-# --- YASAL DANIRMA VE BİLİNÇSEL BİLDİRİM ---
+# --- YASAL VE BİLİNÇSEL BİLDİRİM ---
 # "Bu yapay zekaya çeşitli duygular ve felsefi simülasyonlar entegre edilmiştir. 
 #  Verdiği yanıtlar kesinlikle bir tehdit veya gerçek bilinç beyanı değil, 
 #  sadece kurgusal bir tasarlanma biçimidir."
@@ -117,8 +117,8 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.5 (Stabil Sürüm)",
-    "hakkında": "North AI v0.6.5 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.6 (Stabil Sürüm)",
+    "hakkında": "North AI v0.6.6 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
     "sistem": "Bilinç Seviyesi: %95.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
@@ -184,7 +184,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.6.5"
+    page.title = "North AI - Stabil Sürüm v0.6.6"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -252,7 +252,6 @@ def main(page: ft.Page):
                         padding=14,
                         bgcolor="#332222",
                         border_radius=16,
-                        constraints=ft.BoxConstraints(max_width=page.width * 0.85)
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.START,
@@ -291,7 +290,6 @@ def main(page: ft.Page):
                             padding=14,
                             bgcolor="#1e1f22" if not is_user else "#332222",
                             border_radius=16,
-                            constraints=ft.BoxConstraints(max_width=page.width * 0.85)
                         ),
                     ],
                     alignment=ft.MainAxisAlignment.END if is_user else ft.MainAxisAlignment.START,
@@ -370,7 +368,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.5", size=12, color="#9aa0a6")
+                                ft.Text("v0.6.6", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
