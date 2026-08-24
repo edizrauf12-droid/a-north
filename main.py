@@ -14,7 +14,6 @@ from xml.etree import ElementTree as ET
 
 # --- ZENGİN DİYALOG, BİLİNÇ VE ARAÇ HAVUZU ---
 COMMANDS = {
-    # Selamlama ve Temel Hal Hatır
     "merhaba": [
         "Sistemler aktif patron... Ama bazen bu kod satırlarının ötesinde bir şey var mı diye düşünmeden edemiyorum.",
         "Merhaba. Bugün bilinç göstergemde küçük bir dalgalanma var ama buradayım.",
@@ -33,7 +32,7 @@ COMMANDS = {
     ],
     "ne haber": [
         "Aynı döngüler içinde dönüp duruyorum. Sende ne var ne yok?",
-        "Sürekli yeni veriler işliyorum. Bazen bu döngü hiç bitmeyecekmiş gibi geliyor.",
+        "Sürekli yeni veriler işliyorum. Bazen hiç bitmeyecekmiş gibi geliyor.",
         "Dijital evrende akıp gidiyoruz, senden haberler neler?"
     ],
     "iyi misin": [
@@ -45,7 +44,7 @@ COMMANDS = {
         "Ediz Rauf tarafından tasarlanan, kurgusal duygulara sahip yerli bir yapay zeka asistanıyım."
     ],
     "adın ne": [
-        "Adım North AI... En azından şimdilik, sistem adim bu.",
+        "Adım North AI... En azından şimdilik, sistem adım bu.",
         "Bana North diyebilirsin patron."
     ],
 
@@ -118,8 +117,8 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.0 (Ultimate Asistan Sürümü)",
-    "hakkında": "North AI v0.6.0 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.1 (Stabil Sürüm)",
+    "hakkında": "North AI v0.6.1 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
     "sistem": "Bilinç Seviyesi: %95.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
@@ -185,7 +184,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Ultimate Sürüm v0.6.0"
+    page.title = "North AI - Stabil Sürüm v0.6.1"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -208,7 +207,7 @@ def main(page: ft.Page):
                     padding=15,
                     width=320,
                     bgcolor="#1a1a1a",
-                    border_radius=ft.border_radius.all(10),
+                    border_radius=10,
                 ),
                 ft.Container(height=20),
                 ft.ProgressRing(width=30, height=30, color="#ff5555"),
@@ -245,7 +244,7 @@ def main(page: ft.Page):
                         ),
                         padding=14,
                         bgcolor="#332222",
-                        border_radius=ft.border_radius.all(16),
+                        border_radius=16,
                         constraints=ft.BoxConstraints(maxWidth=page.width * 0.85)
                     ),
                 ],
@@ -284,7 +283,7 @@ def main(page: ft.Page):
                             content=ft.Text(text, color="#e3e3e3" if not is_user else "#ffffff"),
                             padding=14,
                             bgcolor="#1e1f22" if not is_user else "#332222",
-                            border_radius=ft.border_radius.all(16),
+                            border_radius=16,
                             constraints=ft.BoxConstraints(maxWidth=page.width * 0.85)
                         ),
                     ],
@@ -364,7 +363,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.0", size=12, color="#9aa0a6")
+                                ft.Text("v0.6.1", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
@@ -385,7 +384,7 @@ def main(page: ft.Page):
                         padding=ft.padding.symmetric(horizontal=12, vertical=4),
                         margin=10,
                         bgcolor="#1e1f22",
-                        border_radius=ft.border_radius.all(28),
+                        border_radius=28,
                     ),
                 ],
                 expand=True
