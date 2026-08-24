@@ -84,7 +84,7 @@ def main(page: ft.Page):
                 "Temel eczaneye girmiş, 'Bana bir ağrı kesici ver, ama ağrımasın' demiş. 😃"
             ]
         },
-        "EKİp VE İLETİŞİM": {
+        "EKİP VE İLETİŞİM": {
             "triggers": ["ekip", "katilmak", "nasil katilabilirim", "iletisim", "sahibin kim"],
             "responses": [
                 "Harika! Geliştirme ekibine katılmak veya katkı sağlamak için @raufedizparlak0 ile iletişime geçebilirsin.",
@@ -255,7 +255,7 @@ def main(page: ft.Page):
             
             if query:
                 matches = [cmd for cmd in ALL_COMMANDS if cmd.startswith(query)]
-                for match in matches[:5]: # En fazla 5 öneri göster
+                for match in matches[:5]:  # En fazla 5 öneri göster
                     suggestions_row.controls.append(
                         ft.ActionChip(
                             label=ft.Text(match, color="#00E5FF", size=11),
@@ -343,7 +343,7 @@ def main(page: ft.Page):
         page.clean()
 
         top_bar = ft.Row([
-            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#111827", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("AI Protokolü", color="white", weight=ft.FontWeight.BOLD)
         ])
 
@@ -369,7 +369,7 @@ def main(page: ft.Page):
                     padding=10, bgcolor="#1F2937", border_radius=8
                 )
             ], scroll=ft.ScrollMode.AUTO),
-            padding=15, expand=`15` # fixed
+            padding=15, expand=True
         )
 
         page.add(
@@ -384,7 +384,7 @@ def main(page: ft.Page):
         page.clean()
         
         top_bar = ft.Row([
-            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#111827", on_click=show_menu),
+            ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
             ft.Text("Geliştirici Bilgisi", color="white", weight=ft.FontWeight.BOLD)
         ])
 
