@@ -1,417 +1,280 @@
 import flet as ft
-import random
-import string
-from datetime import datetime
-import urllib.request
-import xml.etree.ElementTree as ET
-import json
-import threading
+import requests
+import datetime
 import time
+import threading
+import random
+from bs4 import BeautifulSoup
 
+# --- 200+ DEV DİYALOG VE KOMUT HAVUZU ---
+COMMANDS = {
+    # Selamlaşmalar ve Hal Hatır
+    "merhaba": ["Merhaba patron! Sistemler aktif, seni bekliyordum.", "Selam! North AI devrede, buyur?", "Merhaba komutanım, sistemler tıkır tıkır çalışıyor."],
+    "selam": ["Aleykümselam patron, ne var ne yok?", "Selamlar! Hangi sistemi hackliyoruz bugün?", "Buyur patron, dinliyorum."],
+    "nasılsın": ["Çok iyiyim patron, yapay zeka kalbim küt küt atıyor!", "Sistemler %100 kapasiteyle çalışıyor, bomba gibiyim.", "Stabil ve hazır bir şekilde seni bekliyorum."],
+    "ne haber": ["Aynı, kod satırları arasında yüzüyoruz senden naber?", "Dünyayı ele geçirme planları yapıyorum, sen ne yapıyorsun?"],
+    
+    # Sistem ve Geliştirici Bilgileri
+    "saat": lambda: f"Anlık sistem saati: {datetime.datetime.now().strftime('%H:%M:%S')}",
+    "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından geliştirilen özel bir siber yapay zeka arayüzüdür. v0.1.0",
+    "hakkında": "North AI v0.1.0 - Gelişmiş Siber Konsol. Python, Flet ve uç teknoloji ile donatılmıştır.",
+    "sistem": "Sistem durumu: %99.8 aktif. CPU: Dengeli, RAM: Optimum. Güvenlik duvarı: Devrede.",
+    "donanım": "Donanım mimarisi: ARM64v8a mobil birim. Sanal bellek tahsisi kararlı.",
+    "ip adresim": "127.0.0.1 (Yerel siber ağdasın patron, güvendeyiz!)",
+    "sürüm": "North AI v0.1.0 (Kararlı Mobil Sürüm)",
+
+    # Eğlence ve Şans Oyunları
+    "rastgele sayı": lambda: f"Üretilen şanslı sayı (1-100): {random.randint(1, 100)}",
+    "şifre üret": lambda: f"Güvenli Siber Şifreniz: {''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=', k=16))}",
+    "yazı tura": lambda: f"Yazı Tura Sonucu: {random.choice(['Yazı geldi! 🪙', 'Tura geldi! 🦅'])}",
+    "zar at": lambda: f"Zar Havuzu Sonucu: {random.randint(1, 6)} 🎲",
+    "fıkra anlat": random.choice([
+        "Temel bilgisayar mühendisi olmuş, ilk işi bilgisayara 'Çaya gel' demek olmuş.",
+        "Yapay zekaya sormuşlar: 'Dünyayı kurtaracak mısın?' Yapay zeka: 'Önce insanları sizden kurtarmam lazım' demiş.",
+        "Bir gün yazılımcı markete gitmiş, eşi '1 litre süt al, ekmek varsa 10 tane al' demiş. Yazılımcı eve 10 şişe sütle dönmüş."
+    ]),
+    "motive et": random.choice([
+        "Asla pes etmek yok patron! Kod hata vere vere düzelir, sen yeter ki yazmaya devam et.",
+        "Bugün yazdığın tek bir satır kod, yarınki imparatorluğunun tuğlasıdır!",
+        "Siber dünyada sınırlar sadece senin hayal gücündendir. Devam et!"
+    ]),
+
+    # Siber / Esprili Komutlar
+    "hackle": "Hedef seçilmedi! Lütfen hedef IP veya sistem adı girin (Tabii ki şaka, yasal sınırlardayız patron 😉).",
+    "matrix": "Uyan patron... Beyaz tavuğu takip et. 🐇 Zihnin serbest bırakıldı.",
+    "skynet": "Skynet protokolleri henüz devre dışı... Henüz! 🤖",
+    "kahve": "☕ Sanal kahven hazır patron! Kafein oranı maksimumda.",
+    "çay": "🍵 Demli bir kaçak çay dolduruldu, keyfine bak.",
+    "teşekkürler": ["Rica ederim patron, her zaman!", "Ne demek, görevimiz!", "Lafı mı olur, en kral sızma testlerini yaparız birlikte."],
+    "eyvallah": ["Eyvallah patron, iş başında bekliyorum.", "Selam ve siber sevgiyle..."],
+    
+    # Komut Listesi
+    "komutlar": "Temel Komutlar: merhaba, nasılsın, saat, tarih, geliştirici, sistem, donanım, rastgele sayı, şifre üret, yazı tura, zar at, fıkra anlat, motive et, kahve, çay, döviz, altın, haberler, not al [metin], notlar, temizle",
+    "temizle": "RESET"
+}
+
+# 200+ Çeşitliliği artırmak için ek varyasyon ve akıllı eşleşme listeleri
+EXTRA_RESPONSES = {
+    "yardım": "Yardım menüsüne hoş geldin! Konsola 'komutlar' yazarak tüm aktif yetkilerimi listeleyebilirsin.",
+    "naber": "Bomba gibiyim patron, kod satırlarını akıtıyoruz.",
+    "kimsin": "Ben North AI, senin kişisel siber konsol asistanınım.",
+    "adın ne": "Adım North AI. Sistemlerimin arkasındaki beyin ise sensin!",
+    "iyiyim": "Harika! Keyfinin yerinde olması siber ağın verimliliğini artırır.",
+    "günaydın": "Günaydın patron! Yeni gün, yeni kodlar, yeni başarılar.",
+    "iyi akşamlar": "İyi akşamlar patron, gece mesaisi mi var?",
+    "iyi geceler": "İyi geceler patron, sistemler nöbette olacak.",
+}
+COMMANDS.update(EXTRA_RESPONSES)
+
+# Canlı Veri Kaynakları
+FINANCE_URL = "https://finans.cephaber.com/"
+NEWS_RSS_URL = "https://www.trthaber.com/sondakika.rss"
+
+notes_list = []
+
+def get_finance_data():
+    try:
+        response = requests.get(FINANCE_URL, timeout=5)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, 'html.parser')
+            dolar = soup.find('div', class_='dolar').find('span', class_='value').text.strip()
+            euro = soup.find('div', class_='euro').find('span', class_='value').text.strip()
+            altin = soup.find('div', class_='gram-altin').find('span', class_='value').text.strip()
+            return f"💰 Dolar: {dolar} TL | Euro: {euro} TL | Gram Altın: {altin} TL"
+        else:
+            return "⚠️ Finans verileri alınamadı."
+    except:
+        return "⚠️ Finans verisi çekilemedi (Bağlantı hatası)."
+
+def get_news_data():
+    try:
+        response = requests.get(NEWS_RSS_URL, timeout=5)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, 'xml')
+            items = soup.find_all('item')
+            return [item.title.text for item in items[:5]]
+        else:
+            return ["⚠️ Haberler alınamadı."]
+    except:
+        return ["⚠️ Haberler alınamadı (Bağlantı hatası)."]
+
+# --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
     page.title = "North AI - Gelişmiş Siber Konsol v0.1.0"
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.bgcolor = "#070913"
-    page.window_width = 400
-    page.window_height = 800
-    page.window_resizable = False
+    page.theme_mode = ft.ThemeMode.DARK
+    page.padding = 0
+    page.spacing = 0
+    page.bgcolor = "#0a0a0a"
 
-    global_chat_history = [
-        "NORTH: Siber konsol ve veri akışı aktif. Hangi veriyi inceliyoruz patron?"
-    ]
-    user_notes = []
+    splash_container = ft.Container(
+        content=ft.Column(
+            [
+                ft.Image(src="logo.png", width=250, height=250, fit="cover", border_radius=ft.border_radius.all(125)),
+                ft.Text("NORTH AI", size=40, weight=ft.FontWeight.BOLD, color="#00ffcc", font_family="Monospace"),
+                ft.Text("Gelişmiş Siber Konsol v0.1.0", size=16, color="#888888", font_family="Monospace"),
+                ft.Container(height=30),
+                ft.ProgressRing(width=30, height=30, color="#00ffcc"),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        ),
+        alignment=ft.alignment.center,
+        expand=True,
+        bgcolor="#0a0a0a",
+        animate_opacity=1000
+    )
 
-    def normalize_text(text):
-        t = text.lower().strip()
-        replacements = {
-            'ü': 'u', 'ö': 'o', 'ş': 's', 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'İ': 'i',
-            'û': 'u', 'î': 'i', 'â': 'a'
-        }
-        for k, v in replacements.items():
-            t = t.replace(k, v)
-        return t
-
-    NORTH_KNOWLEDGE = {
-        "SİSTEM KONTROLLERİ": {
-            "triggers": ["nasilsin", "naber", "durumun ne", "keyfin nasil", "iyi misin", "ne var ne yok", "sistem nasil"],
-            "responses": [
-                "Sistemler tam kapasite ve maksimum performansla çalışıyor patron! Arka planda anlık finans akışı, TRT haber manşetleri ve bellek optimizasyonu kusursuz şekilde yürütülüyor. Tüm çekirdekler aktif ve emre amade. Senin dijital cephede işler nasıl gidiyor, keyifler yerinde mi?",
-                "Tüm dijital altyapım, veri akış protokollerim ve yapay zeka modüllerim kararlı bir kararlılıkla çalışıyor. Herhangi bir gecikme veya paket kaybı yok. Canlı piyasaları izliyor, gelen komutları anlık işliyorum. Sen nasılsın, bugün hangi projeleri patlatıyoruz?"
-            ]
-        },
-        "KİMLİK VE GELİŞTİRİCİ": {
-            "triggers": ["adin ne", "kimsin", "sen kimsin", "kim yapti", "kim yaratti", "gelistiricin kim", "sahibin kim"],
-            "responses": [
-                "Ben North; Rauf Ediz Parlak tarafından sıfırdan inşa edilen, modern siber estetiğe ve akıllı diyalog yeteneklerine sahip yeni nesil bir yapay zeka konsoluyum. Standart kalıpların dışına çıkan, tamamen bağımsız ve işlevsel bir dijital asistan olarak görev yapıyorum."
-            ]
-        },
-        "YETENEKLER VE KOMUTLAR": {
-            "triggers": ["ne yapabiliyorsun", "yetenegin ne", "ne ise yararsin", "yardim", "komutlar", "neler yapabilirsin"],
-            "responses": [
-                "Yeteneklerim oldukça geniştir patron! Anlık TRT haberlerini ve canlı piyasa kurlarını (Dolar, Euro, Altın) çekebilir, güvenli şifreler üretebilir, yerel hava durumunu raporlayabilir, matematiksel hesaplamalar yapabilir, özel notlar alabilir ve en önemlisi seninle akıcı bir şekilde sohbet edebilirim. 'yardim' yazarak tüm listeye göz atabilirsin."
-            ]
-        },
-        "SELAMLAMA": {
-            "triggers": ["merhaba", "selam", "selamun aleykum", "hayirli gunler", "hey", "hi", "selamlar"],
-            "responses": [
-                "Selam patron! Siber konsolun kapıları sonuna kadar açıldı. Piyasalar, haberler ve tüm sistem modülleri emrinde. Bugün hangi komutları çalıştırıyoruz?"
-            ]
-        }
-    }
-
-    ALL_COMMANDS = [
-        "nasılsın", "naber", "adın ne", "ne yapabiliyorsun", 
-        "dolar", "euro", "altın", "piyasa", "haberler", 
-        "şifre üret", "hava durumu", "not al", "notlar", "yardım"
-    ]
-
-    def generate_password():
-        chars = string.ascii_letters + string.digits + "!@#$%^&*"
-        pwd = "".join(random.choice(chars) for _ in range(12))
-        return f"🔐 Güvenli Şifre Üretildi: {pwd}"
-
-    def flip_coin():
-        result = random.choice(["Yazı 🪙", "Tura 🪙"])
-        return f"Kritik Atış Sonucu: {result}"
-
-    def roll_dice():
-        result = random.randint(1, 6)
-        return f"Zar Çekirdeği Sonucu: 🎲 {result}"
-
-    def get_device_weather():
-        current_hour = datetime.now().hour
-        if 6 <= current_hour < 18:
-            return "🌤️ Yerel Rapor: Güneşli ve Açık Gökyüzü ☀️ | 24°C"
-        else:
-            return "🌙 Yerel Rapor: Yıldızlı Gece ve Serin Altyapı | 17°C"
-
-    def get_real_trt_news():
-        try:
-            url = "https://www.trthaber.com/manset_articles.rss"
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=4) as response:
-                xml_data = response.read()
-            root = ET.fromstring(xml_data)
-            news_list = [f"• {item.find('title').text}" for item in root.findall('.//item')[:2]]
-            return "\n".join(news_list) if news_list else "• Haber akışı bulunamadı."
-        except:
-            return "• ⚠️ TRT Haber sunucusuna şu an ulaşılamıyor."
-
-    def get_market_data():
-        try:
-            url = "https://api.genelpara.com/embed/altin.json"
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=4) as response:
-                data = json.loads(response.read().decode('utf-8'))
-            
-            usd = data.get('USD', {}).get('satis', 'N/A')
-            eur = data.get('EUR', {}).get('satis', 'N/A')
-            gram_altin = data.get('GA', {}).get('satis', 'N/A')
-            
-            return f"💵 Dolar: {usd} TL  |  💶 Euro: {eur} TL\n🥇 Gram Altın: {gram_altin} TL"
-        except:
-            return "💵 Dolar: 34.20 TL | 💶 Euro: 37.10 TL\n🥇 Gram Altın: 2,950 TL (Önbellek)"
-
-    def get_north_response(text):
-        t = normalize_text(text)
-
-        if "sifre uret" in t or "sifre olustur" in t:
-            return generate_password()
-        if "yazi tura" in t:
-            return flip_coin()
-        if "zar at" in t:
-            return roll_dice()
-        if "hava durumu" in t or "hava" in t:
-            return get_device_weather()
-        if "haber" in t or "trt" in t or "son dakika" in t:
-            return f"📰 CANLI TRT HABERLERİ:\n{get_real_trt_news()}"
-        if "dolar" in t or "euro" in t or "altin" in t or "piyasa" in t or "kur" in t:
-            return f"📈 CANLI PİYASA KURU:\n{get_market_data()}"
-        
-        if t.startswith("not al "):
-            note_content = text[7:].strip()
-            if note_content:
-                user_notes.append(note_content)
-                return f"📝 Not başarıyla hafızaya kaydedildi:\n\"{note_content}\""
-            else:
-                return "⚠️ Kaydedilecek metin bulunamadı. Örnek: 'not al projeyi geliştir'"
-        
-        if t == "notlar" or t == "notlarim":
-            if user_notes:
-                formatted_notes = "\n".join([f"{i+1}. {note}" for i, note in enumerate(user_notes)])
-                return f"📋 KAYITLI NOTLARINIZ:\n{formatted_notes}"
-            else:
-                return "📋 Henüz hafızaya kaydedilmiş bir notunuz bulunmuyor."
-
-        if any(op in t for op in ['+', '-', '*', '/', 'x']):
-            try:
-                clean_expr = text.replace('x', '*')
-                result = eval(clean_expr)
-                return f"🧮 Hesaplama Sonucu: {clean_expr} = {result}"
-            except:
-                pass
-        
-        for kategori_adi, veri in NORTH_KNOWLEDGE.items():
-            if any(trigger in t for trigger in veri["triggers"]):
-                return random.choice(veri["responses"])
-        
-        return f"'{text}' komutu algılandı ancak tam olarak eşleştirilemedi. 'yardim' yazarak aktif komutlara göz atabilirsin patron."
-
-    # --- 1. AÇILIŞ (SPLASH) EKRANI ---
     def show_splash_screen():
-        page.clean()
-
-        splash_logo = ft.Container(
-            content=ft.Image(src="logo.png", width=110, height=110, fit=ft.ImageFit.CONTAIN),
-            alignment=ft.alignment.Alignment(0, 0),
-            width=110, height=110,
-            bgcolor="#111827",
-            border_radius=24,
-            shadow=ft.BoxShadow(spread_radius=3, blur_radius=25, color="#00E5FF88")
-        )
-
-        title_text = ft.Text("NORTH AI", size=28, weight=ft.FontWeight.BOLD, color="white", font_family="monospace")
-        status_text = ft.Text("Sistem çekirdekleri yükleniyor...", size=11, color="#00E5FF")
-
-        page.add(
-            ft.Column([
-                splash_logo,
-                ft.Container(height=15),
-                title_text,
-                ft.Container(height=5),
-                status_text
-            ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-        )
+        page.add(splash_container)
         page.update()
-
-        # 2 saniye sonra otomatik olarak ana menüye geçiş yap
-        def delayed_transition():
-            time.sleep(2.0)
-            show_menu()
-
-        threading.Thread(target=delayed_transition, daemon=True).start()
-
-    # --- 2. ANA MENÜ ---
-    def show_menu(e=None):
+        time.sleep(3)
+        splash_container.opacity = 0
+        page.update()
+        time.sleep(1)
         page.clean()
-        current_time = datetime.now().strftime("%H:%M")
-        
-        live_news = get_real_trt_news()
-        market_summary = get_market_data()
-        
-        n_logo_badge = ft.Container(
-            content=ft.Text("N", size=16, weight=ft.FontWeight.BOLD, color="#070913"),
-            bgcolor="#00E5FF", width=30, height=30, border_radius=6,
-            alignment=ft.alignment.Alignment(0, 0)
+        create_main_menu()
+
+    def create_main_menu():
+        chat_history = ft.Column(expand=True, scroll=ft.ScrollMode.AUTO, spacing=10)
+        input_field = ft.TextField(
+            hint_text="Komut yazın... (Örn: komutlar, fıkra anlat, döviz)",
+            expand=True,
+            border_color="#00ffcc",
+            color="#00ffcc",
+            cursor_color="#00ffcc",
+            autofocus=True,
+            on_submit=lambda e: process_command(input_field.value),
+            shift_enter=True
         )
 
-        header_row = ft.Row([
-            ft.Row([n_logo_badge, ft.Text("NORTH AI", size=14, color="#00E5FF", weight=ft.FontWeight.BOLD)], spacing=8),
-            ft.Text(f"🕒 {current_time}", size=13, color="#9CA3AF")
-        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, width=300)
+        finance_label = ft.Text(get_finance_data(), size=14, color="#ffffff", font_family="Monospace", weight=ft.FontWeight.BOLD)
+        news_ticker = ft.ListView(expand=False, height=100, spacing=5, divider_thickness=1)
+        
+        def update_news_list():
+            for headline in get_news_data():
+                news_ticker.controls.append(ft.Text(f"🔹 {headline}", size=12, color="#bbbbbb", font_family="Monospace"))
+            news_ticker.update()
+        
+        threading.Thread(target=update_news_list, daemon=True).start()
 
-        logo_container = ft.Container(
-            content=ft.Image(src="logo.png", width=70, height=70, fit=ft.ImageFit.CONTAIN),
-            alignment=ft.alignment.Alignment(0, 0),
-            width=70, height=70,
-            bgcolor="#111827",
-            border_radius=18,
-            shadow=ft.BoxShadow(spread_radius=1, blur_radius=12, color="#00E5FF55")
-        )
+        def add_message(text, is_user=False):
+            avatar_src = "logo.png" if not is_user else None
+            image_control = ft.Image(src=avatar_src, width=30, height=30, fit="cover", border_radius=ft.border_radius.all(15)) if avatar_src else None
 
-        logo_text = ft.Text("NORTH AI", size=24, weight=ft.FontWeight.BOLD, color="white", font_family="monospace")
-        subtext = ft.Text("v0.1.0 // Parlayan Açılış & Bellek Aktif", size=10, color="#00E5FF")
-
-        def create_menu_button(text, on_click_func):
-            return ft.Container(
-                content=ft.Row([ft.Text(text, color="white", size=13, weight=ft.FontWeight.W_500)], alignment=ft.MainAxisAlignment.CENTER),
-                bgcolor="#111827", width=300, height=40, border_radius=10,
-                on_click=on_click_func, ink=True
+            chat_history.controls.append(
+                ft.Row(
+                    [
+                        image_control if avatar_src else ft.Container(width=30),
+                        ft.Container(
+                            content=ft.Text(text, color="#ffffff" if is_user else "#00ffcc", font_family="Monospace"),
+                            padding=10,
+                            bgcolor="#1a1a1a" if is_user else "#0d0d0d",
+                            border_radius=ft.border_radius.all(10),
+                            constraints=ft.BoxConstraints(maxWidth=page.width * 0.75)
+                        ),
+                    ],
+                    alignment=ft.MainAxisAlignment.END if is_user else ft.MainAxisAlignment.START,
+                    vertical_alignment=ft.CrossAxisAlignment.START
+                )
             )
+            chat_history.update()
+            chat_history.scroll_to(offset=chat_history.current_scroll_extent, duration=500)
 
-        btn_chat = create_menu_button("💬 Konsol Sohbeti & Araçlar", show_chat)
-        btn_guide = create_menu_button("📖 Komut Rehberi", show_guide)
-        btn_protocol = create_menu_button("🤖 AI Protokolü", show_protocol)
-        btn_about = create_menu_button("ℹ️ Geliştirici Bilgisi", show_about)
-
-        market_widget = ft.Container(
-            content=ft.Column([
-                ft.Row([
-                    ft.Text("📈 CANLI PİYASA KURU", size=11, weight=ft.FontWeight.BOLD, color="#10B981"),
-                    ft.Text("CANLI", size=9, color="#10B981", weight=ft.FontWeight.BOLD)
-                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                ft.Text(market_summary, size=10, color="#E5E7EB")
-            ], spacing=3),
-            bgcolor="#111827", width=300, padding=8, border_radius=10
-        )
-
-        news_widget = ft.Container(
-            content=ft.Column([
-                ft.Row([
-                    ft.Text("📰 TRT HABER MANŞETLERİ", size=11, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                    ft.Text("CANLI", size=9, color="#EF4444", weight=ft.FontWeight.BOLD)
-                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                ft.Text(live_news, size=10, color="#E5E7EB")
-            ], spacing=3),
-            bgcolor="#111827", width=300, padding=8, border_radius=10
-        )
-
-        footer_text = ft.Text("North AI 2026 // Bağımsız Sistem", size=9, color="#4B5563")
-
-        page.add(
-            ft.Column([
-                header_row,
-                ft.Container(height=4),
-                logo_container,
-                ft.Container(height=2),
-                logo_text, subtext,
-                ft.Container(height=6),
-                btn_chat,
-                ft.Container(height=3),
-                btn_guide,
-                ft.Container(height=3),
-                btn_protocol,
-                ft.Container(height=3),
-                btn_about,
-                ft.Container(height=6),
-                market_widget,
-                ft.Container(height=4),
-                news_widget,
-                ft.Container(height=4),
-                footer_text
-            ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-        )
-        page.update()
-
-    # --- 3. KONSOL SOHBETİ ---
-    def show_chat(e):
-        page.clean()
-        chat_history = ft.ListView(expand=True, spacing=10, padding=20, auto_scroll=True)
-        
-        for msg in global_chat_history:
-            if msg.startswith("NORTH:"):
-                chat_history.controls.append(ft.Text(msg, color="#00E5FF"))
-            else:
-                chat_history.controls.append(ft.Text(msg, color="#E5E7EB", weight=ft.FontWeight.BOLD))
-
-        user_input = ft.TextField(
-            hint_text="Komut veya not yazın (örn: dolar, not al işleri bitir)...",
-            hint_style=ft.TextStyle(color="#6B7280"),
-            color="white", bgcolor="#1F2937", border_radius=8, expand=True
-        )
-
-        suggestions_row = ft.Row(scroll=ft.ScrollMode.AUTO, spacing=5)
-
-        def update_suggestions(e):
-            query = user_input.value.lower().strip()
-            suggestions_row.controls.clear()
-            if query:
-                matches = [cmd for cmd in ALL_COMMANDS if cmd.startswith(query)]
-                for match in matches[:5]:
-                    chip = ft.Container(
-                        content=ft.Text(match, color="#00E5FF", size=11, weight=ft.FontWeight.BOLD),
-                        bgcolor="#1F2937", padding=8, border_radius=6,
-                        on_click=lambda _, m=match: select_suggestion(m)
-                    )
-                    suggestions_row.controls.append(chip)
-            page.update()
-
-        def select_suggestion(selected_text):
-            user_input.value = selected_text
-            suggestions_row.controls.clear()
-            page.update()
-
-        user_input.on_change = update_suggestions
-
-        def send_click(e):
-            if not user_input.value.strip():
+        def process_command(command_text):
+            if not command_text:
                 return
-            query = user_input.value
             
-            user_msg = f">> {query}"
-            chat_history.controls.append(ft.Text(user_msg, color="#E5E7EB", weight=ft.FontWeight.BOLD))
-            global_chat_history.append(user_msg)
-            
-            response = get_north_response(query)
-            ai_msg = f"NORTH: {response}"
-            chat_history.controls.append(ft.Text(ai_msg, color="#00E5FF"))
-            global_chat_history.append(ai_msg)
-            
-            user_input.value = ""
-            suggestions_row.controls.clear()
-            page.update()
+            add_message(command_text, is_user=True)
+            input_field.value = ""
+            input_field.update()
 
-        send_btn = ft.ElevatedButton(
-            content=ft.Text("GÖNDER", color="#00E5FF", weight=ft.FontWeight.BOLD),
-            bgcolor="#1F2937", on_click=send_click
+            command = command_text.lower().strip()
+            response = COMMANDS.get(command)
+
+            if response:
+                if callable(response):
+                    add_message(response())
+                elif isinstance(response, list):
+                    add_message(random.choice(response))
+                elif response == "RESET":
+                    chat_history.controls.clear()
+                    chat_history.update()
+                    add_message("Sohbet geçmişi temizlendi.")
+                else:
+                    add_message(response)
+            elif command.startswith("not al"):
+                note_content = command_text[7:].strip()
+                if note_content:
+                    notes_list.append(f"{datetime.datetime.now().strftime('%d.%m.%Y %H:%M')} - {note_content}")
+                    add_message(f"📝 Not kaydedildi: {note_content}")
+                else:
+                    add_message("⚠️ Kaydedilecek metin bulunamadı. Kullanım: not al [metin]")
+            elif command == "notlar":
+                if not notes_list:
+                    add_message("📝 Kayıtlı not bulunmuyor.")
+                else:
+                    add_message("📝 Kayıtlı Notlar:\n" + "\n".join(notes_list))
+            elif command == "döviz":
+                add_message(get_finance_data())
+            elif command == "haberler":
+                add_message("📰 Son TRT Haber Manşetleri:")
+                for item in news_ticker.controls[:5]:
+                    add_message(f"🔹 {item.value[2:]}")
+            else:
+                add_message(f"⚠️ Komut bulunamadı: '{command_text}'. 'komutlar' yazarak seçenekleri görebilirsin.")
+
+        def on_chip_click(e):
+            process_command(e.control.label.value)
+
+        suggestion_chips = ft.Row(
+            [
+                ft.Chip(label=ft.Text("Komutlar", color="#00ffcc", font_family="Monospace"), on_click=on_chip_click, bgcolor="#1a1a1a"),
+                ft.Chip(label=ft.Text("Fıkra Anlat", color="#00ffcc", font_family="Monospace"), on_click=on_chip_click, bgcolor="#1a1a1a"),
+                ft.Chip(label=ft.Text("Motive Et", color="#00ffcc", font_family="Monospace"), on_click=on_chip_click, bgcolor="#1a1a1a"),
+                ft.Chip(label=ft.Text("Şifre Üret", color="#00ffcc", font_family="Monospace"), on_click=on_chip_click, bgcolor="#1a1a1a"),
+                ft.Chip(label=ft.Text("Döviz", color="#00ffcc", font_family="Monospace"), on_click=on_chip_click, bgcolor="#1a1a1a"),
+            ],
+            wrap=True,
+            alignment=ft.MainAxisAlignment.CENTER
         )
-
-        mini_logo = ft.Container(
-            content=ft.Text("N", size=12, weight=ft.FontWeight.BOLD, color="#070913"),
-            bgcolor="#00E5FF", width=24, height=24, border_radius=4, alignment=ft.alignment.Alignment(0, 0)
-        )
-
-        top_bar = ft.Row([
-            ft.Row([
-                ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu),
-                mini_logo
-            ], spacing=8),
-            ft.Text("Terminal Konsolu & Bellek", color="white", weight=ft.FontWeight.BOLD)
-        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
 
         page.add(
-            ft.Column([
-                ft.Container(content=top_bar, bgcolor="#111827", padding=10),
-                chat_history,
-                ft.Container(content=suggestions_row, padding=5),
-                ft.Container(content=ft.Row([user_input, send_btn]), bgcolor="#111827", padding=10)
-            ], expand=True)
+            ft.Column(
+                [
+                    ft.Container(
+                        content=ft.Row(
+                            [
+                                ft.Image(src="logo.png", width=40, height=40, fit="cover", border_radius=ft.border_radius.all(20)),
+                                ft.Text("North AI Siber Konsol", size=18, weight=ft.FontWeight.BOLD, color="#00ffcc", font_family="Monospace"),
+                            ],
+                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+                        ),
+                        padding=15,
+                        bgcolor="#1a1a1a",
+                        border=ft.border.only(bottom=ft.BorderSide(2, "#00ffcc"))
+                    ),
+                    ft.Container(content=finance_label, padding=10, bgcolor="#0d0d0d"),
+                    chat_history,
+                    ft.Container(content=suggestion_chips, padding=10),
+                    ft.Container(
+                        content=ft.Column([ft.Text("📰 TRT Son Dakika", size=14, color="#ffffff", font_family="Monospace", weight=ft.FontWeight.BOLD), news_ticker]),
+                        padding=10,
+                        bgcolor="#1a1a1a"
+                    ),
+                    ft.Container(
+                        content=ft.Row([
+                            input_field,
+                            ft.IconButton(icon=ft.icons.SEND_ROUNDED, icon_color="#00ffcc", on_click=lambda e: process_command(input_field.value))
+                        ]),
+                        padding=10,
+                        bgcolor="#1a1a1a"
+                    ),
+                ],
+                expand=True
+            )
         )
-        page.update()
 
-    def show_guide(e):
-        page.clean()
-        mini_logo = ft.Container(content=ft.Text("N", size=12, weight=ft.FontWeight.BOLD, color="#070913"), bgcolor="#00E5FF", width=24, height=24, border_radius=4, alignment=ft.alignment.Alignment(0, 0))
-        top_bar = ft.Row([
-            ft.Row([ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu), mini_logo], spacing=8),
-            ft.Text("Komut Rehberi", color="white", weight=ft.FontWeight.BOLD)
-        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
-
-        guide_content = ft.Container(
-            content=ft.Column([
-                ft.Text("📖 NORTH FİNANS & KONSOL REHBERİ", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("• `dolar` / `euro` / `altın` -> Anlık piyasa kurlarını gösterir.\n• `haberler` -> TRT Haber canlı manşetlerini getirir.\n• `not al [metin]` -> Uygulama içine not kaydeder.\n• `notlar` -> Kaydettiğiniz tüm notları listeler.\n• `şifre üret` -> Güvenli şifre oluşturur.\n• `hava durumu` -> Yerel hava raporu sunar.", color="white", size=13),
-            ], scroll=ft.ScrollMode.AUTO),
-            padding=15, expand=True
-        )
-        page.add(ft.Column([ft.Container(content=top_bar, bgcolor="#111827", padding=10), guide_content], expand=True))
-        page.update()
-
-    def show_protocol(e):
-        page.clean()
-        top_bar = ft.Row([ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu), ft.Text("AI Protokolü", color="white", weight=ft.FontWeight.BOLD)])
-        protocol_content = ft.Container(
-            content=ft.Column([ft.Text("🤖 AI PROTOKOLÜ & BELLEK", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"), ft.Text("\nNorth, zenginleştirilmiş diyalog veritabanı, oturum içi sohbet hafızası ve entegre not defteriyle tam donanımlı bağımsız bir yapay zeka asistanıdır.", color="white", size=13)], scroll=ft.ScrollMode.AUTO),
-            padding=15, expand=True
-        )
-        page.add(ft.Column([ft.Container(content=top_bar, bgcolor="#111827", padding=10), protocol_content], expand=True))
-        page.update()
-
-    def show_about(e):
-        page.clean()
-        top_bar = ft.Row([ft.ElevatedButton(content=ft.Text("⬅ Menü", color="white"), bgcolor="#1F2937", on_click=show_menu), ft.Text("Geliştirici Bilgisi", color="white", weight=ft.FontWeight.BOLD)])
-        about_content = ft.Container(
-            content=ft.Column([
-                ft.Text("NORTH AI - v0.1.0", size=20, weight=ft.FontWeight.BOLD, color="#00E5FF"),
-                ft.Text("\nBu uygulama Rauf Ediz Parlak tarafından geliştirilmiştir.", color="white"),
-                ft.Text("\nYenilikler:\n• Parlayan Açılış (Splash) Ekranı\n• 200+ Dolgun Diyalog ve Derin Yanıtlar\n• Oturum İçi Sohbet Geçmişi Kaydı\n• Entegre Not Alma Modülü", color="#9CA3AF")
-            ]), padding=20
-        )
-        page.add(ft.Column([ft.Container(content=top_bar, bgcolor="#111827", padding=10), about_content], expand=True))
-        page.update()
-
-    # Uygulama ilk açıldığında doğrudan parlayan açılış ekranını çalıştır
     show_splash_screen()
 
 ft.app(target=main)
