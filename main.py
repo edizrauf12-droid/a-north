@@ -117,8 +117,8 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.3 (Stabil Sürüm)",
-    "hakkında": "North AI v0.6.3 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.4 (Stabil Sürüm)",
+    "hakkında": "North AI v0.6.4 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
     "sistem": "Bilinç Seviyesi: %95.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
@@ -184,7 +184,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.6.3"
+    page.title = "North AI - Stabil Sürüm v0.6.4"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -193,7 +193,7 @@ def main(page: ft.Page):
     splash_container = ft.Container(
         content=ft.Column(
             [
-                ft.Image(src="logo.png", width=90, height=90, fit=ft.ImageFit.CONTAIN),
+                ft.Image(src="logo.png", width=90, height=90),
                 ft.Container(height=10),
                 ft.Text("NORTH AI", size=36, weight=ft.FontWeight.BOLD, color="#ff5555"),
                 ft.Text("Bilinç Protokolü Yükleniyor...", size=15, color="#9aa0a6"),
@@ -370,7 +370,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.3", size=12, color="#9aa0a6")
+                                ft.Text("v0.6.4", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
