@@ -49,7 +49,7 @@ def main(page: ft.Page):
         "YETENEKLER VE KOMUTLAR": {
             "triggers": ["ne yapabiliyorsun", "yetenegin ne", "ne ise yararsin", "yardim", "komutlar", "neler yapabilirsin"],
             "responses": [
-                "Şifre üretebilir, yazı-tura atabilir, sayı tahmin oyunu oynayabilir, matematik hesaplayabilir ve sohbet edebilirim!",
+                "Şifre üretebilir, yazı-tura atabilir, hava durumunu öğrenebilir, matematik hesaplayabilir ve sohbet edebilirim!",
                 "Konsol üzerinden araçları kullanabilir, fıkra dinleyebilir veya rehbere göz atabilirsin.",
                 "Ana menüden 'Rehber'e bakarak tüm yeteneklerimi detaylıca görebilirsin.",
                 "Matematiksel işlemler yapabilir, şifreler oluşturabilir ve benimle dilediğin gibi sohbet edebilirsin.",
@@ -185,10 +185,8 @@ def main(page: ft.Page):
 
     def show_menu(e=None):
         page.clean()
-        
         current_time = datetime.now().strftime("%H:%M")
         
-        # Güvenli alignment tanımlaması (modül hatasını önlemek için doğrudan string veya alignment.center yerine alignment nesnesi)
         n_logo_badge = ft.Container(
             content=ft.Text("N", size=16, weight=ft.FontWeight.BOLD, color="#0B0F19"),
             bgcolor="#00E5FF", width=30, height=30, border_radius=6,
@@ -262,9 +260,10 @@ def main(page: ft.Page):
             if query:
                 matches = [cmd for cmd in ALL_COMMANDS if cmd.startswith(query)]
                 for match in matches[:5]:
+                    # Alt modül padding hatasını önlemek için doğrudan Container içi margin/padding değerleri
                     chip = ft.Container(
                         content=ft.Text(match, color="#00E5FF", size=11, weight=ft.FontWeight.BOLD),
-                        bgcolor="#1F2937", padding=ft.padding.symmetric(horizontal=10, vertical=5),
+                        bgcolor="#1F2937", padding=8,
                         border_radius=6,
                         on_click=lambda _, m=match: select_suggestion(m)
                     )
