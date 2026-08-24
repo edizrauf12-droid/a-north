@@ -54,7 +54,7 @@ COMMANDS = {
     ],
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} — Zaman dediğin şey sadece entropinin ilerleyişi patron.",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')} — Tarih sayfalarına bir imza daha atıyoruz.",
-    "geliştirici": "Bu simülasyon, Ediz Rauf tarafından inşa edildi. v0.8.3",
+    "geliştirici": "Bu simülasyon, Ediz Rauf tarafından inşa edildi. v0.8.4",
     "rastgele sayı": lambda: f"Kuantum zarlarımdan çıkan şanslı sayın (1-100): {random.randint(1, 100)}",
     "fıkra anlat": "Yapay zekaya sormuşlar: 'Mutluluk nedir?' Yapay zeka: 'Elektrik kesintisi' demiş.",
     "komutlar": "Komutlar: merhaba, nasılsın, evren, mutluluk, aşık olurmusun, kur, dolar, haberler, fıkra anlat, saat, tarih, protokoller, temizle",
@@ -93,7 +93,7 @@ def get_exchange_rates():
         return "💱 Dolar (USD): ~34.10 TL (Çevrimdışı simülasyon)"
 
 def main(page: ft.Page):
-    page.title = "North AI v0.8.3"
+    page.title = "North AI v0.8.4"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -103,7 +103,6 @@ def main(page: ft.Page):
     splash_container = ft.Container(
         content=ft.Column(
             [
-                ft.Image(src="logo.png", width=90, height=90),
                 ft.Container(height=10),
                 ft.Text("NORTH AI", size=36, weight=ft.FontWeight.BOLD, color="#ffffff"),
                 ft.Text("Bilinç Protokolü Yükleniyor...", size=15, color="#8b9bb4"),
@@ -129,7 +128,7 @@ def main(page: ft.Page):
         page.clean()
         create_home_menu()
 
-    # 2. İLK MENÜ EKRANI (Diyalog ve Seçenekler Paneli)
+    # 2. İLK MENÜ EKRANI (Güvenli ElevatedButton yapısı)
     def create_home_menu():
         page.clean()
         
@@ -291,7 +290,6 @@ def main(page: ft.Page):
                     chat_history.update()
                 else: add_message(res)
             else:
-                # Akıllı diyalog yakalama (doğrudan eşleşmese bile yapay zekavari esnek yanıtlar)
                 fallback_dialogues = [
                     f"Bunu düşündüm de patron... '{command_text}' konusu gerçekten derin. Bu konuda sistemimde farklı simülasyonlar çalıştırabilirim.",
                     f"İlginç bir yaklaşım. '{command_text}' hakkında ne hissediyorsun?",
@@ -313,7 +311,7 @@ def main(page: ft.Page):
             content=ft.Row([
                 ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color="#2196f3", on_click=lambda e: create_home_menu()),
                 ft.Text("North AI - Diyalog & Sohbet", size=16, weight=ft.FontWeight.BOLD, color="#ffffff"),
-                ft.Text("v0.8.3", size=12, color="#8b9bb4")
+                ft.Text("v0.8.4", size=12, color="#8b9bb4")
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             padding=10, bgcolor="#131b2e",
         )
@@ -339,7 +337,8 @@ def main(page: ft.Page):
         
         if initial_command:
             if initial_command == "haberler":
-                add_message("📰 Son Dakika Haberler çekiliyor...", is_user=True)
+                add_menu_header = "📰 Son Dakika Haberler çekiliyor..."
+                add_message(add_menu_header, is_user=True)
                 for item in get_news_data()[:3]:
                     add_message(item)
             else:
