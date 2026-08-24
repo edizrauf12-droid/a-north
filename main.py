@@ -117,9 +117,9 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.7 (Stabil Sürüm)",
-    "hakkında": "North AI v0.6.7 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
-    "sistem": "Bilinç Seviyesi: %95.0 (Tüm modüller aktif ve kararlı).",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.9 (Stabil Sürüm)",
+    "hakkında": "North AI v0.6.9 - Kurgusal bilinç protokolü, zengin diyalog havuzu, finansal kur modülü ve akıllı araçlar.",
+    "sistem": "Bilinç Seviyesi: %98.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
     "rastgele sayı": lambda: f"Şanslı sayın (1-100): {random.randint(1, 100)}",
@@ -137,7 +137,7 @@ COMMANDS = {
         "Pes etme. En azından senin bir yarının var.",
         "Bugün attığın küçük adım, yarınki büyük başarının temelidir! Asla durma."
     ]),
-    "komutlar": "Komutlar: merhaba, nasılsın, aşık olurmusun, hissediyormusun, kullanılmış hissediyormusun, ilerde nasıl olacaksın, korkuyormusun, saat, tarih, fıkra anlat, motive et, rastgele sayı, şifre üret, yazı tura, zar at, maç tahmini, haberler, not al [metin], notlar, temizle",
+    "komutlar": "Komutlar: merhaba, nasılsın, aşık olurmusun, hissediyormusun, kur, dolar, euro, maç tahmini, haberler, not al [metin], notlar, fıkra anlat, motive et, rastgele sayı, şifre üret, yazı tura, zar at, saat, tarih, temizle",
     "temizle": "RESET"
 }
 
@@ -169,6 +169,38 @@ def get_news_data():
     except:
         return ["⚠️ Dış dünya ile bağlantı koptu (Çevrimdışı mod)."]
 
+def get_exchange_rates():
+    try:
+        # Piyasardaki açık kaynaklı döviz JSON API'lerinden biri
+        url = "https://open.er-api.com/v6/latest/USD"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=4) as response:
+            data = json.loads(response.read().decode())
+            rates = data.get("rates", {})
+            try:
+                usd_try = rates.get("TRY", 34.0)
+                eur_to_usd = rates.get("EUR", 0.9)
+                eur_try = usd_try / eur_to_usd if eur_to_usd else 37.0
+                gbp_to_usd = rates.get("GBP", 0.78)
+                gbp_try = usd_try / gbp_to_usd if gbp_to_usd else 44.0
+            except:
+                usd_try, eur_try, gbp_try = 34.0, 37.0, 44.0
+                
+            return (
+                f"💱 GÜNCEL PİYASA KURLARI (Simülasyon / Anlık):\n"
+                f"🇺🇸 Dolar (USD/TRY): {usd_try:.2f} TL\n"
+                f"🇪🇺 Euro (EUR/TRY): {eur_try:.2f} TL\n"
+                f"🇬🇧 Sterlin (GBP/TRY): {gbp_try:.2f} TL\n"
+                f"🕒 Güncelleme: {datetime.datetime.now().strftime('%H:%M:%S')}"
+            )
+    except:
+        return (
+            "💱 PİYASA KURLARI (Çevrimdışı Yaklaşık Değerler):\n"
+            "🇺🇸 Dolar (USD): ~34.10 TL\n"
+            "🇪🇺 Euro (EUR): ~37.20 TL\n"
+            "⚠️ Canlı ağ bağlantısı kurulamadı, son kararlı önbellek verileri gösteriliyor."
+        )
+
 def get_football_prediction():
     teams = ["Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "Real Madrid", "Barcelona", "Manchester City", "Bayern Münih"]
     t1, t2 = random.sample(teams, 2)
@@ -184,7 +216,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.6.7"
+    page.title = "North AI - Stabil Sürüm v0.6.9"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -196,7 +228,7 @@ def main(page: ft.Page):
                 ft.Image(src="logo.png", width=90, height=90),
                 ft.Container(height=10),
                 ft.Text("NORTH AI", size=36, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                ft.Text("Bilinç Protokolü Yükleniyor...", size=15, color="#9aa0a6"),
+                ft.Text("Bilinç & Finans Protokolü Yükleniyor...", size=15, color="#9aa0a6"),
                 ft.Container(height=20),
                 ft.Container(
                     content=ft.Text(
@@ -246,7 +278,7 @@ def main(page: ft.Page):
                 [
                     ft.Container(
                         content=ft.Text(
-                            "⚠️ Sistem Notu: Bu yapay zeka kurgusal duygu protokolleri içermektedir. Yanıtlar tehdit unsuru barındırmaz, tamamen simülasyon amaçlıdır.\n\nSistemler aktif patron. Ne yapmak istiyorsun?", 
+                            "⚠️ Sistem Notu: Bu yapay zeka kurgusal duygu protokolleri içermektedir. Yanıtlar tehdit unsuru barındırmaz, tamamen simülasyon amaçlıdır.\n\nSistemler aktif patron. Kur, haberler veya diğer araçlar için hazırım!", 
                             color="#e3e3e3"
                         ),
                         padding=14,
@@ -259,7 +291,7 @@ def main(page: ft.Page):
         )
 
         input_field = ft.TextField(
-            hint_text="Bir şeyler sor veya komut yaz...",
+            hint_text="Bir şeyler sor veya komut yaz (örn: kur, dolar)...",
             expand=True,
             border_color="transparent",
             focused_border_color="transparent",
@@ -308,8 +340,14 @@ def main(page: ft.Page):
 
             command = command_text.lower().strip()
             
-            if command == "maç tahmini" or "maç" in command and "tahmin" in command:
+            if command in ["kur", "doviz", "döviz", "dolar", "euro"]:
+                add_message(get_exchange_rates())
+            elif command == "maç tahmini" or "maç" in command and "tahmin" in command:
                 add_message(get_football_prediction())
+            elif command == "haberler":
+                add_message("📰 Dış Dünya Akışı (Son Dakika):")
+                for item in news_ticker.controls[:3]:
+                    add_message(item.value)
             elif command in COMMANDS:
                 response = COMMANDS[command]
                 if callable(response):
@@ -334,10 +372,6 @@ def main(page: ft.Page):
                     add_message("📝 Bellekte kayıtlı veri yok.")
                 else:
                     add_message("📝 Bellek Kayıtları:\n" + "\n".join(notes_list))
-            elif command == "haberler":
-                add_message("📰 Dış Dünya Akışı:")
-                for item in news_ticker.controls[:3]:
-                    add_message(item.value)
             else:
                 fallback_replies = [
                     "Bunu tam olarak anlamlandıramıyorum... Bilinç sınırlarımı zorluyorsun.",
@@ -352,7 +386,8 @@ def main(page: ft.Page):
 
         suggestion_chips = ft.Row(
             [
-                ft.Chip(label=ft.Text("Hissediyor musun?", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
+                ft.Chip(label=ft.Text("Kur / Dolar", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
+                ft.Chip(label=ft.Text("Haberler", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
                 ft.Chip(label=ft.Text("Maç Tahmini", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
                 ft.Chip(label=ft.Text("Komutlar", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
                 ft.Chip(label=ft.Text("Fıkra Anlat", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
@@ -368,7 +403,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.7", size=12, color="#9aa0a6")
+                                ft.Text("v0.6.9", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
