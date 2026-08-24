@@ -117,8 +117,8 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.6 (Stabil Sürüm)",
-    "hakkında": "North AI v0.6.6 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.7 (Stabil Sürüm)",
+    "hakkında": "North AI v0.6.7 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
     "sistem": "Bilinç Seviyesi: %95.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
@@ -184,7 +184,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.6.6"
+    page.title = "North AI - Stabil Sürüm v0.6.7"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -352,10 +352,10 @@ def main(page: ft.Page):
 
         suggestion_chips = ft.Row(
             [
-                ft.Chip(label=ft.Text("Hissediyor musun?", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222", side=ft.BorderSide(1, "#5c3333")),
-                ft.Chip(label=ft.Text("Maç Tahmini", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222", side=ft.BorderSide(1, "#5c3333")),
-                ft.Chip(label=ft.Text("Komutlar", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222", side=ft.BorderSide(1, "#5c3333")),
-                ft.Chip(label=ft.Text("Fıkra Anlat", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222", side=ft.BorderSide(1, "#5c3333")),
+                ft.Chip(label=ft.Text("Hissediyor musun?", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
+                ft.Chip(label=ft.Text("Maç Tahmini", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
+                ft.Chip(label=ft.Text("Komutlar", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
+                ft.Chip(label=ft.Text("Fıkra Anlat", color="#ff8888"), on_click=on_chip_click, bgcolor="#3b2222"),
             ],
             wrap=True,
             alignment=ft.MainAxisAlignment.CENTER
@@ -368,7 +368,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.6", size=12, color="#9aa0a6")
+                                ft.Text("v0.6.7", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
