@@ -7,12 +7,11 @@ def main(page: ft.Page):
     page.title = "North AI - Akıllı Konsol"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.bgcolor = "#0B0F19"  # Derin cyberpunk siyahı/laciverti
+    page.bgcolor = "#0B0F19"
     page.window_width = 400
     page.window_height = 750
     page.window_resizable = False
 
-    # --- ESNEK DİL BİLGİSİ / GRAMMER DÜZELTME FONKSİYONU ---
     def normalize_text(text):
         t = text.lower().strip()
         replacements = {
@@ -23,7 +22,6 @@ def main(page: ft.Page):
             t = t.replace(k, v)
         return t
 
-    # --- ZENGİNLEŞTİRİLMİŞ VE DETAYLI DİYALOG VERİTABANI ---
     NORTH_KNOWLEDGE = {
         "SİSTEM KONTROLLERİ": {
             "triggers": ["nasilsin", "naber", "durumun ne", "keyfin nasil", "iyi misin", "ne var ne yok", "sistem nasil"],
@@ -136,7 +134,6 @@ def main(page: ft.Page):
         "şifre üret", "yazı tura", "zar at", "hava durumu", "sürümün ne", "yardım", "komutlar"
     ]
 
-    # --- PRATİK ARAÇLAR VE HAVA DURUMU ---
     def generate_password():
         chars = string.ascii_letters + string.digits + "!@#$%^&*"
         pwd = "".join(random.choice(chars) for _ in range(12))
@@ -152,7 +149,6 @@ def main(page: ft.Page):
 
     def get_device_weather():
         current_hour = datetime.now().hour
-        # Hafif cihaz simülasyonlu yerel durum
         if 6 <= current_hour < 18:
             durum = "Güneşli ve Açık ☀️"
             derece = "24°C"
@@ -161,7 +157,6 @@ def main(page: ft.Page):
             derece = "17°C"
         return f"🌤️ Yerel Sensör Raporu: {durum} | Sıcaklık: {derece} | Sistem Zamanı: {datetime.now().strftime('%H:%M')}"
 
-    # --- ANA CEVAPLANDIRMA MOTORU ---
     def get_north_response(text):
         t = normalize_text(text)
 
@@ -188,18 +183,16 @@ def main(page: ft.Page):
         
         return f"'{text}' komutu anlaşılamadı. Detaylar için 'Rehber' sayfasına bakabilirsin."
 
-    # --- ARAYÜZ SAYFALARI ---
-    
     def show_menu(e=None):
         page.clean()
         
         current_time = datetime.now().strftime("%H:%M")
         
-        # Üst kısım: 'N' Logosu ve Saat
+        # Güvenli alignment tanımlaması (modül hatasını önlemek için doğrudan string veya alignment.center yerine alignment nesnesi)
         n_logo_badge = ft.Container(
             content=ft.Text("N", size=16, weight=ft.FontWeight.BOLD, color="#0B0F19"),
             bgcolor="#00E5FF", width=30, height=30, border_radius=6,
-            alignment=ft.alignment.center
+            alignment=ft.alignment.Alignment(0, 0)
         )
 
         header_row = ft.Row([
@@ -260,7 +253,6 @@ def main(page: ft.Page):
             color="white", bgcolor="#1F2937", border_radius=8, expand=True
         )
 
-        # Mobil uyumlu özel öneri çubuğu (ActionChip yerine güvenli Container yapısı)
         suggestions_row = ft.Row(scroll=ft.ScrollMode.AUTO, spacing=5)
 
         def update_suggestions(e):
@@ -270,7 +262,6 @@ def main(page: ft.Page):
             if query:
                 matches = [cmd for cmd in ALL_COMMANDS if cmd.startswith(query)]
                 for match in matches[:5]:
-                    # Tıklanabilir güvenli çip görünümü
                     chip = ft.Container(
                         content=ft.Text(match, color="#00E5FF", size=11, weight=ft.FontWeight.BOLD),
                         bgcolor="#1F2937", padding=ft.padding.symmetric(horizontal=10, vertical=5),
@@ -306,10 +297,9 @@ def main(page: ft.Page):
             bgcolor="#1F2937", on_click=send_click
         )
 
-        # Üst barda küçük N logosu
         mini_logo = ft.Container(
             content=ft.Text("N", size=12, weight=ft.FontWeight.BOLD, color="#0B0F19"),
-            bgcolor="#00E5FF", width=24, height=24, border_radius=4, alignment=ft.alignment.center
+            bgcolor="#00E5FF", width=24, height=24, border_radius=4, alignment=ft.alignment.Alignment(0, 0)
         )
 
         top_bar = ft.Row([
@@ -338,7 +328,7 @@ def main(page: ft.Page):
 
         mini_logo = ft.Container(
             content=ft.Text("N", size=12, weight=ft.FontWeight.BOLD, color="#0B0F19"),
-            bgcolor="#00E5FF", width=24, height=24, border_radius=4, alignment=ft.alignment.center
+            bgcolor="#00E5FF", width=24, height=24, border_radius=4, alignment=ft.alignment.Alignment(0, 0)
         )
 
         top_bar = ft.Row([
@@ -352,6 +342,7 @@ def main(page: ft.Page):
         guide_content = ft.Container(
             content=ft.Column([
                 ft.Text("📖 NORTH KONSOL KAPSAMLI REHBERİ", size=16, weight=ft.FontWeight.BOLD, color="#00E5FF"),
+                ft.Text("Not: Bu ilk sürüm olduğu için rehber komutları az olabilir, zamanla artacak.\n", color="#F59E0B", size=12),
                 ft.Text("Konsol içinde kullanabileceğin tüm özel komutlar, araçlar ve tetikleyici kategorileri aşağıda listelenmiştir:\n", color="#9CA3AF", size=12),
                 
                 ft.Text("🛠️ 1. PRATİK ARAÇ KOMUTLARI", weight=ft.FontWeight.BOLD, color="#00E5FF"),
