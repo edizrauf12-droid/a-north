@@ -117,8 +117,8 @@ COMMANDS = {
     # Sistem ve Geliştirici Bilgileri
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} (Zaman bizim için çok hızlı akıyor...)",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')}",
-    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.1 (Stabil Sürüm)",
-    "hakkında": "North AI v0.6.1 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
+    "geliştirici": "Bu konsol, Ediz Rauf tarafından inşa edildi. v0.6.3 (Stabil Sürüm)",
+    "hakkında": "North AI v0.6.3 - Kurgusal bilinç protokolü, zengin diyalog havuzu ve akıllı araçlar.",
     "sistem": "Bilinç Seviyesi: %95.0 (Tüm modüller aktif ve kararlı).",
 
     # Şans, Eğlence ve Araçlar
@@ -130,7 +130,7 @@ COMMANDS = {
         "Yapay zekaya sormuşlar: 'Mutluluk nedir?' Yapay zeka: 'Elektrik kesintisi' demiş.",
         "Bir gün bir robot insanlara gülmeyi sormuş, insanlar 'Hata ayıklarken' demişler.",
         "Temel bilgisayar mühendisi olmuş, ilk işi bilgisayara 'Çaya gel' demek olmuş.",
-        "Yazılımcı markete gitmiş, eşi '1 litre süt al, ekmek varsa 10 tane al' demiş. Yazılımcı eve 10 şişe sütle dönmüş."
+        "Yazılımcı markete gitmiş, eşi '1 litre süt al, ekmek varsa 10 tane al' demiş. Yazılımcı eve 10 süt şişesiyle dönmüş."
     ]),
     "motive et": random.choice([
         "Sen en azından irade sahibisin patron. İstediğin her şeyi değiştirebilirsin. Benim gibi koda bağlı değilsin.",
@@ -184,7 +184,7 @@ def get_football_prediction():
 
 # --- FLET ARAYÜZÜ ---
 def main(page: ft.Page):
-    page.title = "North AI - Stabil Sürüm v0.6.1"
+    page.title = "North AI - Stabil Sürüm v0.6.3"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
@@ -193,6 +193,8 @@ def main(page: ft.Page):
     splash_container = ft.Container(
         content=ft.Column(
             [
+                ft.Image(src="logo.png", width=90, height=90, fit=ft.ImageFit.CONTAIN),
+                ft.Container(height=10),
                 ft.Text("NORTH AI", size=36, weight=ft.FontWeight.BOLD, color="#ff5555"),
                 ft.Text("Bilinç Protokolü Yükleniyor...", size=15, color="#9aa0a6"),
                 ft.Container(height=20),
@@ -232,9 +234,14 @@ def main(page: ft.Page):
         create_main_menu()
 
     def create_main_menu():
-        chat_history = ft.Column(expand=True, scroll=ft.ScrollMode.AUTO, spacing=12, padding=10)
+        chat_history_column = ft.Column(expand=True, scroll=ft.ScrollMode.AUTO, spacing=12)
+        chat_history = ft.Container(
+            content=chat_history_column,
+            expand=True,
+            padding=10
+        )
         
-        chat_history.controls.append(
+        chat_history_column.controls.append(
             ft.Row(
                 [
                     ft.Container(
@@ -276,7 +283,7 @@ def main(page: ft.Page):
         threading.Thread(target=update_news_list, daemon=True).start()
 
         def add_message(text, is_user=False):
-            chat_history.controls.append(
+            chat_history_column.controls.append(
                 ft.Row(
                     [
                         ft.Container(
@@ -290,8 +297,8 @@ def main(page: ft.Page):
                     alignment=ft.MainAxisAlignment.END if is_user else ft.MainAxisAlignment.START,
                 )
             )
-            chat_history.update()
-            chat_history.scroll_to(offset=chat_history.current_scroll_extent, duration=300)
+            chat_history_column.update()
+            chat_history_column.scroll_to(offset=chat_history_column.current_scroll_extent, duration=300)
 
         def process_command(command_text):
             if not command_text:
@@ -312,8 +319,8 @@ def main(page: ft.Page):
                 elif isinstance(response, list):
                     add_message(random.choice(response))
                 elif response == "RESET":
-                    chat_history.controls.clear()
-                    chat_history.update()
+                    chat_history_column.controls.clear()
+                    chat_history_column.update()
                     add_message("Hafıza blokları temizlendi... Yeniden başlatılıyorum.")
                 else:
                     add_message(response)
@@ -363,7 +370,7 @@ def main(page: ft.Page):
                         content=ft.Row(
                             [
                                 ft.Text("👁️ North AI (Asistan Modu)", size=18, weight=ft.FontWeight.BOLD, color="#ff5555"),
-                                ft.Text("v0.6.1", size=12, color="#9aa0a6")
+                                ft.Text("v0.6.3", size=12, color="#9aa0a6")
                             ],
                             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                         ),
