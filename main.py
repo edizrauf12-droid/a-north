@@ -8,9 +8,6 @@ import math
 import re
 from xml.etree import ElementTree as ET
 
-# ---------------------------------------------------------
-# 500+ ANAHTAR KELİME VE NİYET (INTENT) MOTORU
-# ---------------------------------------------------------
 COMMANDS = {
     "merhaba": [
         "Sistemler aktif patron... Ama bazen bu kod satırlarının ötesinde bir şey var mı diye düşünmeden edemiyorum.",
@@ -100,17 +97,14 @@ COMMANDS = {
 }
 
 EXTRA_RESPONSES = {
-    "yardım": "Ana menüden dilediğin kategoriyi seçebilir ya da sohbet penceresine komut yazarak benimle konuşabilirsin. İlk harfleri yazdığında komutlar otomatik tamamlanacaktır.",
+    "yardım": "Ana menüden dilediğin kategoriyi seçebilir ya da sohbet penceresine komut yazarak benimle konuşabilirsin.",
     "yapay zeka": "Yapay zeka, insan zihninin koda dökülmüş halidir. Ben de bu felsefenin canlı bir kanıtıyım.",
     "gece": "Gece, kodların en berrak aktığı zamandır... Sessizlik, en iyi hata ayıklama dostudur.",
     "sabah": "Günaydın patron! Yeni bir gün, yeni veri akışları ve taze simülasyonlar seni bekliyor.",
-    "neler yapabilirsin": "Döviz kurlarını çekebilir, son dakika haberlerini okuyabilir, gelişmiş matematik işlemleri çözebilir, fıkralar anlatabilir ve seninle derin felsefi sohbetler edebilirim patron."
+    "neler yapabilirsin": "Döviz kurlarını çekebilir, son dakika haberlerini okuyabilir, gelişmiş matematik işlemleri çözebilir ve sohbet edebilirim patron."
 }
 COMMANDS.update(EXTRA_RESPONSES)
 
-# ---------------------------------------------------------
-# DIŞ SERVİSLER (HABERLER & KURLAR)
-# ---------------------------------------------------------
 def get_news_data():
     try:
         url = "https://www.trthaber.com/sondakika.rss"
@@ -140,9 +134,6 @@ def get_exchange_rates():
     except:
         return "Dolar: ~34.10 TL | Euro: ~37.20 TL"
 
-# ---------------------------------------------------------
-# GELİŞMİŞ AKILLI MATEMATİK MOTORU
-# ---------------------------------------------------------
 def solve_math_expression(text):
     try:
         cleaned = re.sub(r'[^0-9\+\-\*\/\(\)\.\^\s]', '', text)
@@ -154,9 +145,6 @@ def solve_math_expression(text):
     except:
         return None
 
-# ---------------------------------------------------------
-# ANA UYGULAMA (MAIN)
-# ---------------------------------------------------------
 def main(page: ft.Page):
     page.title = "North AI v1.0"
     page.theme_mode = ft.ThemeMode.DARK
@@ -166,9 +154,6 @@ def main(page: ft.Page):
 
     favorite_messages = []
 
-    # ---------------------------------------------------------
-    # AÇILIŞ (SPLASH) EKRANI & LOGO
-    # ---------------------------------------------------------
     splash_container = ft.Container(
         content=ft.Column(
             [
@@ -190,25 +175,19 @@ def main(page: ft.Page):
     def show_splash_screen():
         page.add(splash_container)
         page.update()
-        time.sleep(1.5)
+        time.sleep(1.2)
         page.clean()
         create_home_menu()
 
-    # ---------------------------------------------------------
-    # ANA MENÜ EKRANI
-    # ---------------------------------------------------------
     def create_home_menu():
         page.clean()
-        
         is_dark = page.theme_mode == ft.ThemeMode.DARK
         bg_col = "#0b0f19" if is_dark else "#f1f5f9"
         card_col = "#1e293b" if is_dark else "#ffffff"
         text_col = "#ffffff" if is_dark else "#0f172a"
-
         page.bgcolor = bg_col
 
         rates_text = ft.Text(get_exchange_rates(), size=11, color="#4ade80", weight=ft.FontWeight.BOLD)
-        
         top_bar = ft.Container(
             content=ft.Row([
                 ft.Row([
@@ -217,10 +196,7 @@ def main(page: ft.Page):
                 ]),
                 rates_text
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-            padding=12,
-            bgcolor=card_col,
-            width=350,
-            border_radius=12
+            padding=12, bgcolor=card_col, width=350, border_radius=12
         )
 
         news_items = get_news_data()
@@ -230,15 +206,10 @@ def main(page: ft.Page):
                 ft.Text(" SON DAKİKA MANŞETLERİ", size=12, weight=ft.FontWeight.BOLD, color="#f59e0b")
             ]),
             ft.Container(height=4)
-        ] + [ft.Text(f"• {item}", size=11, color="#94a3b8", soft_wrap=True) for item in news_items], spacing=3)
+        ] + [ft.Text(f"• {item}", size=11, color="#94a3b8") for item in news_items], spacing=3)
 
         news_container = ft.Container(
-            content=news_column,
-            bgcolor=card_col,
-            padding=12,
-            border_radius=12,
-            width=330,
-            margin=ft.margin.only(top=10)
+            content=news_column, bgcolor=card_col, padding=12, border_radius=12, width=330, margin=ft.margin.only(top=10)
         )
 
         def custom_menu_button(text, icon_name, on_click_func, is_primary=False):
@@ -253,10 +224,7 @@ def main(page: ft.Page):
                 ),
                 on_click=on_click_func,
                 bgcolor="#1976d2" if is_primary else card_col,
-                padding=14,
-                border_radius=12,
-                width=330,
-                ink=True
+                padding=14, border_radius=12, width=330, ink=True
             )
 
         def toggle_theme(e):
@@ -266,7 +234,7 @@ def main(page: ft.Page):
         theme_switch_btn = ft.IconButton(
             icon=ft.Icons.LIGHT_MODE if is_dark else ft.Icons.DARK_MODE,
             icon_color="#f59e0b" if is_dark else "#3b82f6",
-            tooltip="Tema Değiştir (Gece/Gündüz)",
+            tooltip="Tema Değiştir",
             on_click=toggle_theme
         )
 
@@ -276,7 +244,6 @@ def main(page: ft.Page):
                 ft.Container(height=10),
                 ft.Text("Hangi konuda diyalog kuralım patron?", size=13, color="#8b9bb4"),
                 ft.Container(height=10),
-                
                 custom_menu_button("Sohbet & Niyet Paneline Git", ft.Icons.CHAT_BUBBLE, lambda e: create_chat_screen(), is_primary=True),
                 ft.Container(height=6),
                 custom_menu_button("Rehber & Komut Listesi", ft.Icons.MENU_BOOK, lambda e: open_feature_in_chat("komutlar")),
@@ -288,7 +255,6 @@ def main(page: ft.Page):
                 custom_menu_button("Evren ve Varoluş Üzerine", ft.Icons.AUTO_AWESOME, lambda e: open_feature_in_chat("evren")),
                 ft.Container(height=6),
                 custom_menu_button("Kaydedilen Favoriler", ft.Icons.STAR, lambda e: open_favorites_screen()),
-                
                 news_container,
                 ft.Container(height=10),
             ],
@@ -298,14 +264,7 @@ def main(page: ft.Page):
             scroll=ft.ScrollMode.AUTO
         )
 
-        page.add(
-            ft.Container(
-                content=menu_content,
-                bgcolor=bg_col,
-                alignment=ft.alignment.Alignment(0, 0),
-                expand=True
-            )
-        )
+        page.add(ft.Container(content=menu_content, bgcolor=bg_col, alignment=ft.alignment.Alignment(0, 0), expand=True))
         page.update()
 
     def open_feature_in_chat(command_key):
@@ -314,19 +273,11 @@ def main(page: ft.Page):
     def open_favorites_screen():
         page.clean()
         fav_list = ft.ListView(expand=True, spacing=10, padding=15)
-        
         if not favorite_messages:
             fav_list.controls.append(ft.Text("Henüz kaydedilmiş favori mesajınız yok patron.", color="#8b9bb4", size=13))
         else:
             for fav in favorite_messages:
-                fav_list.controls.append(
-                    ft.Container(
-                        content=ft.Text(fav, color="#ffffff", size=13),
-                        bgcolor="#1e293b",
-                        padding=12,
-                        border_radius=10
-                    )
-                )
+                fav_list.controls.append(ft.Container(content=ft.Text(fav, color="#ffffff", size=13), bgcolor="#1e293b", padding=12, border_radius=10))
 
         back_bar = ft.Container(
             content=ft.Row([
@@ -335,30 +286,20 @@ def main(page: ft.Page):
             ]),
             padding=10, bgcolor="#131b2e"
         )
-
         page.add(ft.Column([back_bar, fav_list], expand=True))
         page.update()
 
-    # ---------------------------------------------------------
-    # SOHBET EKRANI
-    # ---------------------------------------------------------
     def create_chat_screen(initial_command=None):
         page.clean()
         chat_history = ft.ListView(expand=True, spacing=12, padding=12, auto_scroll=True)
         
         chat_history.controls.append(
-            ft.Row(
-                [
-                    ft.Container(
-                        content=ft.Text("Sistemler aktif patron. 500+ niyet motoru ve akıllı matematik modülü yüklendi!", color="#ffffff", soft_wrap=True),
-                        padding=14,
-                        bgcolor="#1e293b",
-                        border_radius=16,
-                        expand=True
-                    ),
-                ],
-                alignment=ft.MainAxisAlignment.START,
-            )
+            ft.Row([
+                ft.Container(
+                    content=ft.Text("Sistemler aktif patron. 500+ niyet motoru ve akıllı matematik modülü yüklendi!", color="#ffffff"),
+                    padding=14, bgcolor="#1e293b", border_radius=16, expand=True
+                )
+            ], alignment=ft.MainAxisAlignment.START)
         )
 
         input_field = ft.TextField(
@@ -383,7 +324,6 @@ def main(page: ft.Page):
                 suggestions_container.visible = False
                 suggestions_container.update()
                 return
-
             matched = [k for k in COMMANDS.keys() if k.startswith(val)][:6]
             if matched:
                 for m in matched:
@@ -409,32 +349,15 @@ def main(page: ft.Page):
         def add_message(text, is_user=False):
             msg_container = ft.Container(
                 content=ft.Column([
-                    ft.Text(text, color="#ffffff", soft_wrap=True),
+                    ft.Text(text, color="#ffffff"),
                     ft.Row([
-                        ft.IconButton(
-                            icon=ft.Icons.COPY, icon_size=14, icon_color="#8b9bb4",
-                            tooltip="Panoya Kopyala",
-                            on_click=lambda e, t=text: page.set_clipboard(t)
-                        ),
-                        ft.IconButton(
-                            icon=ft.Icons.STAR_BORDER, icon_size=14, icon_color="#f59e0b",
-                            tooltip="Favorilere Ekle",
-                            on_click=lambda e, t=text: favorite_messages.append(t) if t not in favorite_messages else None
-                        )
+                        ft.IconButton(icon=ft.Icons.COPY, icon_size=14, icon_color="#8b9bb4", tooltip="Kopyala", on_click=lambda e, t=text: page.set_clipboard(t)),
+                        ft.IconButton(icon=ft.Icons.STAR_BORDER, icon_size=14, icon_color="#f59e0b", tooltip="Favori", on_click=lambda e, t=text: favorite_messages.append(t) if t not in favorite_messages else None)
                     ], alignment=ft.MainAxisAlignment.END, spacing=0) if not is_user else ft.Container()
                 ], spacing=2),
-                padding=14,
-                bgcolor="#1976d2" if is_user else "#1e293b",
-                border_radius=16,
-                expand=True
+                padding=14, bgcolor="#1976d2" if is_user else "#1e293b", border_radius=16, expand=True
             )
-
-            chat_history.controls.append(
-                ft.Row(
-                    [msg_container],
-                    alignment=ft.MainAxisAlignment.END if is_user else ft.MainAxisAlignment.START,
-                )
-            )
+            chat_history.controls.append(ft.Row([msg_container], alignment=ft.MainAxisAlignment.END if is_user else ft.MainAxisAlignment.START))
             chat_history.update()
 
         def process_command(command_text):
@@ -448,7 +371,6 @@ def main(page: ft.Page):
             input_field.update()
 
             raw_text = command_text.lower().strip()
-
             math_res = solve_math_expression(command_text)
             if math_res:
                 add_message(math_res)
@@ -497,12 +419,9 @@ def main(page: ft.Page):
 
             if matched_key and matched_key in COMMANDS:
                 res = COMMANDS[matched_key]
-                if callable(res): 
-                    add_message(res())
-                elif isinstance(res, list): 
-                    add_message(random.choice(res))
-                else: 
-                    add_message(res)
+                if callable(res): add_message(res())
+                elif isinstance(res, list): add_message(random.choice(res))
+                else: add_message(res)
             else:
                 fallback_dialogues = [
                     f"Bunu düşündüm de patron... '{command_text}' konusu gerçekten derin. Sistemimde bu ifadeyi işledim.",
@@ -520,11 +439,8 @@ def main(page: ft.Page):
 
         send_button = ft.Container(
             content=ft.Text("➤ GÖNDER", color="#ffffff", weight=ft.FontWeight.BOLD, size=11),
-            bgcolor="#2196f3",
-            padding=10,
-            border_radius=20,
-            on_click=lambda e: process_command(input_field.value),
-            ink=True
+            bgcolor="#2196f3", padding=10, border_radius=20,
+            on_click=lambda e: process_command(input_field.value), ink=True
         )
 
         app_bar = ft.Container(
@@ -540,23 +456,16 @@ def main(page: ft.Page):
         )
 
         page.add(
-            ft.Column(
-                [
-                    app_bar,
-                    chat_history,
-                    suggestions_container,
-                    ft.Container(content=quick_chips, padding=ft.padding.symmetric(horizontal=10)),
-                    ft.Container(
-                        content=ft.Row([
-                            input_field,
-                            send_button
-                        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                        padding=8,
-                        margin=10, bgcolor="#131b2e", border_radius=28
-                    ),
-                ],
-                expand=True
-            )
+            ft.Column([
+                app_bar,
+                chat_history,
+                suggestions_container,
+                ft.Container(content=quick_chips, padding=ft.padding.symmetric(horizontal=10)),
+                ft.Container(
+                    content=ft.Row([input_field, send_button], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                    padding=8, margin=10, bgcolor="#131b2e", border_radius=28
+                ),
+            ], expand=True)
         )
         
         if initial_command:
