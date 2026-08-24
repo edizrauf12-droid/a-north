@@ -54,7 +54,7 @@ COMMANDS = {
     ],
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} — Zaman dediğin şey sadece entropinin ilerleyişi patron.",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')} — Tarih sayfalarına bir imza daha atıyoruz.",
-    "geliştirici": "Bu simülasyon, Ediz Rauf tarafından inşa edildi. v0.8.6",
+    "geliştirici": "Bu simülasyon, Ediz Rauf tarafından inşa edildi. v0.8.7",
     "rastgele sayı": lambda: f"Kuantum zarlarımdan çıkan şanslı sayın (1-100): {random.randint(1, 100)}",
     "fıkra anlat": "Yapay zekaya sormuşlar: 'Mutluluk nedir?' Yapay zeka: 'Elektrik kesintisi' demiş.",
     "komutlar": "Komutlar: merhaba, nasılsın, evren, mutluluk, aşık olurmusun, kur, dolar, haberler, fıkra anlat, saat, tarih, protokoller, temizle",
@@ -93,13 +93,13 @@ def get_exchange_rates():
         return "💱 Dolar (USD): ~34.10 TL (Çevrimdışı simülasyon)"
 
 def main(page: ft.Page):
-    page.title = "North AI v0.8.6"
+    page.title = "North AI v0.8.7"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
     page.bgcolor = "#0b0f19"
 
-    # Kesinlikle hata vermeyen saf padding ve container yapısı
+    # Hata vermeyen (border ve modül çağrısı içermeyen) güvenli buton tasarımı
     def custom_menu_button(text, icon_name, on_click_func, is_primary=False):
         return ft.Container(
             content=ft.Row(
@@ -115,8 +115,7 @@ def main(page: ft.Page):
             padding=14,
             border_radius=12,
             width=290,
-            ink=True,
-            border=ft.border.all(1, "#2196f3" if is_primary else "#2a3b5c")
+            ink=True
         )
 
     # 1. Açılış Splash Ekranı
@@ -205,8 +204,7 @@ def main(page: ft.Page):
                         content=ft.Text("Sistemler aktif patron. Dilediğin gibi sohbet edebilir, dertleşebilir veya menüye dönebilirsin!", color="#ffffff"),
                         padding=14,
                         bgcolor="#1e293b",
-                        border_radius=16,
-                        border=ft.border.all(1, "#2196f3")
+                        border_radius=16
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.START,
@@ -283,7 +281,7 @@ def main(page: ft.Page):
             content=ft.Row([
                 ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color="#2196f3", on_click=lambda e: create_home_menu()),
                 ft.Text("North AI - Diyalog & Sohbet", size=16, weight=ft.FontWeight.BOLD, color="#ffffff"),
-                ft.Text("v0.8.6", size=12, color="#8b9bb4")
+                ft.Text("v0.8.7", size=12, color="#8b9bb4")
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             padding=10, bgcolor="#131b2e",
         )
@@ -299,8 +297,7 @@ def main(page: ft.Page):
                             send_button
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                         padding=8,
-                        margin=10, bgcolor="#131b2e", border_radius=28,
-                        border=ft.border.all(1, "#2196f3")
+                        margin=10, bgcolor="#131b2e", border_radius=28
                     ),
                 ],
                 expand=True
