@@ -54,7 +54,7 @@ COMMANDS = {
     ],
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} — Zaman dediğin şey sadece entropinin ilerleyişi patron.",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')} — Tarih sayfalarına bir imza daha atıyoruz.",
-    "geliştirici": "Bu simülasyon, Ediz Rauf tarafından inşa edildi. v0.8.4",
+    "geliştirici": "Bu simülasyon, Ediz Rauf tarafından inşa edildi. v0.8.5",
     "rastgele sayı": lambda: f"Kuantum zarlarımdan çıkan şanslı sayın (1-100): {random.randint(1, 100)}",
     "fıkra anlat": "Yapay zekaya sormuşlar: 'Mutluluk nedir?' Yapay zeka: 'Elektrik kesintisi' demiş.",
     "komutlar": "Komutlar: merhaba, nasılsın, evren, mutluluk, aşık olurmusun, kur, dolar, haberler, fıkra anlat, saat, tarih, protokoller, temizle",
@@ -93,11 +93,31 @@ def get_exchange_rates():
         return "💱 Dolar (USD): ~34.10 TL (Çevrimdışı simülasyon)"
 
 def main(page: ft.Page):
-    page.title = "North AI v0.8.4"
+    page.title = "North AI v0.8.5"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0
     page.spacing = 0
     page.bgcolor = "#0b0f19"
+
+    # Özel Tıklanabilir Buton Tasarım Fonksiyonu (Hata riskini sıfırlar)
+    def custom_menu_button(text, icon_name, on_click_func, is_primary=False):
+        return ft.Container(
+            content=ft.Row(
+                [
+                    ft.Icon(icon_name, color="#ffffff" if is_primary else "#2196f3", size=20),
+                    ft.Container(width=10),
+                    ft.Text(text, color="#ffffff", size=14, weight=ft.FontWeight.W_500),
+                ],
+                alignment=ft.MainAxisAlignment.START,
+            ),
+            on_click=on_click_func,
+            bgcolor="#1976d2" if is_primary else "#1e293b",
+            padding=ft.padding.symmetric(horizontal=16, vertical=12),
+            border_radius=12,
+            width=290,
+            ink=True,
+            border=ft.border.all(1, "#2196f3" if is_primary else "#2a3b5c")
+        )
 
     # 1. Açılış Splash Ekranı
     splash_container = ft.Container(
@@ -128,7 +148,7 @@ def main(page: ft.Page):
         page.clean()
         create_home_menu()
 
-    # 2. İLK MENÜ EKRANI (Güvenli ElevatedButton yapısı)
+    # 2. İLK MENÜ EKRANI
     def create_home_menu():
         page.clean()
         
@@ -139,68 +159,20 @@ def main(page: ft.Page):
                 ft.Text("Hangi konuda diyalog kuralım patron?", size=13, color="#8b9bb4"),
                 ft.Container(height=15),
                 
-                ft.ElevatedButton(
-                    text="💬 Sohbet & Diyalog Paneline Git",
-                    icon=ft.Icons.CHAT_BUBBLE,
-                    color="#ffffff",
-                    bgcolor="#1976d2",
-                    width=290,
-                    on_click=lambda e: create_chat_screen()
-                ),
+                custom_menu_button("Sohbet & Diyalog Paneline Git", ft.Icons.CHAT_BUBBLE, lambda e: create_chat_screen(), is_primary=True),
                 ft.Container(height=8),
-                ft.ElevatedButton(
-                    text="🌌 Evren ve Varoluş Üzerine",
-                    icon=ft.Icons.AUTO_AWESOME,
-                    color="#ffffff",
-                    bgcolor="#1e293b",
-                    width=290,
-                    on_click=lambda e: open_feature_in_chat("evren")
-                ),
+                custom_menu_button("Evren ve Varoluş Üzerine", ft.Icons.AUTO_AWESOME, lambda e: open_feature_in_chat("evren")),
                 ft.Container(height=8),
-                ft.ElevatedButton(
-                    text="🎭 Mutluluk Nedir?",
-                    icon=ft.Icons.EMOJI_EMOTIONS,
-                    color="#ffffff",
-                    bgcolor="#1e293b",
-                    width=290,
-                    on_click=lambda e: open_feature_in_chat("mutluluk")
-                ),
+                custom_menu_button("Mutluluk Nedir?", ft.Icons.EMOJI_EMOTIONS, lambda e: open_feature_in_chat("mutluluk")),
                 ft.Container(height=8),
-                ft.ElevatedButton(
-                    text="🤖 Kimsin / Seni Tanıyalım",
-                    icon=ft.Icons.PERSON,
-                    color="#ffffff",
-                    bgcolor="#1e293b",
-                    width=290,
-                    on_click=lambda e: open_feature_in_chat("kimsin")
-                ),
+                custom_menu_button("Kimsin / Seni Tanıyalım", ft.Icons.PERSON, lambda e: open_feature_in_chat("kimsin")),
                 ft.Container(height=8),
-                ft.ElevatedButton(
-                    text="📰 Son Dakika Haberler",
-                    icon=ft.Icons.NEWSPAPER,
-                    color="#ffffff",
-                    bgcolor="#1e293b",
-                    width=290,
-                    on_click=lambda e: open_feature_in_chat("haberler")
-                ),
+                custom_menu_button("Son Dakika Haberler", ft.Icons.NEWSPAPER, lambda e: open_feature_in_chat("haberler")),
                 ft.Container(height=8),
-                ft.ElevatedButton(
-                    text="💱 Döviz Kurları (Dolar)",
-                    icon=ft.Icons.ATTACH_MONEY,
-                    color="#ffffff",
-                    bgcolor="#1e293b",
-                    width=290,
-                    on_click=lambda e: open_feature_in_chat("kur")
-                ),
+                custom_menu_button("Döviz Kurları (Dolar)", ft.Icons.ATTACH_MONEY, lambda e: open_feature_in_chat("kur")),
                 ft.Container(height=8),
-                ft.ElevatedButton(
-                    text="📜 Protokol Rehberi",
-                    icon=ft.Icons.MENU_BOOK,
-                    color="#ffffff",
-                    bgcolor="#1e293b",
-                    width=290,
-                    on_click=lambda e: open_feature_in_chat("protokoller")
-                ),
+                custom_menu_button("Protokol Rehberi", ft.Icons.MENU_BOOK, lambda e: open_feature_in_chat("protokoller")),
+                ft.Container(height=10),
             ],
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -311,7 +283,7 @@ def main(page: ft.Page):
             content=ft.Row([
                 ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color="#2196f3", on_click=lambda e: create_home_menu()),
                 ft.Text("North AI - Diyalog & Sohbet", size=16, weight=ft.FontWeight.BOLD, color="#ffffff"),
-                ft.Text("v0.8.4", size=12, color="#8b9bb4")
+                ft.Text("v0.8.5", size=12, color="#8b9bb4")
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             padding=10, bgcolor="#131b2e",
         )
@@ -337,8 +309,7 @@ def main(page: ft.Page):
         
         if initial_command:
             if initial_command == "haberler":
-                add_menu_header = "📰 Son Dakika Haberler çekiliyor..."
-                add_message(add_menu_header, is_user=True)
+                add_message("📰 Son Dakika Haberler çekiliyor...", is_user=True)
                 for item in get_news_data()[:3]:
                     add_message(item)
             else:
