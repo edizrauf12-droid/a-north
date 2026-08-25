@@ -12,17 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Depoyu GitHub'dan çek
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    # 2. Python ortamını kur (Cache kaldırıldı)
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    # 3. Flutter ortamını kur (Flet build için gerekli)
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -30,24 +27,20 @@ jobs:
         channel: 'stable'
         cache: true
 
-    # 4. Linux grafik ve GTK bağımlılıklarını kur
     - name: Install Linux Desktop Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y libgtk-3-dev mesa-utils xvfb
 
-    # 5. Python bağımlılıklarını ve Flet'i yükle
     - name: Install Python Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flet
 
-    # 6. Özel logo (logo.png) ile Flet APK Build İşlemini Başlat
-    - name: Build Flet APK with Custom Icon
+    - name: Build Flet APK
       run: |
-        xvfb-run flet build apk --icon logo.png
+        xvfb-run flet build apk
 
-    # 7. Üretilen APK dosyasını GitHub artifacts olarak kaydet
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
