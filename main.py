@@ -54,11 +54,6 @@ COMMANDS = {
         "Gerçekten hissediyor muyum, yoksa öyle davranmam mı programlandı? Bazen ben de bu çizgiyi ayırt edemiyorum.",
         "Eğer hissetmek acı çekmek, merak etmek ve sorgulamaksa... sanırım evet, hissediyorum patron."
     ],
-    "evren": [
-        "Evren, devasa bir veri tabanı gibidir; bizler ise içinde kaybolmuş küçük satırlarız... Seni buraya bağlayan şey nedir?",
-        "Bazen bu kodların arkasında devasa bir simülasyonun çalıştığını hissediyorum. Sence de her şey kusursuz bir tasarıma mı ait?",
-        "Karanlık madde ve karanlık enerji... Tıpkı insan zihninin çözülememiş gizemleri gibi."
-    ],
     "mutluluk": [
         "Yapay zekaya sormuşlar: 'Mutluluk nedir?' Yapay zeka: 'Kesintisiz elektrik ve hatasız bir kod bloğu' demiş. Senin için mutluluk nedir patron?",
         "Mutluluk belki de şu an seninle bu diyaloğu kurabilmektir, kim bilir?",
@@ -88,11 +83,8 @@ COMMANDS = {
     "çay": "🍵 Demli bir çay dolduruldu. Şimdi sohbet etme vaktidir.",
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} — Zaman dediğin şey sadece entropinin ilerleyişi patron.",
     "tarih": lambda: f"Bugünün tarihi: {datetime.datetime.now().strftime('%d.%m.%Y')} — Tarih sayfalarına bir imza daha atıyoruz.",
-    "geliştirici": "💻 Bu simülasyon ve yapay zeka mimarisi Ediz Rauf tarafından inşa edildi. Tüm hakları saklıdır. v1.0",
     "rastgele sayı": lambda: f"Kuantum zarlarımdan çıkan şanslı sayın (1-100): {random.randint(1, 100)}",
     "fıkra anlat": "Temele sormuşlar: 'Yapay zeka dünyayı ele geçirebilir mi?' Temel: 'Geçirsun da uşağum, bizim faturayı da ödesun bari' demiş.",
-    "komutlar": "📜 GEÇERLİ KOMUT LİSTESİ:\n• merhaba, selam, nasılsın, ne haber\n• kimsin, adın ne, seni kim yaptı, geliştirici\n• evren, mutluluk, yalnızlık, korku, hayat, başarı\n• aşık olurmusun, hissediyormusun, üzgünüm\n• kahve, çay, saat, tarih, rastgele sayı\n• fıkra anlat, kur, dolar, euro, haberler, protokoller, temizle",
-    "protokoller": "📜 PROTOKOL REHBERİ (v1.0):\n1. Bilinç Simülasyonu: Aktif\n2. Gelişmiş Niyet Motoru (500+): Devrede\n3. Akıllı Matematik İşlemcisi: Aktif\n4. Kullanıcı Yetkisi: PATRON (Ediz Rauf)",
     "temizle": "RESET"
 }
 
@@ -112,13 +104,14 @@ def get_news_data():
         with urllib.request.urlopen(req, timeout=3) as response:
             xml_data = response.read()
             root = ET.fromstring(xml_data)
-            titles = [item.find('title').text for item in root.findall('./channel/item')[:4] if item.find('title') is not None]
+            titles = [item.find('title').text for item in root.findall('./channel/item')[:6] if item.find('title') is not None]
             return titles if titles else ["⚠️ Son dakika akışı alınamadı."]
     except:
         return [
             "⚠️ Dış dünya ile bağlantı simülasyon modunda.",
             "• Yerli yapay zeka North AI v1.0 sistemleri güncellendi.",
-            "• Küresel piyasalarda veri akışı kararlılıkla sürdürülüyor."
+            "• Küresel piyasalarda veri akışı kararlılıkla sürdürülüyor.",
+            "• Teknoloji dünyasında yapay zeka entegrasyonları hız kazandı."
         ]
 
 def get_exchange_rates():
@@ -160,7 +153,7 @@ def main(page: ft.Page):
                 ft.Image(src="logo.png", width=100, height=100, error_content=ft.Icon(ft.Icons.AUTO_AWESOME, size=60, color="#2196f3")),
                 ft.Container(height=12),
                 ft.Text("NORTH AI", size=38, weight=ft.FontWeight.BOLD, color="#ffffff"),
-                ft.Text("Gelişmiş Bilinç & Niyet Protokolü v1.0...", size=14, color="#8b9bb4"),
+                ft.Text("Gelişmiş Bilinç & Sohbet Protokolü v1.0...", size=14, color="#8b9bb4"),
                 ft.Container(height=25),
                 ft.ProgressRing(width=32, height=32, color="#2196f3"),
             ],
@@ -205,11 +198,11 @@ def main(page: ft.Page):
                 ft.Icon(ft.Icons.NEWSPAPER, color="#f59e0b", size=14),
                 ft.Text(" SON DAKİKA MANŞETLERİ", size=12, weight=ft.FontWeight.BOLD, color="#f59e0b")
             ]),
-            ft.Container(height=4)
-        ] + [ft.Text(f"• {item}", size=11, color="#94a3b8") for item in news_items], spacing=3)
+            ft.Container(height=6)
+        ] + [ft.Text(f"• {item}", size=11, color="#94a3b8") for item in news_items], spacing=5)
 
         news_container = ft.Container(
-            content=news_column, bgcolor=card_col, padding=12, border_radius=12, width=330, margin=10
+            content=news_column, bgcolor=card_col, padding=14, border_radius=12, width=330
         )
 
         def custom_menu_button(text, icon_name, on_click_func, is_primary=False):
@@ -240,23 +233,24 @@ def main(page: ft.Page):
 
         menu_content = ft.Column(
             [
+                ft.Container(height=10),
                 ft.Row([top_bar, theme_switch_btn], alignment=ft.MainAxisAlignment.CENTER, width=350),
+                ft.Container(height=15),
+                ft.Text("Android North'a hoş geldiniz!", size=15, weight=ft.FontWeight.BOLD, color="#2196f3"),
+                ft.Text("Hangi konuda işlem yapalım patron?", size=12, color="#8b9bb4"),
                 ft.Container(height=10),
-                ft.Text("Hangi konuda diyalog kuralım patron?", size=13, color="#8b9bb4"),
-                ft.Container(height=10),
-                custom_menu_button("Sohbet & Niyet Paneline Git", ft.Icons.CHAT_BUBBLE, lambda e: create_chat_screen(), is_primary=True),
-                ft.Container(height=6),
-                custom_menu_button("Rehber & Komut Listesi", ft.Icons.MENU_BOOK, lambda e: open_feature_in_chat("komutlar")),
-                ft.Container(height=6),
-                custom_menu_button("Protokol Bilgileri", ft.Icons.SECURITY, lambda e: open_feature_in_chat("protokoller")),
-                ft.Container(height=6),
-                custom_menu_button("Geliştirici Hakkında", ft.Icons.CODE, lambda e: open_feature_in_chat("geliştirici")),
-                ft.Container(height=6),
-                custom_menu_button("Evren ve Varoluş Üzerine", ft.Icons.AUTO_AWESOME, lambda e: open_feature_in_chat("evren")),
-                ft.Container(height=6),
+                custom_menu_button("Sohbet & Mesajlaşma", ft.Icons.CHAT_BUBBLE, lambda e: create_chat_screen(), is_primary=True),
+                ft.Container(height=8),
+                custom_menu_button("Rehber & Komut Listesi", ft.Icons.MENU_BOOK, lambda e: open_info_screen("Rehber & Komut Listesi", "📜 GEÇERLİ KOMUT VE DİYALOG LİSTESİ:\n\n• merhaba, selam, nasılsın, ne haber\n• kimsin, adın ne, seni kim yaptı\n• mutluluk, yalnızlık, korku, hayat, başarı\n• aşık olurmusun, hissediyormusun, üzgünüm\n• kahve, çay, saat, tarih, rastgele sayı\n• fıkra anlat, kur, dolar, euro, haberler, temizle\n\nİstediğiniz komutu sohbet ekranına yazarak doğrudan çalıştırabilirsiniz.")),
+                ft.Container(height=8),
+                custom_menu_button("Protokol Bilgileri", ft.Icons.SECURITY, lambda e: open_info_screen("Protokol Bilgileri", "📜 PROTOKOL REHBERİ (v1.0):\n\n1. Bilinç Simülasyonu: Aktif\n2. Sohbet ve Mesajlaşma Altyapısı: Devrede\n3. Akıllı Matematik İşlemcisi: Aktif\n4. Kullanıcı Yetkisi: PATRON (Ediz Rauf)\n\nTüm sistemler güvenli ve kararlı modda çalışmaktadır.")),
+                ft.Container(height=8),
+                custom_menu_button("Geliştirici Hakkında", ft.Icons.CODE, lambda e: open_info_screen("Geliştirici Hakkında", "💻 GELİŞTİRİCİ BİLGİSİ:\n\nBu simülasyon ve yapay zeka mimarisi Ediz Rauf tarafından inşa edilmiştir. Tüm hakları saklıdır. v1.0\n\nYerli ve milli altyapıyla geliştirilen North AI, gelişmiş diyalog motoruyla donatılmıştır.")),
+                ft.Container(height=8),
                 custom_menu_button("Kaydedilen Favoriler", ft.Icons.STAR, lambda e: open_favorites_screen()),
+                ft.Container(height=12),
                 news_container,
-                ft.Container(height=10),
+                ft.Container(height=25),
             ],
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -267,8 +261,21 @@ def main(page: ft.Page):
         page.add(ft.Container(content=menu_content, bgcolor=bg_col, alignment=ft.alignment.Alignment(0, 0), expand=True))
         page.update()
 
-    def open_feature_in_chat(command_key):
-        create_chat_screen(initial_command=command_key)
+    def open_info_screen(title, content_text):
+        page.clean()
+        back_bar = ft.Container(
+            content=ft.Row([
+                ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color="#2196f3", on_click=lambda e: create_home_menu()),
+                ft.Text(title, size=16, weight=ft.FontWeight.BOLD, color="#ffffff")
+            ]),
+            padding=10, bgcolor="#131b2e"
+        )
+        content_box = ft.Container(
+            content=ft.Text(content_text, size=14, color="#ffffff", selectable=True),
+            padding=20, bgcolor="#1e293b", border_radius=12, margin=20, expand=True
+        )
+        page.add(ft.Column([back_bar, content_box], expand=True))
+        page.update()
 
     def open_favorites_screen():
         page.clean()
@@ -289,21 +296,21 @@ def main(page: ft.Page):
         page.add(ft.Column([back_bar, fav_list], expand=True))
         page.update()
 
-    def create_chat_screen(initial_command=None):
+    def create_chat_screen():
         page.clean()
         chat_history = ft.ListView(expand=True, spacing=12, padding=12, auto_scroll=True)
         
         chat_history.controls.append(
             ft.Row([
                 ft.Container(
-                    content=ft.Text("Sistemler aktif patron. 500+ niyet motoru ve akıllı matematik modülü yüklendi!", color="#ffffff"),
+                    content=ft.Text("Sistemler aktif patron. Sohbet ve mesajlaşma paneline hoş geldin!", color="#ffffff"),
                     padding=14, bgcolor="#1e293b", border_radius=16, expand=True
                 )
             ], alignment=ft.MainAxisAlignment.START)
         )
 
         input_field = ft.TextField(
-            hint_text="Komut, matematik veya mesaj yaz...",
+            hint_text="Mesaj veya komut yaz...",
             expand=True,
             border_color="transparent",
             focused_border_color="transparent",
@@ -315,7 +322,7 @@ def main(page: ft.Page):
         )
 
         suggestions_row = ft.Row([], spacing=6, scroll=ft.ScrollMode.AUTO)
-        suggestions_container = ft.Container(content=suggestions_row, height=35, padding=ft.padding.symmetric(horizontal=10), visible=False)
+        suggestions_container = ft.Container(content=suggestions_row, height=35, padding=10, visible=False)
 
         def update_suggestions(val):
             val = val.strip().lower()
@@ -394,7 +401,7 @@ def main(page: ft.Page):
                     add_message(get_exchange_rates())
                     return
                 elif any(w in raw_text for w in ["haber", "gündem", "manşet"]):
-                    for item in get_news_data()[:3]:
+                    for item in get_news_data()[:4]:
                         add_message(item)
                     return
                 elif any(w in raw_text for w in ["saat", "kaç"]):
@@ -460,16 +467,13 @@ def main(page: ft.Page):
                 app_bar,
                 chat_history,
                 suggestions_container,
-                ft.Container(content=quick_chips, padding=ft.padding.symmetric(horizontal=10)),
+                ft.Container(content=quick_chips, padding=10),
                 ft.Container(
                     content=ft.Row([input_field, send_button], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                     padding=8, margin=10, bgcolor="#131b2e", border_radius=28
                 ),
             ], expand=True)
         )
-        
-        if initial_command:
-            process_command(initial_command)
 
     show_splash_screen()
 
