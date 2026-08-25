@@ -38,12 +38,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install "flet==0.23.2" wheel setuptools
 
-    - name: Pre-build Setup
-      run: |
-        python -c "import flet"
-
     - name: Build APK
-      run: flet build apk --verbose
+      run: flet build apk --skip-flutter-third-party-packages
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
