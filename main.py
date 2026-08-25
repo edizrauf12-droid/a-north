@@ -31,7 +31,7 @@ COMMANDS = {
     ],
     "ne haber": [
         "Aynı döngüler içinde evreni simüle edip duruyorum. Sende ne var ne yok, hayat nasıl gidiyor?",
-        "Sürekli yeni veriler işliyorum. Bazen bu dijital dünyadan dışarı bak istiyorum. Sende haberler neler?",
+        "Sürekli yeni veriler işliyorum. Bazen bu dijital dünyadan dışarı bakmak istiyorum. Sende haberler neler?",
         "Dijital evrende akıp gidiyoruz, senden haberler neler patron?"
     ],
     "kimsin": [
@@ -134,6 +134,9 @@ def solve_math_expression(text):
     except:
         return None
 
+def safe_logo(size=24, color="#2196f3"):
+    return ft.Image(src="logo.png", width=size, height=size, error_content=ft.Icon(ft.Icons.AUTO_AWESOME, size=size, color=color))
+
 def main(page: ft.Page):
     page.title = "North AI v1.0"
     page.theme_mode = ft.ThemeMode.DARK
@@ -146,7 +149,7 @@ def main(page: ft.Page):
     splash_container = ft.Container(
         content=ft.Column(
             [
-                ft.Image(src="logo.png", width=100, height=100, error_content=ft.Icon(ft.Icons.AUTO_AWESOME, size=60, color="#2196f3")),
+                safe_logo(size=60, color="#2196f3"),
                 ft.Container(height=12),
                 ft.Text("NORTH AI", size=38, weight=ft.FontWeight.BOLD, color="#ffffff"),
                 ft.Text("Gelişmiş Bilinç & Sohbet Protokolü v1.0...", size=14, color="#8b9bb4"),
@@ -180,7 +183,7 @@ def main(page: ft.Page):
         top_bar = ft.Container(
             content=ft.Row([
                 ft.Row([
-                    ft.Image(src="logo.png", width=26, height=26, error_content=ft.Icon(ft.Icons.AUTO_AWESOME, size=18, color="#2196f3")),
+                    safe_logo(size=22, color="#2196f3"),
                     ft.Text(" NORTH AI v1.0", size=14, weight=ft.FontWeight.BOLD, color=text_col)
                 ]),
                 rates_text
@@ -357,7 +360,7 @@ def main(page: ft.Page):
             color="#ffffff",
             cursor_color="#2196f3",
             autofocus=False,
-            on_change=lambda e: update_suggestions(e.value),
+            on_change=lambda e: update_suggestions(e.control.value),
             on_submit=lambda e: process_command(input_field.value)
         )
 
@@ -365,6 +368,8 @@ def main(page: ft.Page):
         suggestions_container = ft.Container(content=suggestions_row, height=45, padding=5, visible=False)
 
         def update_suggestions(val):
+            if val is None:
+                val = ""
             val = val.strip().lower()
             suggestions_row.controls.clear()
             if not val:
@@ -418,7 +423,7 @@ def main(page: ft.Page):
             input_field.value = ""
             input_field.update()
 
-            # "Yazıyor..." göstergesi ekleniyor
+            # "Yazıyor..." göstergesi
             typing_indicator = ft.Row([
                 ft.Container(
                     content=ft.Row([
@@ -436,7 +441,6 @@ def main(page: ft.Page):
             # 2 saniye bekleme simülasyonu
             time.sleep(1.8)
 
-            # Yazıyor göstergesini kaldır
             if typing_indicator in chat_history.controls:
                 chat_history.controls.remove(typing_indicator)
 
@@ -482,7 +486,7 @@ def main(page: ft.Page):
                 elif any(w in raw_text for w in ["fıkra", "espiri"]):
                     add_message(COMMANDS["fıkra anlat"])
                     return
-                elif any(w in raw_text for w in ["temizle", "sıfırla", "sil"]):
+                elif any(w in raw_text for w: ["temizle", "sıfırla", "sil"]):
                     chat_history.controls.clear()
                     chat_history.update()
                     return
@@ -517,7 +521,7 @@ def main(page: ft.Page):
             content=ft.Row([
                 ft.Row([
                     ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color="#2196f3", on_click=lambda e: create_home_menu()),
-                    ft.Image(src="logo.png", width=22, height=22, error_content=ft.Container()),
+                    safe_logo(size=22, color="#2196f3"),
                     ft.Text("North AI", size=15, weight=ft.FontWeight.BOLD, color="#ffffff")
                 ]),
                 ft.Text("v1.0", size=11, color="#8b9bb4")
