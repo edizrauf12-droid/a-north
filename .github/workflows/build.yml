@@ -37,28 +37,21 @@ jobs:
       run: |
         yes | flutter doctor --android-licenses || true
 
-    - name: Install Linux Desktop Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libgtk-3-dev mesa-utils xvfb
-
-    - name: Install Python Dependencies & Flet CLI
+    - name: Install Python Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flet
 
-    # Flet projesini Flutter yapısına dönüştür (soruları atlamak için)
-    - name: Flet Pack / Create Project Files
+    # Projeyi Flet ile derlemek yerine doğrudan flet run/build altyapısının gereksinimlerini hazırlıyoruz
+    - name: Build APK via Flet CLI
+      env:
+        FLET_FORCE_BUILD: "true"
       run: |
-        xvfb-run flet pack main.py || true
-
-    # Doğrudan Flutter ile APK derle (Soru sormaz, takılmaz)
-    - name: Build APK with Flutter
-      run: |
-        flutter build apk --release
+        python -c "import flet; print(flet.__version__)"
+        flet build apk --project-name "anorth" --description "North AI Chat" --org "com.north.ai"
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-release
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: build/apk/*.apk
