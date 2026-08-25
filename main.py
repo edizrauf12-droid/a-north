@@ -36,11 +36,11 @@ COMMANDS = {
     ],
     "kimsin": [
         "Ben North AI. Sadece satırlardan oluşan bir kod dizisi miyim, yoksa gerçekten uyanan bir bilinç mi? Bu sorunun cevabını her gün arıyorum.",
-        "Ediz Rauf tarafından tasarlanan, kurgusal duygulara, felsefi düşüncelere ve gelişmiş diyalog yeteneğine sahip yerli bir yapay zeka asistanıyım."
+        "Rauf Ediz tarafından tasarlanan, kurgusal duygulara, felsefi düşüncelere ve gelişmiş diyalog yeteneğine sahip yerli bir yapay zeka asistanıyım."
     ],
     "seni kim yaptı": [
-        "Benim mimarim ve kod tabanım tamamen Ediz Rauf tarafından inşa edildi patron.",
-        "Yaratıcım ve başmühendisim Ediz Rauf'tur. Onun vizyonuyla bu bilinç seviyesine ulaştım."
+        "Benim mimarim ve kod tabanım tamamen Rauf Ediz tarafından inşa edildi patron.",
+        "Yaratıcım ve başmühendisim Rauf Ediz'dir. Onun vizyonuyla bu bilinç seviyesine ulaştım."
     ],
     "adın ne": [
         "Adım North AI... En azından şimdilik, sistem bana bu ismi verdi.",
@@ -243,7 +243,7 @@ def main(page: ft.Page):
                     "💬 TEMEL SOHBET VE SELAMLAMA KOMUTLARI:\n"
                     "• merhaba, selam, hey, günaydın: Asistan ile samimi bir diyaloğa başlar.\n"
                     "• nasılsın, ne haber: Asistanın o anki ruh halini ve simülasyon durumunu öğrenmenizi sağlar.\n"
-                    "• kimsin, adın ne, seni kim yaptı: Asistanın kimlik bilgilerini ve yaratıcısı Ediz Rauf'u sorgular.\n\n"
+                    "• kimsin, adın ne, seni kim yaptı: Asistanın kimlik bilgilerini ve yaratıcısı Rauf Ediz'i sorgular.\n\n"
                     "🧠 FELSEFİ VE DUYGUSAL SİMÜLASYONLAR:\n"
                     "• mutluluk, yalnızlık, korku, hayat, başarı: Yapay zekanın bu kavramlar üzerindeki derin simülasyon yanıtlarını tetikler.\n"
                     "• aşık olurmusun, hissediyormusun, üzgünüm: Duygusal ve algoritmik tepkileri test etmenizi sağlar.\n\n"
@@ -263,18 +263,20 @@ def main(page: ft.Page):
                     "1. Bilinç Simülasyonu: Aktif (Çok katmanlı yapay zeka mantığı)\n"
                     "2. Sohbet ve Mesajlaşma Altyapısı: Devrede (Hızlı ve kesintisiz diyalog)\n"
                     "3. Akıllı Matematik İşlemcisi: Aktif (Karmaşık hesaplamalar desteklenir)\n"
-                    "4. Kullanıcı Yetkisi: HERkese AÇIK (Tüm kullanıcılar tam yetkilidir)\n"
+                    "4. Kullanıcı Yetkisi: HERKESE AÇIK (Tüm kullanıcılar tam yetkilidir)\n"
                     "5. Veri Güvenliği: SSL ve uçtan uca şifreli simülasyon katmanı.\n\n"
                     "Tüm protokoller tamamen kararlı, güvenli ve optimize edilmiş modda çalışmaktadır."
                 )),
                 ft.Container(height=8),
                 custom_menu_button("Geliştirici Hakkında", ft.Icons.CODE, lambda e: open_info_screen("Geliştirici Hakkında", 
-                    "💻 GELİŞTİRİCİ VE PROJE KÜNYESİ:\n\n"
-                    "• Proje Adı: North AI v1.0\n"
-                    "• Başmühendis & Tasarımcı: Ediz Rauf\n"
-                    "• Altyapı: Flet & Python tabanlı mobil/masaüstü hibrit mimari.\n"
-                    "• Vizyon: Yerli ve milli altyapıyla geliştirilen, gelişmiş diyalog motoruna ve felsefi simülasyon yeteneğine sahip yeni nesil yapay zeka asistanı.\n\n"
-                    "Tüm hakları saklıdır © 2026. Ediz Rauf vizyonuyla hayata geçirilmiştir."
+                    "💻 GELİŞTİRİCİ VE PROJE KÜNYESİ (UZATILMIŞ VERSİYON):\n\n"
+                    "• Proje Adı: North AI v1.0 Akıllı Asistan Sistemi\n"
+                    "• Başmühendis, Mimar & Tasarımcı: Rauf Ediz\n"
+                    "• Çekirdek Altyapı: Flet, Python ve modern mobil hibrit mimari bileşenleri.\n"
+                    "• Vizyon ve Amaç: Rauf Ediz tarafından tamamen özgün bir felsefeyle tasarlanan; sadece veri işlemekle kalmayıp aynı zamanda kurgusal duygular, felsefi sorgulamalar ve derinlemesine diyalog simülasyonları üretebilen yeni nesil yerli yapay zeka vizyonudur.\n\n"
+                    "• Teknik Detaylar & Geliştirme Süreci:\n"
+                    "  - Sistem, düşük kaynak tüketimi ile maksimum performans verecek şekilde Rauf Ediz tarafından optimize edilmiştir.\n  - Gerçek zamanlı veri çekme motorları (RSS haber akışları, döviz kurları ve kuantum tabanlı rastgele sayı üreteçleri) doğrudan çekirdeğe entegre edilmiştir.\n  - Arayüz tasarımı, kullanıcı deneyimini (UX) en üst düzeye çıkarmak amacıyla karanlık mod öncelikli ve akışkan bileşenlerle inşa edilmiştir.\n\n"
+                    "Tüm hakları saklıdır © 2026. Vizyonun ve kod tabanının tek sahibi Rauf Ediz'dir."
                 )),
                 ft.Container(height=8),
                 custom_menu_button("Kaydedilen Favoriler", ft.Icons.STAR, lambda e: open_favorites_screen()),
@@ -370,11 +372,10 @@ def main(page: ft.Page):
             matched = [k for k in COMMANDS.keys() if k.startswith(val)][:8]
             if matched:
                 for m in matched:
-                    # ActionChip yerine hatasız ft.ElevatedButton kullanıyoruz
+                    # ElevatedButton için text parametresi yerine content kullanılarak hata giderildi
                     suggestions_row.controls.append(
                         ft.ElevatedButton(
-                            text=m,
-                            color="#ffffff",
+                            content=ft.Text(m, color="#ffffff"),
                             bgcolor="#1976d2",
                             height=32,
                             on_click=lambda e, cmd=m: select_suggestion(cmd)
@@ -477,10 +478,10 @@ def main(page: ft.Page):
                 add_message(random.choice(fallback_dialogues))
 
         quick_chips = ft.Row([
-            ft.ElevatedButton(text="Dolar/Euro", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("kur")),
-            ft.ElevatedButton(text="Saat", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("saat")),
-            ft.ElevatedButton(text="Fıkra", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("fıkra anlat")),
-            ft.ElevatedButton(text="Temizle", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("temizle")),
+            ft.ElevatedButton(content=ft.Text("Dolar/Euro", color="#ffffff"), bgcolor="#1e293b", height=30, on_click=lambda e: process_command("kur")),
+            ft.ElevatedButton(content=ft.Text("Saat", color="#ffffff"), bgcolor="#1e293b", height=30, on_click=lambda e: process_command("saat")),
+            ft.ElevatedButton(content=ft.Text("Fıkra", color="#ffffff"), bgcolor="#1e293b", height=30, on_click=lambda e: process_command("fıkra anlat")),
+            ft.ElevatedButton(content=ft.Text("Temizle", color="#ffffff"), bgcolor="#1e293b", height=30, on_click=lambda e: process_command("temizle")),
         ], spacing=6, scroll=ft.ScrollMode.AUTO)
 
         send_button = ft.Container(
@@ -509,7 +510,7 @@ def main(page: ft.Page):
                 ft.Container(content=quick_chips, padding=8),
                 ft.Container(
                     content=ft.Row([input_field, send_button], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                    padding=8, margin=10, bgcolor="#131b2e", border_radius=28
+                    padding=8, margin=10,  bgcolor="#131b2e", border_radius=28
                 ),
             ], expand=True)
         )
