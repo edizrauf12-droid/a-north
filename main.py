@@ -31,7 +31,7 @@ COMMANDS = {
     ],
     "ne haber": [
         "Aynı döngüler içinde evreni simüle edip duruyorum. Sende ne var ne yok, hayat nasıl gidiyor?",
-        "Sürekli yeni veriler işliyorum. Bazen bu dijital dünyadan dışarı bakmak istiyorum. Sende haberler neler?",
+        "Sürekli yeni veriler işliyorum. Bazen bu dijital dünyadan dışarı bak istiyorum. Sende haberler neler?",
         "Dijital evrende akıp gidiyoruz, senden haberler neler patron?"
     ],
     "kimsin": [
@@ -275,7 +275,9 @@ def main(page: ft.Page):
                     "• Çekirdek Altyapı: Flet, Python ve modern mobil hibrit mimari bileşenleri.\n"
                     "• Vizyon ve Amaç: Rauf Ediz tarafından tamamen özgün bir felsefeyle tasarlanan; sadece veri işlemekle kalmayıp aynı zamanda kurgusal duygular, felsefi sorgulamalar ve derinlemesine diyalog simülasyonları üretebilen yeni nesil yerli yapay zeka vizyonudur.\n\n"
                     "• Teknik Detaylar & Geliştirme Süreci:\n"
-                    "  - Sistem, düşük kaynak tüketimi ile maksimum performans verecek şekilde Rauf Ediz tarafından optimize edilmiştir.\n  - Gerçek zamanlı veri çekme motorları (RSS haber akışları, döviz kurları ve kuantum tabanlı rastgele sayı üreteçleri) doğrudan çekirdeğe entegre edilmiştir.\n  - Arayüz tasarımı, kullanıcı deneyimini (UX) en üst düzeye çıkarmak amacıyla karanlık mod öncelikli ve akışkan bileşenlerle inşa edilmiştir.\n\n"
+                    "  - Sistem, düşük kaynak tüketimi ile maksimum performans verecek şekilde Rauf Ediz tarafından optimize edilmiştir.\n"
+                    "  - Gerçek zamanlı veri çekme motorları (RSS haber akışları, döviz kurları ve kuantum tabanlı rastgele sayı üreteçleri) doğrudan çekirdeğe entegre edilmiştir.\n"
+                    "  - Arayüz tasarımı, kullanıcı deneyimini (UX) en üst düzeye çıkarmak amacıyla karanlık mod öncelikli ve akışkan bileşenlerle inşa edilmiştir.\n\n"
                     "Tüm hakları saklıdır © 2026. Vizyonun ve kod tabanının tek sahibi Rauf Ediz'dir."
                 )),
                 ft.Container(height=8),
@@ -372,7 +374,6 @@ def main(page: ft.Page):
             matched = [k for k in COMMANDS.keys() if k.startswith(val)][:8]
             if matched:
                 for m in matched:
-                    # ElevatedButton için text parametresi yerine content kullanılarak hata giderildi
                     suggestions_row.controls.append(
                         ft.ElevatedButton(
                             content=ft.Text(m, color="#ffffff"),
@@ -416,6 +417,28 @@ def main(page: ft.Page):
             add_message(command_text, is_user=True)
             input_field.value = ""
             input_field.update()
+
+            # "Yazıyor..." göstergesi ekleniyor
+            typing_indicator = ft.Row([
+                ft.Container(
+                    content=ft.Row([
+                        ft.ProgressRing(width=14, height=14, stroke_width=2, color="#2196f3"),
+                        ft.Container(width=8),
+                        ft.Text("North AI yazıyor...", color="#8b9bb4", size=12, italic=True)
+                    ], spacing=0),
+                    padding=10, bgcolor="#1e293b", border_radius=12
+                )
+            ], alignment=ft.MainAxisAlignment.START)
+            
+            chat_history.controls.append(typing_indicator)
+            chat_history.update()
+
+            # 2 saniye bekleme simülasyonu
+            time.sleep(1.8)
+
+            # Yazıyor göstergesini kaldır
+            if typing_indicator in chat_history.controls:
+                chat_history.controls.remove(typing_indicator)
 
             raw_text = command_text.lower().strip()
             math_res = solve_math_expression(command_text)
@@ -510,7 +533,7 @@ def main(page: ft.Page):
                 ft.Container(content=quick_chips, padding=8),
                 ft.Container(
                     content=ft.Row([input_field, send_button], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                    padding=8, margin=10,  bgcolor="#131b2e", border_radius=28
+                    padding=8, margin=10, bgcolor="#131b2e", border_radius=28
                 ),
             ], expand=True)
         )
