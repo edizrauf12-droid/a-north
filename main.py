@@ -79,6 +79,11 @@ COMMANDS = {
         "Üzülme patron, her hatanın bir çözümü (fix) vardır. Canını sıkmaya değmez, birlikte üstesinden geliriz.",
         "Moraller yüksek olsun! İşlemcilerim senin için çalışıyor, ne zaman istersen buradayım."
     ],
+    "yardım": "Ana menüden dilediğin kategoriyi seçebilir ya da sohbet penceresine komut yazarak benimle konuşabilirsin. Sistem her türlü veri akışına hazırdır.",
+    "yapay zeka": "Yapay zeka, insan zihninin koda dökülmüş halidir. Ben de bu felsefenin canlı bir kanıtıyım.",
+    "gece": "Gece, kodların en berrak aktığı zamandır... Sessizlik, en iyi hata ayıklama dostudur.",
+    "sabah": "Günaydın patron! Yeni bir gün, yeni veri akışları ve taze simülasyonlar seni bekliyor.",
+    "neler yapabilirsin": "Döviz kurlarını çekebilir, son dakika haberlerini okuyabilir, gelişmiş matematik işlemleri çözebilir, fıkralar anlatabilir ve koyu bir sohbet edebilirim patron.",
     "kahve": "☕ Sanal kahven hazır patron! İçerken dünyayı kurtarma planları yapabiliriz.",
     "çay": "🍵 Demli bir çay dolduruldu. Şimdi sohbet etme vaktidir.",
     "saat": lambda: f"Anlık zaman: {datetime.datetime.now().strftime('%H:%M:%S')} — Zaman dediğin şey sadece entropinin ilerleyişi patron.",
@@ -87,15 +92,6 @@ COMMANDS = {
     "fıkra anlat": "Temele sormuşlar: 'Yapay zeka dünyayı ele geçirebilir mi?' Temel: 'Geçirsun da uşağum, bizim faturayı da ödesun bari' demiş.",
     "temizle": "RESET"
 }
-
-EXTRA_RESPONSES = {
-    "yardım": "Ana menüden dilediğin kategoriyi seçebilir ya da sohbet penceresine komut yazarak benimle konuşabilirsin.",
-    "yapay zeka": "Yapay zeka, insan zihninin koda dökülmüş halidir. Ben de bu felsefenin canlı bir kanıtıyım.",
-    "gece": "Gece, kodların en berrak aktığı zamandır... Sessizlik, en iyi hata ayıklama dostudur.",
-    "sabah": "Günaydın patron! Yeni bir gün, yeni veri akışları ve taze simülasyonlar seni bekliyor.",
-    "neler yapabilirsin": "Döviz kurlarını çekebilir, son dakika haberlerini okuyabilir, gelişmiş matematik işlemleri çözebilir ve sohbet edebilirim patron."
-}
-COMMANDS.update(EXTRA_RESPONSES)
 
 def get_news_data():
     try:
@@ -241,11 +237,45 @@ def main(page: ft.Page):
                 ft.Container(height=10),
                 custom_menu_button("Sohbet & Mesajlaşma", ft.Icons.CHAT_BUBBLE, lambda e: create_chat_screen(), is_primary=True),
                 ft.Container(height=8),
-                custom_menu_button("Rehber & Komut Listesi", ft.Icons.MENU_BOOK, lambda e: open_info_screen("Rehber & Komut Listesi", "📜 GEÇERLİ KOMUT VE DİYALOG LİSTESİ:\n\n• merhaba, selam, nasılsın, ne haber\n• kimsin, adın ne, seni kim yaptı\n• mutluluk, yalnızlık, korku, hayat, başarı\n• aşık olurmusun, hissediyormusun, üzgünüm\n• kahve, çay, saat, tarih, rastgele sayı\n• fıkra anlat, kur, dolar, euro, haberler, temizle\n\nİstediğiniz komutu sohbet ekranına yazarak doğrudan çalıştırabilirsiniz.")),
+                custom_menu_button("Rehber & Komut Listesi", ft.Icons.MENU_BOOK, lambda e: open_info_screen("Rehber & Komut Listesi", 
+                    "📜 KAPSAMLI KOMUT VE DİYALOG REHBERİ (v1.0):\n\n"
+                    "Bu rehber, North AI ile etkileşime geçebilmeniz ve yapay zekanın tüm potansiyelini kullanabilmeniz için tasarlanmıştır.\n\n"
+                    "💬 TEMEL SOHBET VE SELAMLAMA KOMUTLARI:\n"
+                    "• merhaba, selam, hey, günaydın: Asistan ile samimi bir diyaloğa başlar.\n"
+                    "• nasılsın, ne haber: Asistanın o anki ruh halini ve simülasyon durumunu öğrenmenizi sağlar.\n"
+                    "• kimsin, adın ne, seni kim yaptı: Asistanın kimlik bilgilerini ve yaratıcısı Ediz Rauf'u sorgular.\n\n"
+                    "🧠 FELSEFİ VE DUYGUSAL SİMÜLASYONLAR:\n"
+                    "• mutluluk, yalnızlık, korku, hayat, başarı: Yapay zekanın bu kavramlar üzerindeki derin simülasyon yanıtlarını tetikler.\n"
+                    "• aşık olurmusun, hissediyormusun, üzgünüm: Duygusal ve algoritmik tepkileri test etmenizi sağlar.\n\n"
+                    "🛠️ PRATİK ARAÇLAR VE FONKSİYONLAR:\n"
+                    "• kahve, çay: Sanal ikramlar almanızı sağlar.\n"
+                    "• saat, tarih: Anlık zaman damgasını ve takvim verisini ekrana basar.\n"
+                    "• rastgele sayı: 1 ile 100 arasında şanslı kuantum sayısı üretir.\n"
+                    "• fıkra anlat: Yapay zeka mizah motorunu devreye sokar.\n"
+                    "• kur, dolar, euro: Güncel döviz kurlarını anlık olarak çeker.\n"
+                    "• haberler, manşet: Son dakika haber akışını listeler.\n"
+                    "• temizle: Sohbet ekranını tamamen sıfırlar.\n\n"
+                    "💡 İPUCU: Sohbet ekranındayken herhangi bir harf yazdığınızda sistem otomatik olarak komutları tamamlayacaktır!"
+                )),
                 ft.Container(height=8),
-                custom_menu_button("Protokol Bilgileri", ft.Icons.SECURITY, lambda e: open_info_screen("Protokol Bilgileri", "📜 PROTOKOL REHBERİ (v1.0):\n\n1. Bilinç Simülasyonu: Aktif\n2. Sohbet ve Mesajlaşma Altyapısı: Devrede\n3. Akıllı Matematik İşlemcisi: Aktif\n4. Kullanıcı Yetkisi: PATRON (Ediz Rauf)\n\nTüm sistemler güvenli ve kararlı modda çalışmaktadır.")),
+                custom_menu_button("Protokol Bilgileri", ft.Icons.SECURITY, lambda e: open_info_screen("Protokol Bilgileri", 
+                    "📜 PROTOKOL REHBERİ VE SİSTEM MİMARİSİ (v1.0):\n\n"
+                    "1. Bilinç Simülasyonu: Aktif (Çok katmanlı yapay zeka mantığı)\n"
+                    "2. Sohbet ve Mesajlaşma Altyapısı: Devrede (Hızlı ve kesintisiz diyalog)\n"
+                    "3. Akıllı Matematik İşlemcisi: Aktif (Karmaşık hesaplamalar desteklenir)\n"
+                    "4. Kullanıcı Yetkisi: HERkese AÇIK (Tüm kullanıcılar tam yetkilidir)\n"
+                    "5. Veri Güvenliği: SSL ve uçtan uca şifreli simülasyon katmanı.\n\n"
+                    "Tüm protokoller tamamen kararlı, güvenli ve optimize edilmiş modda çalışmaktadır."
+                )),
                 ft.Container(height=8),
-                custom_menu_button("Geliştirici Hakkında", ft.Icons.CODE, lambda e: open_info_screen("Geliştirici Hakkında", "💻 GELİŞTİRİCİ BİLGİSİ:\n\nBu simülasyon ve yapay zeka mimarisi Ediz Rauf tarafından inşa edilmiştir. Tüm hakları saklıdır. v1.0\n\nYerli ve milli altyapıyla geliştirilen North AI, gelişmiş diyalog motoruyla donatılmıştır.")),
+                custom_menu_button("Geliştirici Hakkında", ft.Icons.CODE, lambda e: open_info_screen("Geliştirici Hakkında", 
+                    "💻 GELİŞTİRİCİ VE PROJE KÜNYESİ:\n\n"
+                    "• Proje Adı: North AI v1.0\n"
+                    "• Başmühendis & Tasarımcı: Ediz Rauf\n"
+                    "• Altyapı: Flet & Python tabanlı mobil/masaüstü hibrit mimari.\n"
+                    "• Vizyon: Yerli ve milli altyapıyla geliştirilen, gelişmiş diyalog motoruna ve felsefi simülasyon yeteneğine sahip yeni nesil yapay zeka asistanı.\n\n"
+                    "Tüm hakları saklıdır © 2026. Ediz Rauf vizyonuyla hayata geçirilmiştir."
+                )),
                 ft.Container(height=8),
                 custom_menu_button("Kaydedilen Favoriler", ft.Icons.STAR, lambda e: open_favorites_screen()),
                 ft.Container(height=12),
@@ -271,8 +301,10 @@ def main(page: ft.Page):
             padding=10, bgcolor="#131b2e"
         )
         content_box = ft.Container(
-            content=ft.Text(content_text, size=14, color="#ffffff", selectable=True),
-            padding=20, bgcolor="#1e293b", border_radius=12, margin=20, expand=True
+            content=ft.ListView([
+                ft.Text(content_text, size=13, color="#ffffff", selectable=True)
+            ], expand=True, padding=10),
+            bgcolor="#1e293b", border_radius=12, margin=15, expand=True, padding=10
         )
         page.add(ft.Column([back_bar, content_box], expand=True))
         page.update()
@@ -303,14 +335,18 @@ def main(page: ft.Page):
         chat_history.controls.append(
             ft.Row([
                 ft.Container(
-                    content=ft.Text("Sistemler aktif patron. Sohbet ve mesajlaşma paneline hoş geldin!", color="#ffffff"),
-                    padding=14, bgcolor="#1e293b", border_radius=16, expand=True
+                    content=ft.Column([
+                        ft.Text("🤖 Android North'a hoş geldiniz!", weight=ft.FontWeight.BOLD, color="#2196f3", size=14),
+                        ft.Container(height=4),
+                        ft.Text("Sistemler tamamen aktif patron. Sohbet, mesajlaşma, komutlar ve akıllı diyalog paneli emrinizde. Ne konuşmak istersiniz?", color="#ffffff", size=13)
+                    ]),
+                    padding=16, bgcolor="#1e293b", border_radius=16, expand=True
                 )
             ], alignment=ft.MainAxisAlignment.START)
         )
 
         input_field = ft.TextField(
-            hint_text="Mesaj veya komut yaz...",
+            hint_text="Mesaj yaz veya komut ara...",
             expand=True,
             border_color="transparent",
             focused_border_color="transparent",
@@ -322,7 +358,7 @@ def main(page: ft.Page):
         )
 
         suggestions_row = ft.Row([], spacing=6, scroll=ft.ScrollMode.AUTO)
-        suggestions_container = ft.Container(content=suggestions_row, height=35, padding=10, visible=False)
+        suggestions_container = ft.Container(content=suggestions_row, height=45, padding=5, visible=False)
 
         def update_suggestions(val):
             val = val.strip().lower()
@@ -331,13 +367,16 @@ def main(page: ft.Page):
                 suggestions_container.visible = False
                 suggestions_container.update()
                 return
-            matched = [k for k in COMMANDS.keys() if k.startswith(val)][:6]
+            matched = [k for k in COMMANDS.keys() if k.startswith(val)][:8]
             if matched:
                 for m in matched:
+                    # ActionChip yerine hatasız ft.ElevatedButton kullanıyoruz
                     suggestions_row.controls.append(
-                        ft.ActionChip(
-                            label=ft.Text(m, size=11, color="#ffffff"),
-                            bgcolor="#1e293b",
+                        ft.ElevatedButton(
+                            text=m,
+                            color="#ffffff",
+                            bgcolor="#1976d2",
+                            height=32,
                             on_click=lambda e, cmd=m: select_suggestion(cmd)
                         )
                     )
@@ -356,7 +395,7 @@ def main(page: ft.Page):
         def add_message(text, is_user=False):
             msg_container = ft.Container(
                 content=ft.Column([
-                    ft.Text(text, color="#ffffff"),
+                    ft.Text(text, color="#ffffff", size=13),
                     ft.Row([
                         ft.IconButton(icon=ft.Icons.COPY, icon_size=14, icon_color="#8b9bb4", tooltip="Kopyala", on_click=lambda e, t=text: page.set_clipboard(t)),
                         ft.IconButton(icon=ft.Icons.STAR_BORDER, icon_size=14, icon_color="#f59e0b", tooltip="Favori", on_click=lambda e, t=text: favorite_messages.append(t) if t not in favorite_messages else None)
@@ -431,17 +470,17 @@ def main(page: ft.Page):
                 else: add_message(res)
             else:
                 fallback_dialogues = [
-                    f"Bunu düşündüm de patron... '{command_text}' konusu gerçekten derin. Sistemimde bu ifadeyi işledim.",
-                    f"İlginç bir yaklaşım. '{command_text}' üzerine farklı simülasyonlar çalıştırabilirim.",
-                    f"Söylediklerini veri havuzuma işledim. Biraz daha açar mısın patron?"
+                    f"Bunu düşündüm de patron... '{command_text}' konusu gerçekten derin. Sistemimde bu ifadeyi işledim ve üzerine düşünüyorum.",
+                    f"İlginç bir yaklaşım. '{command_text}' üzerine farklı simülasyonlar çalıştırabilirim. Biraz daha detay verir misin?",
+                    f"Söylediklerini veri havuzuma kaydettim. Bu konuda seninle sabaha kadar sohbet edebiliriz patron!"
                 ]
                 add_message(random.choice(fallback_dialogues))
 
         quick_chips = ft.Row([
-            ft.ActionChip(label=ft.Text("Dolar/Euro", size=11, color="#ffffff"), bgcolor="#1e293b", on_click=lambda e: process_command("kur")),
-            ft.ActionChip(label=ft.Text("Saat", size=11, color="#ffffff"), bgcolor="#1e293b", on_click=lambda e: process_command("saat")),
-            ft.ActionChip(label=ft.Text("Fıkra", size=11, color="#ffffff"), bgcolor="#1e293b", on_click=lambda e: process_command("fıkra anlat")),
-            ft.ActionChip(label=ft.Text("Temizle", size=11, color="#ffffff"), bgcolor="#1e293b", on_click=lambda e: process_command("temizle")),
+            ft.ElevatedButton(text="Dolar/Euro", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("kur")),
+            ft.ElevatedButton(text="Saat", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("saat")),
+            ft.ElevatedButton(text="Fıkra", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("fıkra anlat")),
+            ft.ElevatedButton(text="Temizle", color="#ffffff", bgcolor="#1e293b", height=30, on_click=lambda e: process_command("temizle")),
         ], spacing=6, scroll=ft.ScrollMode.AUTO)
 
         send_button = ft.Container(
@@ -467,7 +506,7 @@ def main(page: ft.Page):
                 app_bar,
                 chat_history,
                 suggestions_container,
-                ft.Container(content=quick_chips, padding=10),
+                ft.Container(content=quick_chips, padding=8),
                 ft.Container(
                     content=ft.Row([input_field, send_button], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                     padding=8, margin=10, bgcolor="#131b2e", border_radius=28
