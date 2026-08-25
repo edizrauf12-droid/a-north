@@ -16,12 +16,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    # 2. Python ortamını kur
+    # 2. Python ortamını kur (Cache kaldırıldı)
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        cache: 'pip'
 
     # 3. Flutter ortamını kur (Flet build için gerekli)
     - name: Set up Flutter
@@ -31,7 +30,7 @@ jobs:
         channel: 'stable'
         cache: true
 
-    # 4. Linux grafik ve GTK bağımlılıklarını kur (Broken pipe hatalarını önler)
+    # 4. Linux grafik ve GTK bağımlılıklarını kur
     - name: Install Linux Desktop Dependencies
       run: |
         sudo apt-get update
