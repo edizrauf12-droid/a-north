@@ -42,13 +42,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install flet
 
-    # Flet CLI'ın o takılan komutunu atlayıp doğrudan flet paketleme aracını tetikliyoruz
-    - name: Initialize Flet Project Structure
+    # Flet'in paketleme motorunu tetikleyip Flutter klasör yapısının oluşmasını sağlıyoruz (Hata verirse yoksayar)
+    - name: Generate Flutter Project Structure via Flet
       run: |
-        python -c "import subprocess; subprocess.run(['flet', 'pack', 'main.py'], capture_output=True)" || true
+        python -c "import subprocess; subprocess.run(['flet', 'pack', 'main.py'])" || true
 
-    # Doğrudan Flutter ile release APK derle (Sıfır soru, yüzde yüz sonuç)
-    - name: Build Direct Flutter APK
+    # Flet'in komutunu KULLANMIYORUZ. Doğrudan Flutter ile release APK derliyoruz (Sıfır interaktif soru, sıfır EOFError!)
+    - name: Build APK Directly with Flutter
       run: |
         flutter build apk --release
 
