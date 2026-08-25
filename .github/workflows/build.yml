@@ -42,17 +42,23 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libgtk-3-dev mesa-utils xvfb
 
-    - name: Install Python Dependencies
+    - name: Install Python Dependencies & Flet CLI
       run: |
         python -m pip install --upgrade pip
         pip install flet
 
-    - name: Build Flet APK (Non-Interactive)
+    # Flet projesini Flutter yapısına dönüştür (soruları atlamak için)
+    - name: Flet Pack / Create Project Files
       run: |
-        CI=true xvfb-run flet build apk
+        xvfb-run flet pack main.py || true
+
+    # Doğrudan Flutter ile APK derle (Soru sormaz, takılmaz)
+    - name: Build APK with Flutter
+      run: |
+        flutter build apk --release
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-release
-        path: build/apk/*.apk
+        path: build/app/outputs/flutter-apk/app-release.apk
