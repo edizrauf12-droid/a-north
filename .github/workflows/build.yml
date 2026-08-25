@@ -12,24 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Depoyu GitHub'dan çek
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    # 2. Java ortamını kur (Android lisansları ve APK derlemesi için şarttır)
     - name: Set up Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: '17'
 
-    # 3. Python ortamını kur
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    # 4. Flutter ortamını kur
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -37,29 +33,24 @@ jobs:
         channel: 'stable'
         cache: true
 
-    # 5. Eksik Android Lisanslarını Otomatik Olarak Onayla
     - name: Accept Android Licenses
       run: |
         yes | flutter doctor --android-licenses || true
 
-    # 6. Linux grafik ve GTK bağımlılıklarını kur
     - name: Install Linux Desktop Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y libgtk-3-dev mesa-utils xvfb
 
-    # 7. Python bağımlılıklarını ve Flet'i yükle
     - name: Install Python Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flet
 
-    # 8. Flet APK derleme işlemini başlat
-    - name: Build Flet APK
+    - name: Build Flet APK (Non-Interactive)
       run: |
-        xvfb-run flet build apk
+        CI=true xvfb-run flet build apk
 
-    # 9. Üretilen APK dosyasını GitHub artifacts olarak kaydet
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
